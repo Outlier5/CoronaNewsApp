@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" (submit)="login()" novalidate>
+    <ion-item>
+      <ion-label position="floating">CPF</ion-label>
+      <ion-input formControlName="cpf" type="text" placeholder="000.000.000-00" maxlength="11"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input formControlName="email" type="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input formControlName="password" type="password" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-button type="submit" size="large" color="primary">Login</ion-button>
+    </ion-item>
+  </form>
+</ion-content>
