@@ -11,6 +11,9 @@ import { Component } from "@angular/core";
 import { Platform } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
+import { Storage } from '@ionic/storage';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+
 
 @Component({
   selector: 'app-home',
@@ -20,15 +23,19 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class HomePage {
   map: GoogleMap;
 
-  constructor(private platform: Platform) { }
+  constructor(
+    public storage: Storage,
+    private platform: Platform,
+    private http: HTTP,
+    private nativeGeocoder: NativeGeocoder) { }
 
   ngOnInit() {
     this.platform.ready();
     this.loadMap();
+    this.getCircles();
   }
 
   loadMap() {
-
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyCOwpKWB6VSvclPt6yoUJIP_jk9LVvzOsM',
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyCOwpKWB6VSvclPt6yoUJIP_jk9LVvzOsM'
@@ -52,16 +59,31 @@ export class HomePage {
         'mapToolbar': true  
       }
     };
-    
-    let GOOGLE: ILatLng = {"lat" : 43.0741904, "lng" : -89.3809802};
 
     this.map = GoogleMaps.create('map_canvas', mapOptions);
+    
+  }
 
-    let circle: Circle = this.map.addCircleSync({
-      'center': GOOGLE,
-      'radius': 300,
-      'strokeWidth': 5,
-      'fillColor' : '#880000'
-    })
+  getCircles() {
+    this.storage.get('token').then(value => {
+      this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
+        'Authorization': `Bearrer ${value}`
+      }).then(data => {
+        const { cleanData } = JSON.parse(data.data);
+
+        let options: NativeGeocoderOptions = {
+          useLocale: true,
+          maxResults: 5
+        };
+        
+        this.nativeGeocoder.forwardGeocode('Alagoas', options)
+          .then((result: NativeGeocoderResult[]) => {
+            console.log('The coordinates are latitude=' + result[0].latitude + ' and longitude=' + result[0].longitude)
+          })
+          .catch((error: any) => console.log(error));
+      });
+    });
+
+  
   }
 }
