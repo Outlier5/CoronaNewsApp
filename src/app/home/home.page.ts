@@ -5,7 +5,7 @@ import {
   Circle,
   Marker,
   Environment,
-  HtmlInfoWindow,
+  LatLng,
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
 import { Component } from "@angular/core";
@@ -14,7 +14,7 @@ import { Platform } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
-
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
 @Component({
   selector: 'app-home',
@@ -29,11 +29,13 @@ export class HomePage {
     public storage: Storage,
     private platform: Platform,
     private http: HTTP,
-    private geolocation: Geolocation) { }
+    private geolocation: Geolocation,
+    private nativeGeocoder: NativeGeocoder) { }
 
   ngOnInit() {
-    this.platform.ready();
-    this.loadMap();
+    this.platform.ready().then(() => {
+      this.loadMap();
+    });
   }
 
   loadMap() {
@@ -65,12 +67,15 @@ export class HomePage {
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
+        const position = this.map.getCameraPosition().target;
+        
         const zoom = this.map.getCameraZoom(); 
-        if (zoom < 10 && zoom > 6)
-          this.insertControll(1);
-        else if (zoom < 15 && zoom > 10)
-          this.insertControll(2);
-      })
+
+        if (zoom < 8 && zoom > 6)
+          this.insertControll(1, position);
+        else if (zoom < 15 && zoom > 8)
+          this.insertControll(2, position);
+      });
      }).catch((error) => {
        console.log('Error getting location', error);
      });
@@ -78,7 +83,7 @@ export class HomePage {
     
   }
 
-  async insertControll(number) {
+  async insertControll(number, position) {
     const date = new Date();
 
     if (number == 1 && number != this.actualNumber) {
@@ -94,15 +99,27 @@ export class HomePage {
     }
     else if (number == 2 && number != this.actualNumber) {
       this.actualNumber = number;
-      const data = await this.storage.get('perState').then(val => val);
-      console.log(data)
-      if (data == null || 
-        (date.getDate() > data.date.day ||
-        date.getMonth() > data.date.month ||
-        date.getFullYear() > data.date.year))
-          this.getPerState();
 
-      this.drawCircles(data.cleanData);
+      let options: NativeGeocoderOptions = {
+        useLocale: true,
+          maxResults: 5
+      };
+
+      this.nativeGeocoder.reverseGeocode(position.lat, position.lng, options)
+        .then(async (result: NativeGeocoderResult[]) => {
+          const { administrativeArea } = result[0];
+          const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
+
+          if (data == null || 
+            (date.getDate() > data.date.day ||
+            date.getMonth() > data.date.month ||
+            date.getFullYear() > data.date.year))
+              this.getPerState(administrativeArea);
+
+          this.drawCircles(data.cleanData);
+        })
+        .catch((error: any) => console.log(error));
+
     }
   }
 
@@ -123,16 +140,16 @@ export class HomePage {
       });
   }
 
-  getPerState() {
+  getPerState(state) {
     const d = new Date()
     console.log(d.getDate());
     this.storage.get('token').then(value => {
-      this.http.get('https://coronago.herokuapp.com/coronaApi/getPerState/*', {}, {
+      this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const date = new Date();
         const { cleanData } = JSON.parse(data.data);
-          this.storage.set('perState', { 
+          this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
             date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
           this.drawCircles(cleanData);
@@ -143,23 +160,24 @@ export class HomePage {
   drawCircles(array) {
     this.map.clear();
     array.forEach(element => {
-      const { latitude, longitude } = element.position;
+      if (element.position){
+        const { latitude, longitude } = element.position;
 
-      let marker: Marker = this.map.addMarkerSync({
-        position: { lat: latitude, lng: longitude },
-        title: element.state,
-        icon: 'blue',
-        animation: 'DROP',
-      });
-      
-      //console.log(element.confirmed * (this.map.getCameraZoom() / 0.1))
-      let circle: Circle = this.map.addCircleSync({
-        center: marker.getPosition(),
-        radius: element.confirmed * 30,
-        fillColor: "rgba(255, 0, 0, 0.5)",
-      });
-      marker.bindTo("position", circle, "center");
-      
+        let marker: Marker = this.map.addMarkerSync({
+          position: { lat: latitude, lng: longitude },
+          title: element.state,
+          icon: 'blue',
+          animation: 'DROP',
+        });
+        
+        //console.log(element.confirmed * (this.map.getCameraZoom() / 0.1))
+        let circle: Circle = this.map.addCircleSync({
+          center: marker.getPosition(),
+          radius: element.confirmed * 30,
+          fillColor: "rgba(255, 0, 0, 0.5)",
+        });
+        marker.bindTo("position", circle, "center");
+      }
     });
   }
 }
