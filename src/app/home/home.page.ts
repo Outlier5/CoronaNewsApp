@@ -5,11 +5,11 @@ import {
   Circle,
   Marker,
   Environment,
-  LatLng,
+  HtmlInfoWindow,
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
 import { Component } from "@angular/core";
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -30,6 +30,7 @@ export class HomePage {
 
   constructor(
     public storage: Storage,
+    public menuCtrl: MenuController,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
@@ -41,6 +42,7 @@ export class HomePage {
     this.platform.ready().then(() => {
       this.loadMap();
     });
+    this.menuCtrl.enable(true, 'myMenu')
   }
 
   loadMap() {
@@ -66,7 +68,7 @@ export class HomePage {
           'myLocation': true, 
           'indoorPicker': true,
           'zoom': false,       
-          'mapToolbar': true  
+          'mapToolbar': false  
         }
       };
   
@@ -86,6 +88,19 @@ export class HomePage {
      });
     
     
+  }
+
+  goToMyLoc() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.map.animateCamera({
+        target: {
+          lat: resp.coords.latitude,
+          lng: resp.coords.longitude
+        },
+        zoom: 18,
+        duration: 2000
+      });
+    });
   }
 
   async insertControll(number, position) {
@@ -170,12 +185,30 @@ export class HomePage {
 
         let marker: Marker = this.map.addMarkerSync({
           position: { lat: latitude, lng: longitude },
-          title: element.state,
           icon: 'blue',
           animation: 'DROP',
         });
-        
-        //console.log(element.confirmed * (this.map.getCameraZoom() / 0.1))
+
+        let htmlInfoWindow = new HtmlInfoWindow();
+
+        let frame: HTMLElement = document.createElement('div');
+        frame.innerHTML = [
+          `<h3>${element.state}</h3>`,
+          `<h4>${element.city}</h4>`,
+          `<h5>Confirmados: ${element.confirmed}</h5>`,
+          `<h5>Mortes: ${element.deaths}</h5>`,
+        ].join("");
+
+        htmlInfoWindow.setContent(frame, {
+          width: "200px",
+          height: "200px"
+        });
+
+        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+          marker.hideInfoWindow();
+          htmlInfoWindow.open(marker);
+        });
+
         let circle: Circle = this.map.addCircleSync({
           center: marker.getPosition(),
           radius: element.confirmed * 30,
