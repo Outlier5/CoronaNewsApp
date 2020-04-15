@@ -1,5 +1,17 @@
-<ion-content [fullscreen]="true">
-  <div #map_canvas style="height:100%;width:100%;margin:0 auto;" id="map_canvas">
-    <button ion-button style="bottom: 2;right: 1; position: fixed; z-index: 99;" >Demo</button>
-  </div>
-</ion-content>
+<ion-app>
+  <ion-content [fullscreen]="true">
+    <div #map_canvas id="map_canvas">
+      <ion-buttons slot="start">
+        <ion-menu-button>
+          <ion-icon slot="start" size="large" name="menu"></ion-icon>
+        </ion-menu-button>
+      </ion-buttons>
+      <div class="overlay">
+        <ion-button>
+            <ion-icon slot="start" size="large" name="star"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    
+  </ion-content>
+</ion-app>

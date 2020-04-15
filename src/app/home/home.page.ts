@@ -11,6 +11,8 @@ import {
 import { Component } from "@angular/core";
 import { Platform } from '@ionic/angular';
 
+import { ActivatedRoute } from '@angular/router';
+
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
@@ -22,6 +24,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  public folder: string;
   map: GoogleMap;
   actualNumber: 0;
 
@@ -30,9 +33,11 @@ export class HomePage {
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder) { }
+    private nativeGeocoder: NativeGeocoder,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.platform.ready().then(() => {
       this.loadMap();
     });
@@ -56,7 +61,7 @@ export class HomePage {
            tilt: 30
          },
          controls: {
-          'compass': true,
+          'compass': false,
           'myLocationButton': false,
           'myLocation': true, 
           'indoorPicker': true,

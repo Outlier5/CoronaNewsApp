@@ -1,6 +1,5 @@
 #container {
   text-align: center;
-
   position: absolute;
   left: 0;
   right: 0;
@@ -30,6 +29,17 @@ ion-content ion-toolbar {
   --background: translucent;
 }
 
+#map_canvas {
+  height: 100%;
+  width: 100%;
+  margin: 0 0;
+  position: absolute;
+  z-index: 0;
+}
+
 .overlay{
-  
+  position: absolute;
+  z-index: 20;
+  bottom: 0;
+  right: 0;
 }
