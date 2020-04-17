@@ -8,12 +8,16 @@ import { ModalPageRoutingModule } from './modal-routing.module';
 
 import { ModalPage } from './modal.page';
 
+import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ModalPageRoutingModule
+    ModalPageRoutingModule,
+    NgxTwitterTimelineModule,
   ],
   declarations: [ModalPage]
 })

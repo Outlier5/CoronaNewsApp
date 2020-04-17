@@ -16,6 +16,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { ModalPageModule } from './modal/modal.module';
 
+import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -25,6 +27,7 @@ import { ModalPageModule } from './modal/modal.module';
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     ModalPageModule,
+    NgxTwitterTimelineModule
     ],
   providers: [
     StatusBar,

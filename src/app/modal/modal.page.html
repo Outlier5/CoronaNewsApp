@@ -4,7 +4,9 @@
     <ion-button (click)="dismiss()">Close</ion-button>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-
+  <ngx-twitter-timeline 
+    [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
+    [opts]="{ tweetLimit: 20 }">
+  </ngx-twitter-timeline>
 </ion-content>
