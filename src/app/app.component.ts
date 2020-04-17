@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Storage } from '@ionic/storage';
+
 import { HomePage } from './home/home.page';
 
 @Component({
@@ -12,48 +14,37 @@ import { HomePage } from './home/home.page';
 })
 export class AppComponent implements OnInit{
   public selectedIndex = 0;
+  public user: any;
   public appPages = [
     {
-      title: 'Inbox',
-      url: '/folder/Inbox',
+      title: 'Mapa',
+      url: '/home',
       icon: 'mail'
     },
     {
-      title: 'Outbox',
-      url: '/folder/Outbox',
+      title: 'Noticias',
+      url: '/news',
       icon: 'paper-plane'
     },
     {
-      title: 'Favorites',
-      url: '/folder/Favorites',
+      title: 'Opções',
+      url: '/options',
       icon: 'heart'
     },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive'
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash'
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning'
-    }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   rootPage: any;
 
   constructor(
+    public storage: Storage,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
   ) {
     this.initializeApp();
+    this.user = { 
+      name: "Nome Teste"
+    }
   }
 
   initializeApp() {
@@ -64,6 +55,10 @@ export class AppComponent implements OnInit{
     });
   }
 
+  logout() {
+    alert('logout');
+  }
+  
   ngOnInit() {
     const path = window.location.pathname.split('home/')[1];
     if (path !== undefined) {

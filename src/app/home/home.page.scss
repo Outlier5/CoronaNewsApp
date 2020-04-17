@@ -52,3 +52,11 @@ ion-content ion-toolbar {
   padding-bottom: 80px;
   right: 0;
 }
+
+.newsButton {
+  position: absolute;
+  z-index: 20;
+  bottom: 0;
+  padding-bottom: 10px;
+  left: 0;
+}

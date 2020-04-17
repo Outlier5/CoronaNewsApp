@@ -6,6 +6,7 @@ import { MenuController } from '@ionic/angular';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -40,7 +41,7 @@ export class LoginPage implements OnInit {
         const { token, user, message } = JSON.parse(data.data);
         this.storage.set('token', token);
         this.storage.set('user', user);
-        alert(message)
+        alert(message);
         this.router.navigate(['/home'])
 
       });
