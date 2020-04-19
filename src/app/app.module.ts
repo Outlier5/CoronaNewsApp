@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { ModalPageModule } from './modal/modal.module';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -39,6 +40,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HTTP,
     Geolocation,
     NativeGeocoder,
+    InAppBrowser
   ],
   bootstrap: [AppComponent]
 })

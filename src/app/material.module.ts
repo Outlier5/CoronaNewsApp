@@ -6,7 +6,8 @@ import {
   MatSelectModule,
   MatTabsModule,
   MatButtonModule,
-  MatListModule
+  MatCardModule,
+  MatDividerModule
 } from '@angular/material';
 
 @NgModule({
@@ -15,7 +16,8 @@ import {
     MatSelectModule,
     MatTabsModule,
     MatButtonModule,
-    MatListModule
+    MatCardModule,
+    MatDividerModule
   ],
   declarations: [],
   imports: [

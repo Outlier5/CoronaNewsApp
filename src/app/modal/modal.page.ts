@@ -4,6 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 
 @Component({
   selector: 'app-modal',
@@ -23,6 +25,7 @@ export class ModalPage implements OnInit {
   constructor(
     public storage: Storage,
     public modalController: ModalController,
+    private iab: InAppBrowser,
     private http: HTTP,
   ) {
   }
@@ -48,6 +51,10 @@ export class ModalPage implements OnInit {
     } catch (error) {
       alert(error)
     }
+  }
+
+  openBrowser(url) {
+    this.iab.create(url);
   }
 
   dismiss() {

@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <mat-tab-group mat-align-tabs="center">
-    <mat-tab label="First"> 
+    <mat-tab label="Noticias"> 
       <ng-template matTabContent>
         <ngx-twitter-timeline 
           [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
@@ -13,7 +13,7 @@
         </ngx-twitter-timeline>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Second">
+    <mat-tab label="Boletins Oficiais">
       <ng-template matTabContent>
         <mat-form-field appearance="fill">
           <mat-select [(value)]="selected" (change)="test()">
@@ -24,12 +24,20 @@
         </mat-form-field>
         <button mat-raised-button (click)="select()" >Basic</button>
 
-        <mat-list role="list">
-          <mat-list-item role="listitem" *ngFor="let boletim of data">
-            
-            {{ boletim.url }}
-          </mat-list-item>
-        </mat-list>
+        <div role="listitem" *ngFor="let boletim of data">
+          <mat-card class="card">
+            <mat-card-title>
+              {{ boletim.state }}
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{ boletim.date }}
+            </mat-card-subtitle>
+            <mat-card-content>
+              {{ boletim.notes }}
+            </mat-card-content>
+          </mat-card>  
+          <mat-divider></mat-divider>
+        </div>
       </ng-template>
     </mat-tab>
   </mat-tab-group>
