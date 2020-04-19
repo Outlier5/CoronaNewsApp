@@ -125,7 +125,7 @@ export class HomePage {
         date.getFullYear() > data.date.year))
           this.getAllStates();
 
-      this.drawCircles(data.cleanData);
+      this.drawCircles(data.cleanData, 'allStates');
     }
     else if (number == 2 && number != this.actualNumber) {
       this.actualNumber = number;
@@ -146,7 +146,7 @@ export class HomePage {
             date.getFullYear() > data.date.year))
               this.getPerState(administrativeArea);
 
-          this.drawCircles(data.cleanData);
+          this.drawCircles(data.cleanData, 'perState');
         })
         .catch((error: any) => console.log(error));
 
@@ -165,7 +165,7 @@ export class HomePage {
           this.storage.set('allStates', { 
             cleanData,
             date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
-          this.drawCircles(cleanData);
+          this.drawCircles(cleanData, 'allStates');
         });
       });
   }
@@ -182,13 +182,15 @@ export class HomePage {
           this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
             date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
-          this.drawCircles(cleanData);
+          this.drawCircles(cleanData, 'perState');
         });
       });
   }
 
-  drawCircles(array) {
+  drawCircles(array, type) {
     this.map.clear();
+    let radius;
+
     array.forEach(element => {
       if (element.position){
         const { latitude, longitude } = element.position;
@@ -204,7 +206,7 @@ export class HomePage {
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
           `<h3>${element.state}</h3>`,
-          `<h4>${element.city}</h4>`,
+          `<h4>${element.city == undefined ? '': element.city}</h4>`,
           `<h5>Confirmados: ${element.confirmed}</h5>`,
           `<h5>Mortes: ${element.deaths}</h5>`,
         ].join("");
@@ -218,10 +220,19 @@ export class HomePage {
           marker.hideInfoWindow();
           htmlInfoWindow.open(marker);
         });
-
+        switch (type) {
+          case 'perState':
+            radius = (element.confirmed * 10) > 10000 ? 10000 : (element.confirmed * 10);
+            break;
+          case 'allStates':
+            radius = element.confirmed * 20;
+            break;
+          default:
+            break;
+        }
         let circle: Circle = this.map.addCircleSync({
           center: marker.getPosition(),
-          radius: element.confirmed * 30,
+          radius,
           fillColor: "rgba(255, 0, 0, 0.5)",
         });
         marker.bindTo("position", circle, "center");

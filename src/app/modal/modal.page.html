@@ -1,12 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Modal</ion-title>
     <ion-button (click)="dismiss()">Close</ion-button>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ngx-twitter-timeline 
-    [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
-    [opts]="{ tweetLimit: 20 }">
-  </ngx-twitter-timeline>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab label="First"> 
+      <ng-template matTabContent>
+        <ngx-twitter-timeline 
+          [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
+          [opts]="{ tweetLimit: 20 }">
+        </ngx-twitter-timeline>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Second">
+      <ng-template matTabContent>
+        <mat-form-field appearance="fill">
+          <mat-select [(value)]="selected" (change)="test()">
+            <mat-option *ngFor="let state of states" [value]="state.code">
+              {{ state.state }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button (click)="select()" >Basic</button>
+
+        <mat-list role="list">
+          <mat-list-item role="listitem" *ngFor="let boletim of data">
+            
+            {{ boletim.url }}
+          </mat-list-item>
+        </mat-list>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </ion-content>
