@@ -25,7 +25,7 @@
         <button mat-raised-button (click)="select()" >Basic</button>
 
         <div role="listitem" *ngFor="let boletim of data">
-          <mat-card class="card">
+          <mat-card class="card" (click)="openBrowser( boletim.url )">
             <mat-card-title>
               {{ boletim.state }}
             </mat-card-title>

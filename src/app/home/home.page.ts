@@ -27,6 +27,7 @@ import { ModalPage } from  '../modal/modal.page';
 })
 export class HomePage {
   public folder: string;
+  public user = { name: 'aa' };
   map: GoogleMap;
   actualNumber: 0;
 
@@ -40,12 +41,15 @@ export class HomePage {
     private nativeGeocoder: NativeGeocoder,
     private activatedRoute: ActivatedRoute) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.platform.ready().then(() => {
       this.loadMap();
     });
-    this.menuCtrl.enable(true, 'myMenu')
+    this.storage.get('user').then(value => {
+      this.user = value;
+      console.log(this.user)
+    });
   }
 
   async openModal() {
@@ -239,4 +243,9 @@ export class HomePage {
       }
     });
   }
+
+  logout() {
+    alert('logout');
+  }
+
 }

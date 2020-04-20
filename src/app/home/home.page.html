@@ -1,31 +1,48 @@
 <ion-app>
-  <ion-content [fullscreen]="true">
-    <div #map_canvas id="map_canvas">
-      <ion-buttons slot="start" >
-        <ion-menu-button fill="solid" color="dark" style="width: 50px;">
-          <ion-icon slot="start" size="large" name="menu"></ion-icon>
-        </ion-menu-button>
-      </ion-buttons>
-    </div>
+  <mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <mat-drawer #drawer [mode]="over">
+      <mat-list>
+        <img src="{{'data:image/webp;base64,' + user.avatar}}" >
+        <h1> {{ user.name }} </h1>
+        <h3> {{ user.email }} </h3>
+        <mat-divider></mat-divider>
+        <mat-list-item> Nigga </mat-list-item>
+        <mat-list-item [routerLink]="['/login']" (click)="logout()">
+          <ion-icon slot="start" [ios]="star + '-outline'" [md]="star + '-sharp'"></ion-icon>
+          Logout
+        </mat-list-item>
+      </mat-list>
+    </mat-drawer>
 
-    <div class="secondButton">
-      <ion-button shape="round" (click)="goToMyLoc()">
-        <ion-icon slot="start" size="large" name="locate"></ion-icon>
-      </ion-button>
-    </div>
-    
-    <div class="firstButton">
-      <ion-button shape="round">
-        <ion-icon slot="start" size="large" name="star"></ion-icon>
-      </ion-button>
-    </div>
+    <mat-drawer-content>
+      <ion-content [fullscreen]="true">
+        <div #map_canvas id="map_canvas">
+          <ion-buttons slot="start" >
+            <button mat-raised-button (click)="drawer.toggle()">
+              <ion-icon slot="start" size="large" name="menu"></ion-icon>
+            </button>
+          </ion-buttons>
+        </div>
 
-    <div class="newsButton">
-      <ion-button shape="round" (click)="openModal()">
-        <ion-icon slot="start" name="earth-outline"></ion-icon>
-        News
-      </ion-button>
-    </div>
-    
-  </ion-content>
+        <div class="secondButton">
+          <ion-button shape="round" (click)="goToMyLoc()">
+            <ion-icon slot="start" size="large" name="locate"></ion-icon>
+          </ion-button>
+        </div>
+        
+        <div class="firstButton">
+          <ion-button shape="round">
+            <ion-icon slot="start" size="large" name="star"></ion-icon>
+          </ion-button>
+        </div>
+
+        <div class="newsButton">
+          <ion-button shape="round" (click)="openModal()">
+            <ion-icon slot="start" name="earth-outline"></ion-icon>
+            News
+          </ion-button>
+        </div>
+      </ion-content>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </ion-app>

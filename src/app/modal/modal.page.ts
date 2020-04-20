@@ -54,7 +54,7 @@ export class ModalPage implements OnInit {
   }
 
   openBrowser(url) {
-    this.iab.create(url);
+    this.iab.create(encodeURI(url), '_self', 'hideurlbar=yes,zoom=no');
   }
 
   dismiss() {

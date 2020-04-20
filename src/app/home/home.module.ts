@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { MaterialModule } from '../material.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { HomePage } from './home.page';
         path: '',
         component: HomePage
       }
-    ])
+    ]),
+    MaterialModule
   ],
   declarations: [HomePage]
 })

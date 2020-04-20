@@ -7,7 +7,9 @@ import {
   MatTabsModule,
   MatButtonModule,
   MatCardModule,
-  MatDividerModule
+  MatDividerModule,
+  MatSidenavModule,
+  MatListModule
 } from '@angular/material';
 
 @NgModule({
@@ -17,7 +19,9 @@ import {
     MatTabsModule,
     MatButtonModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSidenavModule,
+    MatListModule
   ],
   declarations: [],
   imports: [
