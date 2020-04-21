@@ -9,7 +9,8 @@ import {
   MatCardModule,
   MatDividerModule,
   MatSidenavModule,
-  MatListModule
+  MatListModule,
+  MatInputModule
 } from '@angular/material';
 
 @NgModule({
@@ -21,7 +22,8 @@ import {
     MatCardModule,
     MatDividerModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatInputModule
   ],
   declarations: [],
   imports: [

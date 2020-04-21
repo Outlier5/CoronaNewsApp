@@ -2,13 +2,16 @@
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
     <mat-drawer #drawer [mode]="over">
       <mat-list>
-        <img src="{{'data:image/webp;base64,' + user.avatar}}" >
+        <img src="data:image/webp;base64,{{ avatar }}" >
         <h1> {{ user.name }} </h1>
-        <h3> {{ user.email }} </h3>
+        <h3>Level: {{ user.level }} </h3>
         <mat-divider></mat-divider>
-        <mat-list-item> Nigga </mat-list-item>
+        <mat-list-item [routerLink]="['/options']">
+          <ion-icon slot="start" [ios]="star" [md]="star"></ion-icon>
+          Opções
+        </mat-list-item>
         <mat-list-item [routerLink]="['/login']" (click)="logout()">
-          <ion-icon slot="start" [ios]="star + '-outline'" [md]="star + '-sharp'"></ion-icon>
+          <ion-icon slot="start" [ios]="star" [md]="star"></ion-icon>
           Logout
         </mat-list-item>
       </mat-list>

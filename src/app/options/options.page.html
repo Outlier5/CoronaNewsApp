@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <button mat-raised-button [routerLink]="['/home']" >back</button>
+    <ion-title>options</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
+    <mat-form-field class="example-full-width">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name"  value="{{ user.name }}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email"  value="{{ user.email }}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
+
+    <ion-item>
+      <ion-button type="submit" size="large" color="primary">Atualizar</ion-button>
+    </ion-item>
+  </form>
+</ion-content>
