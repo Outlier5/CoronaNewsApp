@@ -16,7 +16,7 @@
     <mat-tab label="Boletins Oficiais">
       <ng-template matTabContent>
         <mat-form-field appearance="fill">
-          <mat-select [(value)]="selected" (change)="test()">
+          <mat-select [(value)]="selected">
             <mat-option *ngFor="let state of states" [value]="state.code">
               {{ state.state }}
             </mat-option>

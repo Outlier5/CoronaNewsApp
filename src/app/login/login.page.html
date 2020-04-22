@@ -1,29 +1,61 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-align-items-center">
+  <div id="container">
+  <ion-img src="../../assets/shapes.svg" width="150px" height="150px"></ion-img>
+    <div id="divForm" class="center">
+      <form [formGroup]="loginForm" (submit)="login()" novalidate>
+        <mat-list class="center">
+          <mat-list-item>
+            <mat-form-field>
+              <mat-label>CPF</mat-label>
+              <input formControlName="cpf" matInput type="text" placeholder="000.000.000-00" maxlength="11">
+              <mat-error >
+                Por favor, corrija o CPF.
+              </mat-error>
+              <mat-error>
+                CPF é <strong>necessário</strong>.
+              </mat-error>
+            </mat-form-field>
+          </mat-list-item>
 
-<ion-content>
-  <form [formGroup]="loginForm" (submit)="login()" novalidate>
-    <ion-item>
-      <ion-label position="floating">CPF</ion-label>
-      <ion-input formControlName="cpf" type="text" placeholder="000.000.000-00" maxlength="11"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Nome</ion-label>
-      <ion-input formControlName="name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Senha</ion-label>
-      <ion-input formControlName="password" type="password" ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-button type="submit" size="large" color="primary">Login</ion-button>
-    </ion-item>
-  </form>
+          <mat-list-item>
+            <mat-form-field>
+              <mat-label>Nome</mat-label>
+              <input formControlName="name" matInput type="text" placeholder="">
+              <mat-error>
+                Nome é <strong>necessário</strong>.
+              </mat-error>
+            </mat-form-field>
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-form-field>
+              <mat-label>Email</mat-label>
+              <input formControlName="email" matInput type="email" placeholder="user@example.com">
+              <mat-error >
+                Por favor, corrija o Email.
+              </mat-error>
+              <mat-error>
+                Email é <strong>necessário</strong>.
+              </mat-error>
+            </mat-form-field>  
+          </mat-list-item>
+
+          <mat-list-item>
+            <mat-form-field>
+              <mat-label>Senha</mat-label>
+              <input formControlName="password" matInput type="password">
+              <mat-error >
+                Senha inválida
+              </mat-error>
+              <mat-error>
+                Senha é <strong>necessária</strong>.
+              </mat-error>
+            </mat-form-field>
+          </mat-list-item>
+          <button mat-raised-button color="primary" type="submit">LOGIN</button>
+        </mat-list>
+        
+      </form>
+    </div>
+  </div>
 </ion-content>

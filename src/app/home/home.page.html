@@ -1,6 +1,6 @@
 <ion-app>
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
-    <mat-drawer #drawer [mode]="over">
+    <mat-drawer #drawer>
       <mat-list>
         <img src="{{'data:image/webp;base64,' + user.avatar}}" >
         <h1> {{ user.name }} </h1>
@@ -8,7 +8,7 @@
         <mat-divider></mat-divider>
         <mat-list-item> Nigga </mat-list-item>
         <mat-list-item [routerLink]="['/login']" (click)="logout()">
-          <ion-icon slot="start" [ios]="star + '-outline'" [md]="star + '-sharp'"></ion-icon>
+          <mat-icon>my_location</mat-icon>
           Logout
         </mat-list-item>
       </mat-list>
@@ -25,19 +25,19 @@
         </div>
 
         <div class="secondButton">
-          <ion-button shape="round" (click)="goToMyLoc()">
-            <ion-icon slot="start" size="large" name="locate"></ion-icon>
-          </ion-button>
+            <button mat-fab color="primary" (click)="goToMyLoc()">
+              <mat-icon>my_location</mat-icon>
+            </button>
         </div>
         
         <div class="firstButton">
-          <ion-button shape="round">
-            <ion-icon slot="start" size="large" name="star"></ion-icon>
-          </ion-button>
+          <button mat-fab color="primary" (click)="goToMyLoc()">
+            <mat-icon>star</mat-icon>
+          </button>
         </div>
 
         <div class="newsButton">
-          <ion-button shape="round" (click)="openModal()">
+          <ion-button shape="round" color="primary" (click)="openModal()">
             <ion-icon slot="start" name="earth-outline"></ion-icon>
             News
           </ion-button>

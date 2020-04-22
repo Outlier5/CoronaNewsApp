@@ -18,7 +18,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
-import { ModalPage } from  '../modal/modal.page';
+import { ModalPage } from '../modal/modal.page';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +27,7 @@ import { ModalPage } from  '../modal/modal.page';
 })
 export class HomePage {
   public folder: string;
-  public user = { name: 'aa' };
+  public user = { name: 'aa', email:'bb@bb.com' };
   map: GoogleMap;
   actualNumber: 0;
 
