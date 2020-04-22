@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
+import { Buffer } from 'buffer';
+
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +18,7 @@ export class LoginPage implements OnInit {
   public loginForm: any;
 
   constructor(
+    public global: GlobalService,
     public formBuilder: FormBuilder,
     public storage: Storage,
     private http: HTTP,
@@ -37,6 +41,8 @@ export class LoginPage implements OnInit {
         const { token, user, message } = JSON.parse(data.data);
         this.storage.set('token', token);
         this.storage.set('user', user);
+        this.global.userGlobal = user;
+        this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
         alert(message);
         this.router.navigate(['/home'])
       }).catch(error => {

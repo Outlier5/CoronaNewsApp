@@ -6,14 +6,20 @@
 </ion-header>
 
 <ion-content>
+  <img src="{{ avatar || global.avatar }}" >
+  <ion-item>
+    <ion-button size="large" color="primary" (click)="getImage()">get Image</ion-button>
+    <ion-button size="large" color="primary" (click)="uploadImage()">Accept</ion-button>
+
+  </ion-item>
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
     <mat-form-field class="example-full-width">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name"  value="{{ user.name }}">
+      <input matInput formControlName="name"  value="{{ global.userGlobal.name }}">
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email"  value="{{ user.email }}">
+      <input matInput type="email" formControlName="email"  value="{{ global.userGlobal.email }}">
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Senha</mat-label>

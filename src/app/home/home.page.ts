@@ -20,6 +20,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { Buffer } from 'buffer';
 
 import { ModalPage } from '../modal/modal.page';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-home',
@@ -29,11 +30,11 @@ import { ModalPage } from '../modal/modal.page';
 export class HomePage {
   public folder: string;
   public avatar: string;
-  public user = {};
   map: GoogleMap;
   actualNumber: 0;
 
   constructor(
+    public global: GlobalService,
     public storage: Storage,
     public menuCtrl: MenuController,
     public modalController: ModalController,
@@ -41,15 +42,12 @@ export class HomePage {
     private http: HTTP,
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
-    private activatedRoute: ActivatedRoute) {}
-
-
-  ionViewDidEnter() {
-    this.storage.get('user').then(value => {
-      this.user = value;
-      this.avatar = Buffer.from(value.avatar).toString('base64');
-    });
-  }
+    private activatedRoute: ActivatedRoute) {
+      this.storage.get('user').then(value => {
+        this.global.userGlobal = value;
+        this.global.avatar = `data:image/webp;base64,${Buffer.from(value.avatar).toString('base64')}`;
+      });
+    }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
