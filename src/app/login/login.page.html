@@ -1,61 +1,29 @@
 <ion-content class="ion-align-items-center">
-  <div id="container">
-  <ion-img src="../../assets/shapes.svg" width="150px" height="150px"></ion-img>
-    <div id="divForm" class="center">
-      <form [formGroup]="loginForm" (submit)="login()" novalidate>
-        <mat-list class="center">
-          <mat-list-item>
-            <mat-form-field>
-              <mat-label>CPF</mat-label>
-              <input formControlName="cpf" matInput type="text" placeholder="000.000.000-00" maxlength="11">
-              <mat-error >
-                Por favor, corrija o CPF.
-              </mat-error>
-              <mat-error>
-                CPF é <strong>necessário</strong>.
-              </mat-error>
-            </mat-form-field>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-form-field>
-              <mat-label>Nome</mat-label>
-              <input formControlName="name" matInput type="text" placeholder="">
-              <mat-error>
-                Nome é <strong>necessário</strong>.
-              </mat-error>
-            </mat-form-field>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input formControlName="email" matInput type="email" placeholder="user@example.com">
-              <mat-error >
-                Por favor, corrija o Email.
-              </mat-error>
-              <mat-error>
-                Email é <strong>necessário</strong>.
-              </mat-error>
-            </mat-form-field>  
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-form-field>
-              <mat-label>Senha</mat-label>
-              <input formControlName="password" matInput type="password">
-              <mat-error >
-                Senha inválida
-              </mat-error>
-              <mat-error>
-                Senha é <strong>necessária</strong>.
-              </mat-error>
-            </mat-form-field>
-          </mat-list-item>
-          <button mat-raised-button color="primary" type="submit">LOGIN</button>
-        </mat-list>
+  <div>
+    <ion-img src="../../assets/icon.png"></ion-img>
+    <form [formGroup]="loginForm" (submit)="login()" novalidate>
+      <ion-list>
+        <ion-item>
+          <ion-label position="stacked">CPF</ion-label>
+          <ion-input formControlName="cpf" type="text" placeholder="000.000.000-00" maxlength="11"></ion-input>
+        </ion-item>
         
-      </form>
-    </div>
+        <ion-item>
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input formControlName="name" placeholder="Insira aqui seu nome" type="text"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" type="email" placeholder="usuário@exemplo.com"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label position="stacked">Senha</ion-label>
+          <ion-input formControlName="password" placeholder="Insira aqui uma senha" type="password"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button type="submit">Login</ion-button>
+    </form>
   </div>
 </ion-content>
