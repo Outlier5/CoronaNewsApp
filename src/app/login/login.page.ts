@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
-
 
 @Component({
   selector: 'app-login',
@@ -19,7 +17,6 @@ export class LoginPage implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     public storage: Storage,
-    public menuCtrl: MenuController,
     private http: HTTP,
     private router: Router
     ) {
@@ -32,7 +29,6 @@ export class LoginPage implements OnInit {
    }
 
   ngOnInit() {
-    this.menuCtrl.enable(false, 'myMenu');
   }
 
   login(){
@@ -43,7 +39,8 @@ export class LoginPage implements OnInit {
         this.storage.set('user', user);
         alert(message);
         this.router.navigate(['/home'])
-
+      }).catch(error => {
+        alert(error)
       });
   }
 
