@@ -2,9 +2,9 @@
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
     <mat-drawer #drawer>
       <mat-list>
-        <img src="data:image/webp;base64,{{ avatar }}" >
-        <h1> {{ user.name }} </h1>
-        <h3>Level: {{ user.level }} </h3>
+        <img src="{{ global.avatar }}" >
+        <h1> {{ global.userGlobal.name }} </h1>
+        <h3>Level: {{ global.userGlobal.level }} </h3>
         <mat-divider></mat-divider>
         <mat-list-item [routerLink]="['/options']">
           <mat-icon>star</mat-icon>
