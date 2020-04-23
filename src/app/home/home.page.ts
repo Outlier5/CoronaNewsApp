@@ -10,6 +10,8 @@ import {
 } from '@ionic-native/google-maps/ngx';
 import { Component } from "@angular/core";
 import { Platform, MenuController, ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -17,7 +19,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
-import { Buffer } from 'buffer';
 
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
@@ -30,6 +31,13 @@ import { GlobalService } from '../global.service';
 export class HomePage {
   public folder: string;
   public avatar: string;
+  public infoDenuncia: any = {};
+  public denunciaForm: any;
+
+  public overlayHidden: boolean = false;
+  public buttonHidden: boolean = true;
+  public denunciaHidden: boolean = false;
+
   map: GoogleMap;
   actualNumber: 0;
 
@@ -38,14 +46,16 @@ export class HomePage {
     public storage: Storage,
     public menuCtrl: MenuController,
     public modalController: ModalController,
+    public  formBuilder: FormBuilder,
+    private router: Router,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     private activatedRoute: ActivatedRoute) {
-      this.storage.get('user').then(value => {
-        this.global.userGlobal = value;
-        this.global.avatar = `data:image/webp;base64,${Buffer.from(value.avatar).toString('base64')}`;
+      this.denunciaForm = formBuilder.group({
+        title: [''],
+        description: [''],
       });
     }
 
@@ -61,6 +71,18 @@ export class HomePage {
       component: ModalPage
     });
     return await modal.present();
+  }
+
+  toggleOverlay(){
+    if(this.overlayHidden == false) {
+      this.overlayHidden = true;
+      this.buttonHidden = false;
+    }
+    else {
+      this.overlayHidden = false;
+      this.buttonHidden = true;
+    }
+      
   }
 
   loadMap() {
@@ -116,7 +138,7 @@ export class HomePage {
           lng: resp.coords.longitude
         },
         zoom: 18,
-        duration: 2000
+        duration: 0
       });
     });
   }
@@ -248,8 +270,90 @@ export class HomePage {
     });
   }
 
+  drawMarker() {
+
+  }
+
+  denunciaInsert(infos) {
+    this.infoDenuncia = infos;
+    this.geolocation.getCurrentPosition().then((resp) => {
+      const { latitude, longitude } =resp.coords;
+      this.map.animateCamera({
+        target: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 18,
+        duration: 0
+      });
+    });
+    this.overlayHidden = false;
+    this.denunciaHidden = true;
+    
+  }
+
+  cancelDenuncia(){
+    this.denunciaHidden = false;
+    this.buttonHidden = true;
+  }
+
+  confirmDenuncia() {
+
+    const { title, description } = this.denunciaForm.value;
+    const { target } = this.map.getCameraPosition();
+
+    let data = {
+      title,
+      description,
+      type: this.infoDenuncia.type,
+      location: {
+        type: "Pointer",
+        coordinates: [target.lat, target.lng]
+      }
+    };
+
+    this.storage.get('token').then(value => {
+      this.http.post('https://coronago.herokuapp.com/denuncias/register', data, {
+        'Authorization': `Bearrer ${value}`
+      }).then(data => {
+        const { denuncia } = JSON.parse(data.data);
+        
+
+        let marker: Marker = this.map.addMarkerSync({
+          position: { lat: denuncia.location.coordinates[0], lng: denuncia.location.coordinates[1] },
+          icon: 'blue',
+          animation: 'DROP',
+        });
+
+        let htmlInfoWindow = new HtmlInfoWindow();
+
+        let frame: HTMLElement = document.createElement('div');
+        frame.innerHTML = [
+          `<h3>${denuncia.title}</h3>`,
+          `<p>${denuncia.description}</p>`,
+          `<h5>Likes: ${denuncia.rank}</h5>`,
+        ].join("");
+
+        htmlInfoWindow.setContent(frame, {
+          width: "200px",
+          height: "200px"
+        });
+
+        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+          marker.hideInfoWindow();
+          htmlInfoWindow.open(marker);
+        });
+        this.cancelDenuncia();   
+      }).catch(err => {
+        console.log(err.data);
+      });
+    });
+  }
+
   logout() {
+    this.storage.clear();
     alert('logout');
+    this.router.navigate(['/login']);
   }
 
 }

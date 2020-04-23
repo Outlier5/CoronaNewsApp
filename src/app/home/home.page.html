@@ -1,5 +1,6 @@
 <ion-app>
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <!-- Side Menu -->
     <mat-drawer #drawer>
       <mat-list>
         <img src="{{ global.avatar }}" >
@@ -10,7 +11,7 @@
           <mat-icon>star</mat-icon>
           Opções
         </mat-list-item>
-        <mat-list-item [routerLink]="['/login']" (click)="logout()">
+        <mat-list-item (click)="logout()">
           <mat-icon>star</mat-icon>
           Logout
         </mat-list-item>
@@ -18,34 +19,100 @@
     </mat-drawer>
 
     <mat-drawer-content>
+      <!-- Mapa e Botões -->
       <ion-content [fullscreen]="true">
         <div #map_canvas id="map_canvas">
-          <ion-buttons slot="start" >
+          <ion-buttons slot="start" *ngIf="buttonHidden">
             <button mat-raised-button (click)="drawer.toggle()">
               <ion-icon slot="start" size="large" name="menu"></ion-icon>
             </button>
           </ion-buttons>
         </div>
 
-        <div class="secondButton">
+        <div *ngIf="buttonHidden">
+          <div class="secondButton">
             <button mat-fab color="primary" (click)="goToMyLoc()">
               <mat-icon>my_location</mat-icon>
             </button>
-        </div>
-        
-        <div class="firstButton">
-          <button mat-fab color="primary" (click)="goToMyLoc()">
-            <mat-icon>star</mat-icon>
-          </button>
-        </div>
+          </div>
+          
+          <div class="firstButton">
+            <button mat-fab color="primary" (click)="toggleOverlay()">
+              <mat-icon>star</mat-icon>
+            </button>
+          </div>
 
-        <div class="newsButton">
-          <ion-button shape="round" color="primary" (click)="openModal()">
-            <ion-icon slot="start" name="earth-outline"></ion-icon>
-            News
-          </ion-button>
+          <div class="newsButton">
+            <ion-button shape="round" color="primary" (click)="openModal()">
+              <ion-icon slot="start" name="earth-outline"></ion-icon>
+              Notícias
+            </ion-button>
+          </div>
         </div>
       </ion-content>
     </mat-drawer-content>
   </mat-drawer-container>
+  <div id="overlay" *ngIf="overlayHidden" (click)="toggleOverlay()">
+    
+  </div>
+  <div id="itens" *ngIf="overlayHidden">
+    <mat-grid-list cols="2" rowHeight="100px">
+      <h1>Denunciar</h1>
+      <mat-grid-tile>
+        <button mat-fab class="overlayButton" color="primary" (click)="denunciaInsert({ title: 'Aglomerações', type: 'aglomeracoes' })">
+          <mat-icon>star</mat-icon>
+        </button>
+        Aglomerações
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <button mat-fab class="overlayButton" color="accent">
+          <mat-icon>star</mat-icon>
+        </button>
+          Situações de Risco
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="2" [rowspan]="2">
+        <button mat-fab class="overlayButton" color="warn">
+          <mat-icon>star</mat-icon>
+        </button>
+        Areas com incidentes recentes
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  
+  <div *ngIf="denunciaHidden" id=marker>
+    <mat-grid-list cols="1" rowHeight="100px">
+      <mat-grid-tile>
+        <mat-icon style="font-size: 30px; margin-bottom: 45px;">room</mat-icon>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div *ngIf="denunciaHidden" id="denuncia">
+    <div style="background-color: #fff; height: 100%;">
+      <form [formGroup]="denunciaForm" novalidate>
+        <ion-list>
+          <ion-item>
+            <h3>{{ infoDenuncia.title }}</h3>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Titulo</ion-label>
+            <ion-input formControlName="title" type="text"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Descrição</ion-label>
+            <ion-textarea formControlName="description" type="text" maxlength="125"></ion-textarea>
+          </ion-item>
+        </ion-list>
+        <button mat-raised-button color="primary" (click)="cancelDenuncia()">
+          Cancelar
+        </button>
+        <button mat-raised-button color="primary" (click)="confirmDenuncia()">
+          Confirmar
+        </button>
+      </form>
+    </div>
+  </div>
+
 </ion-app>
+
+<!-- Eu sempre sobre que o bolo é uma mentira -->

@@ -33,6 +33,14 @@ export class LoginPage implements OnInit {
    }
 
   ngOnInit() {
+    this.storage.get('token').then(value => {
+      if(value)
+        this.storage.get('user').then(val => {
+          this.global.userGlobal = val;
+          this.global.avatar = `data:image/webp;base64,${Buffer.from(val.avatar).toString('base64')}`;
+          this.router.navigate(['/home']);
+        });
+    });
   }
 
   login(){
@@ -44,6 +52,7 @@ export class LoginPage implements OnInit {
         this.global.userGlobal = user;
         this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
         alert(message);
+        console.log('message')
         this.router.navigate(['/home'])
       }).catch(error => {
         alert(error)
