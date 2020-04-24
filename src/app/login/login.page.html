@@ -1,6 +1,9 @@
-<ion-content class="ion-align-items-center">
-  <div>
-    <ion-img src="../../assets/icon.png"></ion-img>
+<ion-content class="ion-align-items-center" disable-scroll>
+  <ion-img id="banner" src="../../assets/back2.jpg"><div></div></ion-img>
+  <div id="container">
+    <div id="logo">
+      <ion-img  src="../../assets/icon.png"></ion-img>
+    </div>
     <form [formGroup]="loginForm" (submit)="login()" novalidate>
       <ion-list>
         <ion-item>

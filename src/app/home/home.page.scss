@@ -66,5 +66,9 @@ mat-drawer {
   z-index: 20;
   bottom: 0;
   padding-bottom: 8px;
-  left: 0px;
+  left: 5px;
+}
+button[mat-raised-button]{
+  padding: 5px;
+   
 }

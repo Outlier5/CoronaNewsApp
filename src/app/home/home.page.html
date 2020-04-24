@@ -22,7 +22,7 @@
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" >
             <button mat-raised-button (click)="drawer.toggle()">
-              <ion-icon slot="start" size="large" name="menu"></ion-icon>
+              <mat-icon>menu</mat-icon>
             </button>
           </ion-buttons>
         </div>
@@ -40,10 +40,10 @@
         </div>
 
         <div class="newsButton">
-          <ion-button shape="round" color="primary" (click)="openModal()">
-            <ion-icon slot="start" name="earth-outline"></ion-icon>
+          <button mat-raised-button shape="round" color="primary" (click)="openModal()">
+            <mat-icon>public</mat-icon>
             News
-          </ion-button>
+          </button>
         </div>
       </ion-content>
     </mat-drawer-content>
