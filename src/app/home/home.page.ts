@@ -62,6 +62,7 @@ export class HomePage {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.platform.ready().then(() => {
+      this.getAllDenuncias();
       this.loadMap();
     });
   }
@@ -122,6 +123,8 @@ export class HomePage {
           this.insertControll(1, position);
         else if (zoom < 15 && zoom > 8)
           this.insertControll(2, position);
+        else if (zoom < 0 && zoom > 8)
+          this.insertControll(3, position);
       });
      }).catch((error) => {
        console.log('Error getting location', error);
@@ -179,8 +182,12 @@ export class HomePage {
           this.drawCircles(data.cleanData, 'perState');
         })
         .catch((error: any) => console.log(error));
-
     }
+    else if (number == 3 && number != this.actualNumber) { 
+      this.actualNumber = number;
+      this.getAllDenuncias();
+    }
+  
   }
 
   getAllStates() {
@@ -215,6 +222,17 @@ export class HomePage {
           this.drawCircles(cleanData, 'perState');
         });
       });
+  }
+
+  getAllDenuncias() {
+    this.storage.get('token').then(value => {
+      this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
+        'Authorization': `Bearrer ${value}`
+      }).then(data => {
+        const { denuncias } = JSON.parse(data.data);
+        this.drawMarker(denuncias);
+      });
+    });
   }
 
   drawCircles(array, type) {
@@ -270,8 +288,34 @@ export class HomePage {
     });
   }
 
-  drawMarker() {
+  drawMarker(array) {
+    this.map.clear();
 
+    array.forEach(element => {
+      let marker: Marker = this.map.addMarkerSync({
+        position: { lat: element.lat, lng: element.lng },
+        icon: 'blue',
+        animation: 'DROP',
+      });
+
+      let htmlInfoWindow = new HtmlInfoWindow();
+
+      let frame: HTMLElement = document.createElement('div');
+      frame.innerHTML = [
+        `<h3>${ element.title }</h3>`,
+        `<p>${ element.description }</p>`,
+      ].join("");
+
+      htmlInfoWindow.setContent(frame, {
+        width: "200px",
+        height: "200px"
+      });
+
+      marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+        marker.hideInfoWindow();
+        htmlInfoWindow.open(marker);
+      });
+    });
   }
 
   denunciaInsert(infos) {
@@ -297,30 +341,29 @@ export class HomePage {
     this.buttonHidden = true;
   }
 
-  confirmDenuncia() {
+  async confirmDenuncia() {
 
     const { title, description } = this.denunciaForm.value;
-    const { target } = this.map.getCameraPosition();
+    const { lat, lng } = await this.map.getCameraPosition().target;
 
-    let data = {
-      title,
-      description,
-      type: this.infoDenuncia.type,
-      location: {
-        type: "Pointer",
-        coordinates: [target.lat, target.lng]
-      }
-    };
+    console.log(this.map.getCameraPosition().target)
+    console.log(lat)
+    console.log(lng)
 
     this.storage.get('token').then(value => {
-      this.http.post('https://coronago.herokuapp.com/denuncias/register', data, {
+      this.http.post('https://coronago.herokuapp.com/denuncias/register', {
+        title,
+        description,
+        type: this.infoDenuncia.type,
+        lat,
+        lng,
+      }, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
-        const { denuncia } = JSON.parse(data.data);
-        
 
+        const { denuncia } = JSON.parse(data.data);
         let marker: Marker = this.map.addMarkerSync({
-          position: { lat: denuncia.location.coordinates[0], lng: denuncia.location.coordinates[1] },
+          position: { lat: denuncia.lat, lng: denuncia.lng },
           icon: 'blue',
           animation: 'DROP',
         });
@@ -329,9 +372,8 @@ export class HomePage {
 
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
-          `<h3>${denuncia.title}</h3>`,
-          `<p>${denuncia.description}</p>`,
-          `<h5>Likes: ${denuncia.rank}</h5>`,
+          `<h3>${ denuncia.title }</h3>`,
+          `<p>${ denuncia.description }</p>`,
         ].join("");
 
         htmlInfoWindow.setContent(frame, {
@@ -343,10 +385,10 @@ export class HomePage {
           marker.hideInfoWindow();
           htmlInfoWindow.open(marker);
         });
-        this.cancelDenuncia();   
+        this.cancelDenuncia();
       }).catch(err => {
-        console.log(err.data);
-      });
+        console.log(err);
+      })
     });
   }
 
