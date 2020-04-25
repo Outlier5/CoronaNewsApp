@@ -24,31 +24,28 @@
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button mat-raised-button (click)="drawer.toggle()">
-              <ion-icon slot="start" size="large" name="menu"></ion-icon>
+              <mat-icon>menu</mat-icon>
             </button>
           </ion-buttons>
         </div>
-
         <div *ngIf="buttonHidden">
           <div class="secondButton">
             <button mat-fab color="primary" (click)="goToMyLoc()">
               <mat-icon>my_location</mat-icon>
             </button>
           </div>
-          
           <div class="firstButton">
             <button mat-fab color="primary" (click)="toggleOverlay()">
               <mat-icon>star</mat-icon>
             </button>
           </div>
-
-          <div class="newsButton">
-            <ion-button shape="round" color="primary" (click)="openModal()">
-              <ion-icon slot="start" name="earth-outline"></ion-icon>
-              Notícias
-            </ion-button>
-          </div>
+        <div class="newsButton">
+          <button mat-raised-button shape="round" color="primary" (click)="openModal()">
+            <mat-icon>public</mat-icon>
+            News
+          </button>
         </div>
+      </div>
       </ion-content>
     </mat-drawer-content>
   </mat-drawer-container>
