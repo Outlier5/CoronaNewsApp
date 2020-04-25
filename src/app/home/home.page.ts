@@ -297,30 +297,29 @@ export class HomePage {
     this.buttonHidden = true;
   }
 
-  confirmDenuncia() {
+  async confirmDenuncia() {
 
     const { title, description } = this.denunciaForm.value;
-    const { target } = this.map.getCameraPosition();
+    const { lat, lng } = await this.map.getCameraPosition().target;
 
-    let data = {
-      title,
-      description,
-      type: this.infoDenuncia.type,
-      location: {
-        type: "Pointer",
-        coordinates: [target.lat, target.lng]
-      }
-    };
+    console.log(this.map.getCameraPosition().target)
+    console.log(lat)
+    console.log(lng)
 
     this.storage.get('token').then(value => {
-      this.http.post('https://coronago.herokuapp.com/denuncias/register', data, {
+      this.http.post('https://coronago.herokuapp.com/denuncias/register', {
+        title,
+        description,
+        type: this.infoDenuncia.type,
+        lat,
+        lng,
+      }, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
-        const { denuncia } = JSON.parse(data.data);
-        
 
+        const { denuncia } = JSON.parse(data.data);
         let marker: Marker = this.map.addMarkerSync({
-          position: { lat: denuncia.location.coordinates[0], lng: denuncia.location.coordinates[1] },
+          position: { lat: denuncia.lat, lng: denuncia.lng },
           icon: 'blue',
           animation: 'DROP',
         });
@@ -329,9 +328,8 @@ export class HomePage {
 
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
-          `<h3>${denuncia.title}</h3>`,
-          `<p>${denuncia.description}</p>`,
-          `<h5>Likes: ${denuncia.rank}</h5>`,
+          `<h3>${ denuncia.title }</h3>`,
+          `<p>${ denuncia.description }</p>`,
         ].join("");
 
         htmlInfoWindow.setContent(frame, {
@@ -343,10 +341,10 @@ export class HomePage {
           marker.hideInfoWindow();
           htmlInfoWindow.open(marker);
         });
-        this.cancelDenuncia();   
+        this.cancelDenuncia();
       }).catch(err => {
-        console.log(err.data);
-      });
+        console.log(err);
+      })
     });
   }
 
