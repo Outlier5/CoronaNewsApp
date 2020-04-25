@@ -62,13 +62,13 @@
         Aglomerações
       </mat-grid-tile>
       <mat-grid-tile>
-        <button mat-fab class="overlayButton" color="accent">
+        <button mat-fab class="overlayButton" color="accent" (click)="denunciaInsert({ title: 'Situações de Risco', type: 'risco' })">
           <mat-icon>star</mat-icon>
         </button>
           Situações de Risco
       </mat-grid-tile>
       <mat-grid-tile [colspan]="2" [rowspan]="2">
-        <button mat-fab class="overlayButton" color="warn">
+        <button mat-fab class="overlayButton" color="warn" (click)="denunciaInsert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
           <mat-icon>star</mat-icon>
         </button>
         Areas com incidentes recentes
