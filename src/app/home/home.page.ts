@@ -62,7 +62,6 @@ export class HomePage {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.platform.ready().then(() => {
-      this.getAllDenuncias();
       this.loadMap();
     });
   }
@@ -118,12 +117,11 @@ export class HomePage {
         const position = this.map.getCameraPosition().target;
         
         const zoom = this.map.getCameraZoom(); 
-
         if (zoom < 8 && zoom > 6)
           this.insertControll(1, position);
         else if (zoom < 15 && zoom > 8)
           this.insertControll(2, position);
-        else if (zoom < 0 && zoom > 8)
+        else if (zoom > 15)
           this.insertControll(3, position);
       });
      }).catch((error) => {
@@ -230,6 +228,7 @@ export class HomePage {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
+        console.log(denuncias)
         this.drawMarker(denuncias);
       });
     });
@@ -292,9 +291,26 @@ export class HomePage {
     this.map.clear();
 
     array.forEach(element => {
+      let conf = { color: '', type: '' };
+      switch (element.type) {
+        case 'aglomeracoes':
+          conf['color'] = 'red';
+          conf['type'] = 'Aglomerações';
+          break;
+        case 'risco':
+          conf['color'] = 'yellow';
+          conf['type'] = 'Situações de Risco';
+
+          break;
+        case 'incidenteRecente':
+          conf['color'] = 'green';
+          conf['type'] = 'Areas com incidentes recentes';
+        default:
+          break;
+      }
       let marker: Marker = this.map.addMarkerSync({
         position: { lat: element.lat, lng: element.lng },
-        icon: 'blue',
+        icon: conf.color,
         animation: 'DROP',
       });
 
@@ -302,13 +318,19 @@ export class HomePage {
 
       let frame: HTMLElement = document.createElement('div');
       frame.innerHTML = [
+        `<h3>${ conf.type }</h3>`,
+        '<hr style="background: grey; margin-right: 10px;">',
         `<h3>${ element.title }</h3>`,
-        `<p>${ element.description }</p>`,
+        `<p style="
+          margin: 0;
+          display: block;
+          overflow: hidden;
+        ">${ element.description }</p>`,
       ].join("");
 
       htmlInfoWindow.setContent(frame, {
-        width: "200px",
-        height: "200px"
+        width: '300px',
+        height: '200px'
       });
 
       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
@@ -360,11 +382,29 @@ export class HomePage {
       }, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
-
         const { denuncia } = JSON.parse(data.data);
+
+        let conf = { color: '', type: '' };
+        switch (denuncia.type) {
+          case 'aglomeracoes':
+            conf['color'] = 'red';
+            conf['type'] = 'Aglomerações';
+            break;
+          case 'risco':
+            conf['color'] = 'yellow';
+            conf['type'] = 'Situações de Risco';
+  
+            break;
+          case 'incidenteRecente':
+            conf['color'] = 'green';
+            conf['type'] = 'Areas com incidentes recentes';
+          default:
+            break;
+        }
+
         let marker: Marker = this.map.addMarkerSync({
           position: { lat: denuncia.lat, lng: denuncia.lng },
-          icon: 'blue',
+          icon: conf.color,
           animation: 'DROP',
         });
 
@@ -372,12 +412,18 @@ export class HomePage {
 
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
+          `<h3>${ conf.type }</h3>`,
+          '<hr style="background: grey; margin-right: 10px;">',
           `<h3>${ denuncia.title }</h3>`,
-          `<p>${ denuncia.description }</p>`,
+          `<p style="
+            margin: 0;
+            display: block;
+            overflow: hidden;
+          ">${ denuncia.description }</p>`,
         ].join("");
 
         htmlInfoWindow.setContent(frame, {
-          width: "200px",
+          width: "300px",
           height: "200px"
         });
 
