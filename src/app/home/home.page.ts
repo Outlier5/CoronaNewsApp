@@ -58,7 +58,7 @@ export class HomePage {
         description: [''],
       });
     }
-
+  
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.platform.ready().then(() => {

@@ -1,19 +1,27 @@
+
 <ion-app>
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
     <!-- Side Menu -->
     <mat-drawer #drawer>
-      <mat-list>
-        <img src="{{ global.avatar }}" >
-        <h1> {{ global.userGlobal.name }} </h1>
-        <h3>Level: {{ global.userGlobal.level }} </h3>
-        <mat-divider></mat-divider>
+      <div id="drawerHeader">
+        <img src="../../assets/back2.jpg" >
+        <div id="userInfo">
+          <p> <!-- {{ global.avatar }} {{ global.userGlobal.name }}-->Nome </p>
+          <p><b>Level: <!--{{ global.userGlobal.level }}-->0</b></p>
+        </div>
+      </div>
+      <mat-list id="listaDrawer">
+        <mat-list-item routerLinkActive [routerLink]="['/home']">
+          <mat-icon>map</mat-icon>
+          <p>Mapa</p>
+        </mat-list-item>
         <mat-list-item [routerLink]="['/options']">
-          <mat-icon>star</mat-icon>
-          Opções
+          <mat-icon>tune</mat-icon>
+          <p>Opções</p>
         </mat-list-item>
         <mat-list-item (click)="logout()">
-          <mat-icon>star</mat-icon>
-          Logout
+          <mat-icon>exit_to_app</mat-icon>
+          <p>Logout</p>
         </mat-list-item>
       </mat-list>
     </mat-drawer>
@@ -23,7 +31,7 @@
       <ion-content [fullscreen]="true">
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
-            <button mat-raised-button (click)="drawer.toggle()">
+            <button id="btnDrawer" mat-flat-button (click)="drawer.toggle()">
               <mat-icon>menu</mat-icon>
             </button>
           </ion-buttons>
