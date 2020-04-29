@@ -34,7 +34,47 @@ ion-content ion-toolbar {
 }
 
 mat-drawer {
-  width: 60%;
+  width: 70%;
+  background-color: #02C39A;
+  color:#F0F3BD;
+  padding: 1em;
+}
+
+#drawerHeader{
+  text-align: center;
+  padding-bottom: 2em;
+}
+#drawerHeader>img{
+  margin-top: 2em;
+  width: 5em;
+  height: 5em;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0;
+}
+#userInfo{
+  margin-top: 1em;
+}
+#userInfo>p{
+  margin: 0;
+}
+#listaDrawer mat-list-item{
+  background-color: rgba(0,0,0,0.05);
+  margin-bottom: 0.5em;
+  border-radius: 5px;
+  color:#F0F3BD;
+  text-align: center;
+}
+#listaDrawer mat-list-item[active]{
+  background-color: rgba(0,0,0,0.1);
+}
+mat-list-item p{
+  width:75%
+}
+
+#btnDrawer{
+  background-color: transparent;
+  padding: 12px;
 }
 
 #map_canvas {
@@ -62,30 +102,24 @@ mat-drawer {
 .firstButton{
   position: absolute;
   z-index: 20;
-  bottom: 0;
-  padding-bottom: 20px;
+  bottom: 10px;
   right: 10px;
 }
 
 .secondButton {
   position: absolute;
   z-index: 20;
-  bottom: 0;
-  padding-bottom: 90px;
+  bottom: 85px;
   right: 10px;
 }
 
 .newsButton {
   position: absolute;
   z-index: 20;
-  bottom: 0;
-  padding-bottom: 8px;
-  left: 5px;
+  bottom: 16px;
+  left: 10px;
 }
-button[mat-raised-button]{
-  padding: 5px;
-  left: 0px;
-}
+
 
 #overlay {
   position: fixed;

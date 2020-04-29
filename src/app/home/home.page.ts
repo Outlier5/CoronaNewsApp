@@ -63,7 +63,7 @@ export class HomePage {
         description: [''],
       });
     }
-
+  
   ngOnInit() {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       if(canRequest) {
