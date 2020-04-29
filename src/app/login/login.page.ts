@@ -33,6 +33,24 @@ export class LoginPage implements OnInit {
    }
 
   ngOnInit() {
+    this.storage.get('date').then(async value => {
+      const date = new Date();
+      if (date.getFullYear() > value.getFullYear()) {
+        const { _id } = await this.storage.get('user').then(val => JSON.parse(val));
+        const token = await this.storage.get('token').then(val => val);
+
+        this.http.get(`https://coronago.herokuapp.com/auth/revokeToken/${ _id }`, {}, {
+          'Authorization': `Bearrer ${token}`
+        })
+          .then(data => {
+            const { user } = JSON.parse(data.data); 
+            this.global.userGlobal = user;
+            this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
+            this.router.navigate(['/home']);
+          })
+      }
+    });
+
     this.storage.get('token').then(value => {
       if(value)
         this.storage.get('user').then(val => {
@@ -48,6 +66,7 @@ export class LoginPage implements OnInit {
       .then(data => {
         const { token, user, message } = JSON.parse(data.data);
         this.storage.set('token', token);
+        this.storage.set('date', new Date());
         this.storage.set('user', user);
         this.global.userGlobal = user;
         this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;

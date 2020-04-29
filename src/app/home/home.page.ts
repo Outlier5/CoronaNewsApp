@@ -228,7 +228,6 @@ export class HomePage {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
-        console.log(denuncias)
         this.drawMarker(denuncias);
       });
     });
@@ -291,7 +290,7 @@ export class HomePage {
     this.map.clear();
 
     array.forEach(element => {
-      let conf = { color: '', type: '' };
+      let conf = { color: '', type: '', voted: false };
       switch (element.type) {
         case 'aglomeracoes':
           conf['color'] = 'red';
@@ -314,23 +313,74 @@ export class HomePage {
         animation: 'DROP',
       });
 
+      element.whoVote.forEach(item => {
+        if (item._id == this.global.userGlobal._id)
+          conf['voted'] = true;
+      });
+
       let htmlInfoWindow = new HtmlInfoWindow();
 
       let frame: HTMLElement = document.createElement('div');
       frame.innerHTML = [
-        `<h3>${ conf.type }</h3>`,
-        '<hr style="background: grey; margin-right: 10px;">',
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
+        `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
+        `<p style="color: grey; margin: 0;">Por: ${ element.by.name } <span class="vote">Votos: ${ element.rank }</span></p>`,
         `<h3>${ element.title }</h3>`,
-        `<p style="
-          margin: 0;
-          display: block;
-          overflow: hidden;
-        ">${ element.description }</p>`,
+        `<p style="margin: 0;display: block;overflow: hidden;">${ element.description }</p>`,
+        '<footer class="bottomButton">',
+        '<button style="left: 1;" class="rank"><i class="material-icons">thumb_down</i></button>',
+        '<button style="margin-left: 60%;" class="rank"><i class="material-icons">thumb_up</i></button>',
+        '</footer>',
+        `<style>
+          button {
+            background-color: white;
+            color: #028090;
+          }
+          .bottomButton {
+            margin-left: 10%;
+            bottom: 0;
+            display: ${ conf.voted ? 'none' : 'block' }
+          }
+          .vote {
+            margin-left: 50%;
+            color: ${ element.rank > 0 ? 'green' : 'red'};
+          }
+        </style>`
       ].join("");
+
+      frame.getElementsByClassName('rank')[0].addEventListener('click', () => {
+        this.storage.get('token').then(value => {
+          this.http.put('https://coronago.herokuapp.com/denuncias/rankDenuncia', {
+            id: element._id,
+            rank: '-1',
+          }, {
+            'Authorization': `Bearrer ${value}`
+          }).then(data => {
+            alert(JSON.parse(data.data).success)
+          }).catch(data => {
+            console.log(JSON.parse(data.data).error)
+          });
+        });
+      });
+
+      frame.getElementsByClassName('rank')[1].addEventListener('click', () => {
+        this.storage.get('token').then(value => {
+          this.http.put('https://coronago.herokuapp.com/denuncias/rankDenuncia', {
+            id: element._id,
+            rank: '1',
+          }, {
+            'Authorization': `Bearrer ${value}`
+          }).then(data => {
+            alert(JSON.parse(data.data).success)
+          }).catch(data => {
+            console.log(JSON.parse(data.data).error)
+          });
+        });
+      });
 
       htmlInfoWindow.setContent(frame, {
         width: '300px',
-        height: '200px'
+        height: '250px'
       });
 
       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
@@ -342,6 +392,11 @@ export class HomePage {
 
   denunciaInsert(infos) {
     this.infoDenuncia = infos;
+    this.map.setOptions({
+      'gestures': {
+        'zoom': false
+      }
+    });
     this.geolocation.getCurrentPosition().then((resp) => {
       const { latitude, longitude } =resp.coords;
       this.map.animateCamera({
@@ -361,6 +416,11 @@ export class HomePage {
   cancelDenuncia(){
     this.denunciaHidden = false;
     this.buttonHidden = true;
+    this.map.setOptions({
+      'gestures': {
+        'zoom': true
+      }
+    });
   }
 
   async confirmDenuncia() {
@@ -412,14 +472,21 @@ export class HomePage {
 
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
-          `<h3>${ conf.type }</h3>`,
-          '<hr style="background: grey; margin-right: 10px;">',
-          `<h3>${ denuncia.title }</h3>`,
-          `<p style="
-            margin: 0;
-            display: block;
-            overflow: hidden;
-          ">${ denuncia.description }</p>`,
+          '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
+        `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
+        `<p style="color: grey; margin: 0;">Por: Eu <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
+        `<h3>${ denuncia.title }</h3>`,
+        `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
+        `<style>
+          button {
+            background-color: white;
+            color: #028090;
+          }
+          #vote {
+            margin-left: 50%;
+            color: ${ denuncia.rank > 0 ? 'green' : 'red'};
+          }
+        </style>`
         ].join("");
 
         htmlInfoWindow.setContent(frame, {
