@@ -8,8 +8,8 @@ import {
   HtmlInfoWindow,
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
-import { Component } from "@angular/core";
-import { Platform, MenuController, ModalController } from '@ionic/angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Platform, MenuController, ModalController, NavController, NavParams } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
@@ -23,17 +23,33 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
 
+import { MatDrawer} from '@angular/material';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  @ViewChild('drawer', { static: true }) drawer: MatDrawer;
+  
+  handleSwipeRight(drawer){
+    if (this.sideMenu == false){
+      this.sideMenu = true;
+      this.drawer.toggle();
+    }
+  }
+  handleSwipeLeft(drawer){
+    if (this.sideMenu == true){
+      this.sideMenu = false;
+      this.drawer.toggle();
+    }
+  }
   public folder: string;
   public avatar: string;
   public infoDenuncia: any = {};
   public denunciaForm: any;
-
+  public sideMenu: boolean = false;
   public overlayHidden: boolean = false;
   public buttonHidden: boolean = true;
   public denunciaHidden: boolean = false;
@@ -48,6 +64,8 @@ export class HomePage {
     public modalController: ModalController,
     public  formBuilder: FormBuilder,
     private router: Router,
+    public navCtrl: NavController, 
+    public navParams: NavParams,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
@@ -57,6 +75,15 @@ export class HomePage {
         title: [''],
         description: [''],
       });
+      /*this.platform.ready().then(() => {
+        document.addEventListener('backbutton', () => {
+          if (this.navCtrl.canGoBack()) {
+            this.platform.exitApp()
+            return;
+          }
+          this.navCtrl.pop()
+          }, false);
+      });*/
     }
 
   ngOnInit() {

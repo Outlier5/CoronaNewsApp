@@ -1,7 +1,7 @@
 <ion-app>
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
     <!-- Side Menu -->
-    <mat-drawer #drawer>
+    <mat-drawer #drawer id="drawer">
       <mat-list>
         <img src="{{ global.avatar }}" >
         <h1> {{ global.userGlobal.name }} </h1>
@@ -20,7 +20,7 @@
 
     <mat-drawer-content>
       <!-- Mapa e Botões -->
-      <ion-content [fullscreen]="true">
+      <ion-content [fullscreen]="true" (swiperight)="handleSwipeRight()" (swipeleft)="handleSwipeLeft()">
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button mat-raised-button (click)="drawer.toggle()">

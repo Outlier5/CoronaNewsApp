@@ -25,7 +25,6 @@ export class LoginPage implements OnInit {
     private router: Router
     ) {
       this.loginForm = formBuilder.group({
-        cpf: [''],
         name: [''],
         email: [''],
         password: [''],
