@@ -1,1 +1,28 @@
+#container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+ 
+}
+#container ion-title{
+  margin-top: 5%;
+}
+#userImg{
+  width: 50%;
+  height: 25%;
+  margin-top: 2rem;
+}
+#userImg img{
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+#userImg button[mat-fab]{
+  z-index: 2;
+  margin-top: -2rem;
+  margin-left: 7rem;
 
+}
