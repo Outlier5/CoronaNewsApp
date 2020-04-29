@@ -7,11 +7,6 @@
     <form [formGroup]="loginForm" (submit)="login()" novalidate>
       <ion-list>
         <ion-item>
-          <ion-label position="stacked">CPF</ion-label>
-          <ion-input formControlName="cpf" type="text" placeholder="000.000.000-00" maxlength="11"></ion-input>
-        </ion-item>
-        
-        <ion-item>
           <ion-label position="stacked">Nome</ion-label>
           <ion-input formControlName="name" placeholder="Insira aqui seu nome" type="text"></ion-input>
         </ion-item>
@@ -26,7 +21,7 @@
           <ion-input formControlName="password" placeholder="Insira aqui uma senha" type="password"></ion-input>
         </ion-item>
       </ion-list>
-      <ion-button type="submit">Login</ion-button>
+      <ion-button type="submit" disabled={{loading}}>Entrar <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
     </form>
   </div>
 </ion-content>

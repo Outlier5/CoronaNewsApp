@@ -19,6 +19,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
@@ -37,9 +38,12 @@ export class HomePage {
   public overlayHidden: boolean = false;
   public buttonHidden: boolean = true;
   public denunciaHidden: boolean = false;
+  public mapHidden: boolean = false;
+  public loading: boolean = false;
 
   map: GoogleMap;
   actualNumber: 0;
+  actualState: any;
 
   constructor(
     public global: GlobalService,
@@ -47,6 +51,7 @@ export class HomePage {
     public menuCtrl: MenuController,
     public modalController: ModalController,
     public  formBuilder: FormBuilder,
+    private locationAccuracy: LocationAccuracy,
     private router: Router,
     private platform: Platform,
     private http: HTTP,
@@ -60,9 +65,36 @@ export class HomePage {
     }
 
   ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    this.platform.ready().then(() => {
-      this.loadMap();
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if(canRequest) {
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => {
+            this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+            this.platform.ready().then(() => {
+              this.mapHidden = false; this.buttonHidden = true;
+              this.loadMap();
+            });
+          },
+          error => { this.mapHidden = true; this.buttonHidden = false; }
+        );
+      }    
+    });
+  }
+
+  ativeMap() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if(canRequest) {
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => {
+            this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+            this.platform.ready().then(() => {
+              this.mapHidden = false; this.buttonHidden = true;
+              this.loadMap();
+            });
+          },
+          error => { }
+        );
+      }    
     });
   }
 
@@ -153,12 +185,13 @@ export class HomePage {
       if (data == null || 
         (date.getDate() > data.date.day ||
         date.getMonth() > data.date.month ||
-        date.getFullYear() > data.date.year))
+        date.getFullYear() > data.date.year ||
+        date.getHours() >= 17))
           this.getAllStates();
 
       this.drawCircles(data.cleanData, 'allStates');
     }
-    else if (number == 2 && number != this.actualNumber) {
+    else if (number == 2) {
       this.actualNumber = number;
 
       let options: NativeGeocoderOptions = {
@@ -169,15 +202,19 @@ export class HomePage {
       this.nativeGeocoder.reverseGeocode(position.lat, position.lng, options)
         .then(async (result: NativeGeocoderResult[]) => {
           const { administrativeArea } = result[0];
-          const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
+          if (this.actualState != administrativeArea.replace('State of ', '')) {
+            this.actualState = administrativeArea.replace('State of ', '');
+            const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
 
-          if (data == null || 
-            (date.getDate() > data.date.day ||
-            date.getMonth() > data.date.month ||
-            date.getFullYear() > data.date.year))
-              this.getPerState(administrativeArea);
-
-          this.drawCircles(data.cleanData, 'perState');
+            if (data == null || 
+              (date.getDate() > data.date.day ||
+              date.getMonth() > data.date.month ||
+              date.getFullYear() > data.date.year ||
+              date.getHours() >= 17))
+                this.getPerState(administrativeArea);
+  
+            this.drawCircles(data.cleanData, 'perState');
+          }
         })
         .catch((error: any) => console.log(error));
     }
@@ -424,7 +461,7 @@ export class HomePage {
   }
 
   async confirmDenuncia() {
-
+    this.loading = true;
     const { title, description } = this.denunciaForm.value;
     const { lat, lng } = await this.map.getCameraPosition().target;
 
@@ -443,6 +480,7 @@ export class HomePage {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncia } = JSON.parse(data.data);
+        this.loading = false;
 
         let conf = { color: '', type: '' };
         switch (denuncia.type) {
@@ -501,6 +539,7 @@ export class HomePage {
         this.cancelDenuncia();
       }).catch(err => {
         console.log(err);
+        this.loading = false;
       })
     });
   }

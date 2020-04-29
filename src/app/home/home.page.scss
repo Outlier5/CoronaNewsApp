@@ -44,7 +44,21 @@ mat-drawer {
   position: absolute;
   z-index: 0;
 }
+.mapMss {
+  margin: 0;
+  position: relative;
+  top: 10em;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
 .firstButton{
   position: absolute;
   z-index: 20;

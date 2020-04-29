@@ -16,6 +16,7 @@ import { GlobalService } from '../global.service';
 export class LoginPage implements OnInit {
 
   public loginForm: any;
+  public loading: boolean = false;
 
   constructor(
     public global: GlobalService,
@@ -25,7 +26,6 @@ export class LoginPage implements OnInit {
     private router: Router
     ) {
       this.loginForm = formBuilder.group({
-        cpf: [''],
         name: [''],
         email: [''],
         password: [''],
@@ -62,6 +62,7 @@ export class LoginPage implements OnInit {
   }
 
   login(){
+    this.loading = true;
     this.http.post('https://coronago.herokuapp.com/auth/login', this.loginForm.value, {})
       .then(data => {
         const { token, user, message } = JSON.parse(data.data);
@@ -70,11 +71,13 @@ export class LoginPage implements OnInit {
         this.storage.set('user', user);
         this.global.userGlobal = user;
         this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
-        alert(message);
-        console.log('message')
+        this.global.toast(message);
+        this.loading = false;
         this.router.navigate(['/home'])
       }).catch(error => {
-        alert(error)
+        console.log(error)
+        this.loading = false;
+        this.global.toast(error.data);
       });
   }
 

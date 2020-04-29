@@ -28,6 +28,12 @@
             </button>
           </ion-buttons>
         </div>
+        <div *ngIf="mapHidden" class="mapMss">
+          <h2>Para ultiziar o App é necessario ativar o GPS</h2>
+          <button mat-raised-button (click)="ativeMap()">
+            Toque aqui para ativar
+          </button>
+        </div>
         <div *ngIf="buttonHidden">
           <div class="secondButton">
             <button mat-fab color="primary" (click)="goToMyLoc()">
@@ -103,8 +109,9 @@
         <button mat-raised-button color="primary" (click)="cancelDenuncia()">
           Cancelar
         </button>
-        <button mat-raised-button color="primary" (click)="confirmDenuncia()">
+        <button mat-raised-button color="primary" disabled={{loading}} (click)="confirmDenuncia()">
           Confirmar
+          <ion-spinner *ngIf="loading"></ion-spinner>
         </button>
       </form>
     </div>
