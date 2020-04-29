@@ -4,10 +4,10 @@
     <!-- Side Menu -->
     <mat-drawer #drawer>
       <div id="drawerHeader">
-        <img src="../../assets/back2.jpg" >
+        <img src="{{ global.avatar }}" >
         <div id="userInfo">
-          <p> <!-- {{ global.avatar }} {{ global.userGlobal.name }}-->Nome </p>
-          <p><b>Level: <!--{{ global.userGlobal.level }}-->0</b></p>
+          <p> {{ global.userGlobal.name }} </p>
+          <p><b>Level: {{ global.userGlobal.level }}</b></p>
         </div>
       </div>
       <mat-list id="listaDrawer">

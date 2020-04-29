@@ -9,7 +9,7 @@
 
 <ion-content>
   <div>
-  <img width="150px" height="150px" src="../../assets/icon.png">
+  <img width="150px" height="150px" src="{{ avatar || global.avatar }}">
   <button mat-fab (click)="getImage()" color="accent">
     <mat-icon>edit</mat-icon>
   </button>
@@ -22,11 +22,11 @@
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
     <mat-form-field class="example-full-width">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name"  value="aaa">
+      <input matInput formControlName="name"  value={{global.userGlobal.name}}>
     </mat-form-field>
-    <mat-form-field class="example-full-width"> <!-- {{ avatar || global.avatar }} {{ global.userGlobal.name }} {{ global.userGlobal.email }} -->
+    <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email"  value="bbb">
+      <input matInput type="email" formControlName="email"  value={{global.userGlobal.email}}>
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Senha</mat-label>
