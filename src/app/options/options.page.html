@@ -1,25 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <button mat-raised-button [routerLink]="['/home']" >back</button>
-    <ion-title>options</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Opções</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <img src="{{ avatar || global.avatar }}" >
+  <div>
+  <img width="150px" height="150px" src="{{ avatar || global.avatar }}">
+  <button mat-fab (click)="getImage()" color="accent">
+    <mat-icon>edit</mat-icon>
+  </button>
+  </div>
   <ion-item>
-    <ion-button size="large" color="primary" (click)="getImage()">get Image</ion-button>
-    <ion-button size="large" color="primary" (click)="uploadImage()">Accept</ion-button>
-
+    <ion-button size="medium" color="primary" (click)="getImage()">get Image</ion-button>
+    <ion-button size="medium" color="primary" (click)="uploadImage()">Accept</ion-button>
   </ion-item>
+
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
     <mat-form-field class="example-full-width">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name"  value="{{ global.userGlobal.name }}">
+      <input matInput formControlName="name"  value={{global.userGlobal.name}}>
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email"  value="{{ global.userGlobal.email }}">
+      <input matInput type="email" formControlName="email"  value={{global.userGlobal.email}}>
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label>Senha</mat-label>
@@ -27,7 +34,8 @@
     </mat-form-field>
 
     <ion-item>
-      <ion-button type="submit" size="large" color="primary">Atualizar</ion-button>
+      <ion-button type="submit" size="medium" color="primary">Atualizar</ion-button>
     </ion-item>
   </form>
+
 </ion-content>

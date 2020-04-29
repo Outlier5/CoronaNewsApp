@@ -19,6 +19,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
@@ -53,9 +54,12 @@ export class HomePage {
   public overlayHidden: boolean = false;
   public buttonHidden: boolean = true;
   public denunciaHidden: boolean = false;
+  public mapHidden: boolean = false;
+  public loading: boolean = false;
 
   map: GoogleMap;
   actualNumber: 0;
+  actualState: any;
 
   constructor(
     public global: GlobalService,
@@ -63,6 +67,7 @@ export class HomePage {
     public menuCtrl: MenuController,
     public modalController: ModalController,
     public  formBuilder: FormBuilder,
+    private locationAccuracy: LocationAccuracy,
     private router: Router,
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -75,21 +80,39 @@ export class HomePage {
         title: [''],
         description: [''],
       });
-      /*this.platform.ready().then(() => {
-        document.addEventListener('backbutton', () => {
-          if (this.navCtrl.canGoBack()) {
-            this.platform.exitApp()
-            return;
-          }
-          this.navCtrl.pop()
-          }, false);
-      });*/
     }
-
+  
   ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    this.platform.ready().then(() => {
-      this.loadMap();
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if(canRequest) {
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => {
+            this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+            this.platform.ready().then(() => {
+              this.mapHidden = false; this.buttonHidden = true;
+              this.loadMap();
+            });
+          },
+          error => { this.mapHidden = true; this.buttonHidden = false; }
+        );
+      }    
+    });
+  }
+
+  ativeMap() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if(canRequest) {
+        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+          () => {
+            this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+            this.platform.ready().then(() => {
+              this.mapHidden = false; this.buttonHidden = true;
+              this.loadMap();
+            });
+          },
+          error => { }
+        );
+      }    
     });
   }
 
@@ -180,12 +203,13 @@ export class HomePage {
       if (data == null || 
         (date.getDate() > data.date.day ||
         date.getMonth() > data.date.month ||
-        date.getFullYear() > data.date.year))
+        date.getFullYear() > data.date.year ||
+        date.getHours() >= 17))
           this.getAllStates();
 
       this.drawCircles(data.cleanData, 'allStates');
     }
-    else if (number == 2 && number != this.actualNumber) {
+    else if (number == 2) {
       this.actualNumber = number;
 
       let options: NativeGeocoderOptions = {
@@ -196,15 +220,19 @@ export class HomePage {
       this.nativeGeocoder.reverseGeocode(position.lat, position.lng, options)
         .then(async (result: NativeGeocoderResult[]) => {
           const { administrativeArea } = result[0];
-          const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
+          if (this.actualState != administrativeArea.replace('State of ', '')) {
+            this.actualState = administrativeArea.replace('State of ', '');
+            const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
 
-          if (data == null || 
-            (date.getDate() > data.date.day ||
-            date.getMonth() > data.date.month ||
-            date.getFullYear() > data.date.year))
-              this.getPerState(administrativeArea);
-
-          this.drawCircles(data.cleanData, 'perState');
+            if (data == null || 
+              (date.getDate() > data.date.day ||
+              date.getMonth() > data.date.month ||
+              date.getFullYear() > data.date.year ||
+              date.getHours() >= 17))
+                this.getPerState(administrativeArea);
+  
+            this.drawCircles(data.cleanData, 'perState');
+          }
         })
         .catch((error: any) => console.log(error));
     }
@@ -255,7 +283,6 @@ export class HomePage {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
-        console.log(denuncias)
         this.drawMarker(denuncias);
       });
     });
@@ -318,7 +345,7 @@ export class HomePage {
     this.map.clear();
 
     array.forEach(element => {
-      let conf = { color: '', type: '' };
+      let conf = { color: '', type: '', voted: false };
       switch (element.type) {
         case 'aglomeracoes':
           conf['color'] = 'red';
@@ -341,23 +368,74 @@ export class HomePage {
         animation: 'DROP',
       });
 
+      element.whoVote.forEach(item => {
+        if (item._id == this.global.userGlobal._id)
+          conf['voted'] = true;
+      });
+
       let htmlInfoWindow = new HtmlInfoWindow();
 
       let frame: HTMLElement = document.createElement('div');
       frame.innerHTML = [
-        `<h3>${ conf.type }</h3>`,
-        '<hr style="background: grey; margin-right: 10px;">',
+        '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
+        `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
+        `<p style="color: grey; margin: 0;">Por: ${ element.by.name } <span class="vote">Votos: ${ element.rank }</span></p>`,
         `<h3>${ element.title }</h3>`,
-        `<p style="
-          margin: 0;
-          display: block;
-          overflow: hidden;
-        ">${ element.description }</p>`,
+        `<p style="margin: 0;display: block;overflow: hidden;">${ element.description }</p>`,
+        '<footer class="bottomButton">',
+        '<button style="left: 1;" class="rank"><i class="material-icons">thumb_down</i></button>',
+        '<button style="margin-left: 60%;" class="rank"><i class="material-icons">thumb_up</i></button>',
+        '</footer>',
+        `<style>
+          button {
+            background-color: white;
+            color: #028090;
+          }
+          .bottomButton {
+            margin-left: 10%;
+            bottom: 0;
+            display: ${ conf.voted ? 'none' : 'block' }
+          }
+          .vote {
+            margin-left: 50%;
+            color: ${ element.rank > 0 ? 'green' : 'red'};
+          }
+        </style>`
       ].join("");
+
+      frame.getElementsByClassName('rank')[0].addEventListener('click', () => {
+        this.storage.get('token').then(value => {
+          this.http.put('https://coronago.herokuapp.com/denuncias/rankDenuncia', {
+            id: element._id,
+            rank: '-1',
+          }, {
+            'Authorization': `Bearrer ${value}`
+          }).then(data => {
+            alert(JSON.parse(data.data).success)
+          }).catch(data => {
+            console.log(JSON.parse(data.data).error)
+          });
+        });
+      });
+
+      frame.getElementsByClassName('rank')[1].addEventListener('click', () => {
+        this.storage.get('token').then(value => {
+          this.http.put('https://coronago.herokuapp.com/denuncias/rankDenuncia', {
+            id: element._id,
+            rank: '1',
+          }, {
+            'Authorization': `Bearrer ${value}`
+          }).then(data => {
+            alert(JSON.parse(data.data).success)
+          }).catch(data => {
+            console.log(JSON.parse(data.data).error)
+          });
+        });
+      });
 
       htmlInfoWindow.setContent(frame, {
         width: '300px',
-        height: '200px'
+        height: '250px'
       });
 
       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
@@ -369,6 +447,11 @@ export class HomePage {
 
   denunciaInsert(infos) {
     this.infoDenuncia = infos;
+    this.map.setOptions({
+      'gestures': {
+        'zoom': false
+      }
+    });
     this.geolocation.getCurrentPosition().then((resp) => {
       const { latitude, longitude } =resp.coords;
       this.map.animateCamera({
@@ -388,10 +471,15 @@ export class HomePage {
   cancelDenuncia(){
     this.denunciaHidden = false;
     this.buttonHidden = true;
+    this.map.setOptions({
+      'gestures': {
+        'zoom': true
+      }
+    });
   }
 
   async confirmDenuncia() {
-
+    this.loading = true;
     const { title, description } = this.denunciaForm.value;
     const { lat, lng } = await this.map.getCameraPosition().target;
 
@@ -410,6 +498,7 @@ export class HomePage {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncia } = JSON.parse(data.data);
+        this.loading = false;
 
         let conf = { color: '', type: '' };
         switch (denuncia.type) {
@@ -439,14 +528,21 @@ export class HomePage {
 
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
-          `<h3>${ conf.type }</h3>`,
-          '<hr style="background: grey; margin-right: 10px;">',
-          `<h3>${ denuncia.title }</h3>`,
-          `<p style="
-            margin: 0;
-            display: block;
-            overflow: hidden;
-          ">${ denuncia.description }</p>`,
+          '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
+        `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
+        `<p style="color: grey; margin: 0;">Por: Eu <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
+        `<h3>${ denuncia.title }</h3>`,
+        `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
+        `<style>
+          button {
+            background-color: white;
+            color: #028090;
+          }
+          #vote {
+            margin-left: 50%;
+            color: ${ denuncia.rank > 0 ? 'green' : 'red'};
+          }
+        </style>`
         ].join("");
 
         htmlInfoWindow.setContent(frame, {
@@ -461,6 +557,7 @@ export class HomePage {
         this.cancelDenuncia();
       }).catch(err => {
         console.log(err);
+        this.loading = false;
       })
     });
   }

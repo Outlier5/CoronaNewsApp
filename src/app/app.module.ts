@@ -14,6 +14,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -49,6 +50,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     WebView,
     FileTransfer,
     FileTransferObject,
+    LocationAccuracy,
     GlobalService
   ],
   bootstrap: [AppComponent]
