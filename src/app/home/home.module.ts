@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, RouteReuseStrategy } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { MaterialModule } from '../material.module';

@@ -8,8 +8,8 @@ import {
   HtmlInfoWindow,
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Platform, MenuController, ModalController, NavController, NavParams } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
@@ -24,7 +24,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
 
-import { MatDrawer} from '@angular/material';
+import { MatDrawer } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +32,7 @@ import { MatDrawer} from '@angular/material';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
   @ViewChild('drawer', { static: true }) drawer: MatDrawer;
   
   handleSwipeRight(drawer){
@@ -50,16 +51,19 @@ export class HomePage {
   public avatar: string;
   public infoDenuncia: any = {};
   public denunciaForm: any;
+  
   public sideMenu: boolean = false;
   public overlayHidden: boolean = false;
   public buttonHidden: boolean = true;
   public denunciaHidden: boolean = false;
   public mapHidden: boolean = false;
   public loading: boolean = false;
+  public loadScreen: boolean = false;
 
   map: GoogleMap;
   actualNumber: 0;
   actualState: any;
+  att: any = { state: false, nation: false };
 
   constructor(
     public global: GlobalService,
@@ -69,8 +73,6 @@ export class HomePage {
     public  formBuilder: FormBuilder,
     private locationAccuracy: LocationAccuracy,
     private router: Router,
-    public navCtrl: NavController, 
-    public navParams: NavParams,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
@@ -83,6 +85,7 @@ export class HomePage {
     }
   
   ngOnInit() {
+    this.loadScreen = true;
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       if(canRequest) {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
@@ -163,10 +166,11 @@ export class HomePage {
       };
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
+      this.loadScreen = false;
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
-        
         const zoom = this.map.getCameraZoom(); 
+
         if (zoom < 8 && zoom > 6)
           this.insertControll(1, position);
         else if (zoom < 15 && zoom > 8)
@@ -195,22 +199,28 @@ export class HomePage {
   }
 
   async insertControll(number, position) {
-    const date = new Date();
 
+    const date = new Date();
     if (number == 1 && number != this.actualNumber) {
       this.actualNumber = number;
+      this.loadScreen = true;
       const data = await this.storage.get('allStates').then(val => val);
       if (data == null || 
         (date.getDate() > data.date.day ||
         date.getMonth() > data.date.month ||
-        date.getFullYear() > data.date.year ||
-        date.getHours() >= 17))
+        date.getFullYear() > data.date.year)) {
+          this.att['state'] = false;
           this.getAllStates();
-
-      this.drawCircles(data.cleanData, 'allStates');
+        }
+      else if (date.getHours() >= 17 && !this.att.state) {
+        this.att['state'] = true;
+        this.getAllStates();
+      } else
+        this.drawCircles(data.cleanData, 'allStates');
     }
     else if (number == 2) {
       this.actualNumber = number;
+      this.loadScreen = true;
 
       let options: NativeGeocoderOptions = {
         useLocale: true,
@@ -227,17 +237,23 @@ export class HomePage {
             if (data == null || 
               (date.getDate() > data.date.day ||
               date.getMonth() > data.date.month ||
-              date.getFullYear() > data.date.year ||
-              date.getHours() >= 17))
-                this.getPerState(administrativeArea);
-  
-            this.drawCircles(data.cleanData, 'perState');
+              date.getFullYear() > data.date.year)){
+              this.att['nation'] = false;
+              this.getPerState(administrativeArea);
+            } else if (date.getHours() >= 17 && !this.att.nation) {
+              this.att['nation'] = true;
+              this.getAllStates();
+            } else
+              this.drawCircles(data.cleanData, 'perState');
+          } else {
+            return 0;
           }
         })
         .catch((error: any) => console.log(error));
     }
     else if (number == 3 && number != this.actualNumber) { 
       this.actualNumber = number;
+      this.loadScreen = true;
       this.getAllDenuncias();
     }
   
@@ -245,7 +261,6 @@ export class HomePage {
 
   getAllStates() {
     const d = new Date()
-    console.log(d.getDate());
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
@@ -255,14 +270,15 @@ export class HomePage {
           this.storage.set('allStates', { 
             cleanData,
             date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
+          this.loadScreen = false;
           this.drawCircles(cleanData, 'allStates');
         });
       });
   }
 
   getPerState(state) {
+    this.loadScreen = true;
     const d = new Date()
-    console.log(d.getDate());
     this.storage.get('token').then(value => {
       this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
@@ -272,17 +288,20 @@ export class HomePage {
           this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
             date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
+          this.loadScreen = false;
           this.drawCircles(cleanData, 'perState');
         });
       });
   }
 
   getAllDenuncias() {
+    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
+        this.loadScreen = false;
         this.drawMarker(denuncias);
       });
     });
@@ -291,6 +310,7 @@ export class HomePage {
   drawCircles(array, type) {
     this.map.clear();
     let radius;
+    this.loadScreen = false;
 
     array.forEach(element => {
       if (element.position){
@@ -306,15 +326,15 @@ export class HomePage {
 
         let frame: HTMLElement = document.createElement('div');
         frame.innerHTML = [
-          `<h3>${element.state}</h3>`,
-          `<h4>${element.city == undefined ? '': element.city}</h4>`,
-          `<h5>Confirmados: ${element.confirmed}</h5>`,
-          `<h5>Mortes: ${element.deaths}</h5>`,
+          `<h3 style="margin: 0;" >${element.state}</h3>`,
+          `<h4 style="color: grey; margin: 0;">${element.city == undefined ? '': element.city}</h4>`,
+          `<h5 style="margin: 0; margin-top: 10px;">Confirmados: ${element.confirmed}</h5>`,
+          `<h5 style="margin: 0;">Mortes: ${element.deaths}</h5>`,
         ].join("");
 
         htmlInfoWindow.setContent(frame, {
           width: "200px",
-          height: "200px"
+          height: "150px"
         });
 
         marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
@@ -343,7 +363,7 @@ export class HomePage {
 
   drawMarker(array) {
     this.map.clear();
-
+    
     array.forEach(element => {
       let conf = { color: '', type: '', voted: false };
       switch (element.type) {
