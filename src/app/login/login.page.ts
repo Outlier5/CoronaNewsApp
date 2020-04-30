@@ -68,19 +68,27 @@ export class LoginPage implements OnInit {
 
   login(){
     this.isSubmitted = true;
+
     if (!this.loginForm.valid) {
       this.global.toast('Por favor insira todos valores requeridos');
       return false;
     } else {
       this.loading = true;
-      this.http.post('https://coronago.herokuapp.com/auth/login', this.loginForm.value, {})
+      this.http.post('https://coronago.herokuapp.com/auth/login', {
+        name: this.loginForm.value.name.trim(),
+        email: this.loginForm.value.email.trim(),
+        password: this.loginForm.value.password.trim(),
+      }, {})
         .then(data => {
           const { token, user, message } = JSON.parse(data.data);
+
           this.storage.set('token', token);
           this.storage.set('date', new Date());
           this.storage.set('user', user);
+
           this.global.userGlobal = user;
           this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
+
           this.global.toast(message);
           this.loading = false;
           this.router.navigate(['/home'])
@@ -88,8 +96,6 @@ export class LoginPage implements OnInit {
           const { error } = JSON.parse(err.error)
           this.loading = false;
           this.global.toast(error);
-          console.log(error)
-          console.log(this.loginForm)
         });
     }
   }

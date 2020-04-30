@@ -22,7 +22,7 @@
         </span>
         <ion-item>
           <ion-label position="stacked">Senha</ion-label>
-          <ion-input formControlName="password" placeholder="Insira aqui uma senha" type="password" required></ion-input>
+          <ion-input clearOnEdit="false" formControlName="password" placeholder="Insira aqui uma senha" type="password" required></ion-input>
         </ion-item>
         <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
           Uma senha é necessária.
