@@ -2,7 +2,7 @@
 <ion-app>
   <mat-drawer-container class="example-container" [hasBackdrop]="true">
     <!-- Side Menu -->
-    <mat-drawer #drawer>
+    <mat-drawer #drawer id="drawer">
       <div id="drawerHeader">
         <img src="{{ global.avatar }}" >
         <div id="userInfo">
@@ -28,7 +28,7 @@
 
     <mat-drawer-content>
       <!-- Mapa e Botões -->
-      <ion-content [fullscreen]="true">
+      <ion-content [fullscreen]="true" (swiperight)="handleSwipeRight()" (swipeleft)="handleSwipeLeft()">
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button id="btnDrawer" mat-flat-button (click)="drawer.toggle()">
@@ -36,12 +36,15 @@
             </button>
           </ion-buttons>
         </div>
+        <!-- se o gps tiver off, apresenta isso-->
         <div *ngIf="mapHidden" class="mapMss">
-          <h2>Para ultiziar o App é necessario ativar o GPS</h2>
+          <mat-icon>gps_off</mat-icon>
+          <h2>Para utilizar o aplicativo é necessario ativar o GPS</h2>
           <button mat-raised-button (click)="ativeMap()">
             Toque aqui para ativar
           </button>
         </div>
+        
         <div *ngIf="buttonHidden">
           <div class="secondButton">
             <button mat-fab color="primary" (click)="goToMyLoc()">

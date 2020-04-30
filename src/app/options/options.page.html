@@ -1,41 +1,43 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button default-href="/home" routerLink="['/home']"></ion-back-button>
     </ion-buttons>
     <ion-title>Opções</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div>
-  <img width="150px" height="150px" src="{{ avatar || global.avatar }}">
-  <button mat-fab (click)="getImage()" color="accent">
-    <mat-icon>edit</mat-icon>
-  </button>
+<div id="container">
+  <ion-title>Alterar imagem</ion-title>
+  <div id="userImg">
+    <img src="{{ avatar || global.avatar }}">
+    <button mat-fab (click)="getImage()" color="accent">
+      <mat-icon>edit</mat-icon>
+    </button>
   </div>
-  <ion-item>
-    <ion-button size="medium" color="primary" (click)="getImage()">get Image</ion-button>
-    <ion-button size="medium" color="primary" (click)="uploadImage()">Accept</ion-button>
-  </ion-item>
 
+  <ion-button size="medium" color="primary" (click)="uploadImage()">Alterar</ion-button>
+
+  <ion-item-divider></ion-item-divider>
+  <ion-title>Alterar Nome</ion-title>
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
-    <mat-form-field class="example-full-width">
-      <mat-label>Nome</mat-label>
-      <input matInput formControlName="name"  value={{global.userGlobal.name}}>
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email"  value={{global.userGlobal.email}}>
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <mat-label>Senha</mat-label>
-      <input matInput type="password" formControlName="password">
-    </mat-form-field>
+    <ion-item>
+      <ion-label position="stacked">Nome</ion-label>
+      <ion-input formControlName="name"  value={{global.userGlobal.name}}></ion-input>
+    </ion-item>
 
     <ion-item>
-      <ion-button type="submit" size="medium" color="primary">Atualizar</ion-button>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="email" formControlName="email"  value={{global.userGlobal.email}}></ion-input>
     </ion-item>
-  </form>
 
+    <ion-item>
+      <ion-label position="stacked">Senha</ion-label>
+      <ion-input type="password" placeholder="Digite uma nova senha" formControlName="password"></ion-input>
+    </ion-item>
+    
+    <ion-button type="submit" size="medium" color="primary">Atualizar</ion-button>
+  </form>
+</div>
 </ion-content>
