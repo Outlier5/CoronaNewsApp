@@ -8,18 +8,25 @@
       <ion-list>
         <ion-item>
           <ion-label position="stacked">Nome</ion-label>
-          <ion-input formControlName="name" placeholder="Insira aqui seu nome" type="text"></ion-input>
+          <ion-input formControlName="name" placeholder="Insira aqui seu nome" type="text" required></ion-input>
         </ion-item>
-        
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+          Um nome é necessário.
+        </span>
         <ion-item>
           <ion-label position="stacked">Email</ion-label>
-          <ion-input formControlName="email" type="email" placeholder="usuário@exemplo.com"></ion-input>
+          <ion-input formControlName="email" type="email" placeholder="usuário@exemplo.com" required></ion-input>
         </ion-item>
-        
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
+          Um email é necessário.
+        </span>
         <ion-item>
           <ion-label position="stacked">Senha</ion-label>
-          <ion-input formControlName="password" placeholder="Insira aqui uma senha" type="password"></ion-input>
+          <ion-input formControlName="password" placeholder="Insira aqui uma senha" type="password" required></ion-input>
         </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+          Uma senha é necessária.
+        </span>
       </ion-list>
       <ion-button type="submit" disabled={{loading}}>Entrar <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
     </form>

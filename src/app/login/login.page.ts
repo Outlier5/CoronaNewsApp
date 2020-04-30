@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { HTTP } from '@ionic-native/http/ngx';
@@ -17,6 +17,7 @@ export class LoginPage implements OnInit {
 
   public loginForm: any;
   public loading: boolean = false;
+  public isSubmitted = false;
 
   constructor(
     public global: GlobalService,
@@ -26,11 +27,15 @@ export class LoginPage implements OnInit {
     private router: Router
     ) {
       this.loginForm = formBuilder.group({
-        name: [''],
-        email: [''],
-        password: [''],
+        name: ['', Validators.required],
+        email: ['', Validators.required],
+        password: ['', Validators.required],
       });
-   }
+  }
+
+  get errorControl() {
+    return this.loginForm.controls;
+  }
 
   ngOnInit() {
     this.storage.get('date').then(async value => {
@@ -62,23 +67,29 @@ export class LoginPage implements OnInit {
   }
 
   login(){
-    this.loading = true;
-    this.http.post('https://coronago.herokuapp.com/auth/login', this.loginForm.value, {})
-      .then(data => {
-        const { token, user, message } = JSON.parse(data.data);
-        this.storage.set('token', token);
-        this.storage.set('date', new Date());
-        this.storage.set('user', user);
-        this.global.userGlobal = user;
-        this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
-        this.global.toast(message);
-        this.loading = false;
-        this.router.navigate(['/home'])
-      }).catch(error => {
-        console.log(error)
-        this.loading = false;
-        this.global.toast(error.data);
-      });
+    this.isSubmitted = true;
+    if (!this.loginForm.valid) {
+      this.global.toast('Por favor coloque todos valores requeridos');
+      return false;
+    } else {
+      this.loading = true;
+      this.http.post('https://coronago.herokuapp.com/auth/login', this.loginForm.value, {})
+        .then(data => {
+          const { token, user, message } = JSON.parse(data.data);
+          this.storage.set('token', token);
+          this.storage.set('date', new Date());
+          this.storage.set('user', user);
+          this.global.userGlobal = user;
+          this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
+          this.global.toast(message);
+          this.loading = false;
+          this.router.navigate(['/home'])
+        }).catch(err => {
+          const { error } = JSON.parse(err.error)
+          this.loading = false;
+          this.global.toast(error);
+        });
+    }
   }
 
 }
