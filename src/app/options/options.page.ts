@@ -21,6 +21,9 @@ export class OptionsPage implements OnInit {
   public avatar: any;
   public toUploadAvatar: any;
 
+  public acceptButton: boolean = false;
+  public loading: boolean = false;
+
   constructor(
     public global: GlobalService,
     public formBuilder: FormBuilder,
@@ -50,11 +53,13 @@ export class OptionsPage implements OnInit {
       for (var i = 0; i < results.length; i++) {
         this.avatar = this.webview.convertFileSrc(results[i])
         this.toUploadAvatar = results[i];
+        this.acceptButton = true;
       }
-    }, (err) => { });
+    }, (err) => { this.acceptButton = false; });
   }
 
   uploadImage() {
+    this.loading = true;
     this.storage.get('token').then(value => { 
       const fileTransfer: FileTransferObject = this.transfer.create();
 
@@ -68,13 +73,21 @@ export class OptionsPage implements OnInit {
           'Authorization': `Bearrer ${value}`
         }
       }
+
       fileTransfer.upload(this.toUploadAvatar, 'https://coronago.herokuapp.com/options/avatarUpload', options)
         .then(data => {
-          const { user } = JSON.parse(data.response);
           this.avatar = null;
+
+          const { user } = JSON.parse(data.response);
+          this.storage.set('user', user);
           this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
+          this.acceptButton = false;
+          this.loading = false;
+          this.global.toast('Foto atualizada com sucesso');
         }).catch(err => {
-          console.log(err)
+          const { error } = JSON.parse(err.error)
+          this.loading = false;
+          this.global.toast(error);
         });
     });
       

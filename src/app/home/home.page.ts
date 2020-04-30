@@ -186,6 +186,7 @@ export class HomePage {
   }
 
   goToMyLoc() {
+    this.actualState = '';
     this.geolocation.getCurrentPosition().then((resp) => {
       this.map.animateCamera({
         target: {
@@ -199,11 +200,9 @@ export class HomePage {
   }
 
   async insertControll(number, position) {
-
     const date = new Date();
     if (number == 1 && number != this.actualNumber) {
       this.actualNumber = number;
-      this.loadScreen = true;
       const data = await this.storage.get('allStates').then(val => val);
       if (data == null || 
         (date.getDate() > data.date.day ||
@@ -220,7 +219,6 @@ export class HomePage {
     }
     else if (number == 2) {
       this.actualNumber = number;
-      this.loadScreen = true;
 
       let options: NativeGeocoderOptions = {
         useLocale: true,
@@ -253,13 +251,13 @@ export class HomePage {
     }
     else if (number == 3 && number != this.actualNumber) { 
       this.actualNumber = number;
-      this.loadScreen = true;
       this.getAllDenuncias();
     }
   
   }
 
   getAllStates() {
+    this.loadScreen = true;
     const d = new Date()
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
@@ -399,7 +397,7 @@ export class HomePage {
       frame.innerHTML = [
         '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
         `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-        `<p style="color: grey; margin: 0;">Por: ${ element.by.name } <span class="vote">Votos: ${ element.rank }</span></p>`,
+        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } <span class="vote">Votos: ${ element.rank }</span></p>`,
         `<h3>${ element.title }</h3>`,
         `<p style="margin: 0;display: block;overflow: hidden;">${ element.description }</p>`,
         '<footer class="bottomButton">',

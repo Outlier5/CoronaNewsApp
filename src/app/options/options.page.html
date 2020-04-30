@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button default-href="/home" routerLink="['/home']"></ion-back-button>
+      <ion-back-button routerLink="['/home']"></ion-back-button>
     </ion-buttons>
     <ion-title>Opções</ion-title>
   </ion-toolbar>
@@ -17,7 +17,7 @@
     </button>
   </div>
 
-  <ion-button size="medium" color="primary" (click)="uploadImage()">Alterar</ion-button>
+  <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="uploadImage()">Alterar <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
 
   <ion-item-divider></ion-item-divider>
   <ion-title>Alterar Nome</ion-title>
