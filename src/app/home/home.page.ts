@@ -8,8 +8,8 @@ import {
   HtmlInfoWindow,
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Platform, MenuController, ModalController, NavController, NavParams } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
@@ -24,7 +24,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
 
-import { MatDrawer} from '@angular/material';
+import { MatDrawer } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +32,7 @@ import { MatDrawer} from '@angular/material';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+
   @ViewChild('drawer', { static: true }) drawer: MatDrawer;
   
   handleSwipeRight(drawer){
@@ -69,8 +70,6 @@ export class HomePage {
     public  formBuilder: FormBuilder,
     private locationAccuracy: LocationAccuracy,
     private router: Router,
-    public navCtrl: NavController, 
-    public navParams: NavParams,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
