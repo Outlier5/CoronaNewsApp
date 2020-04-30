@@ -116,16 +116,19 @@
             <ion-label position="stacked">Descrição</ion-label>
             <ion-textarea formControlName="description" type="text" maxlength="125"></ion-textarea>
           </ion-item>
+          <button mat-raised-button color="primary" (click)="cancelDenuncia()">
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" disabled={{loading}} (click)="confirmDenuncia()">
+            Confirmar
+            <ion-spinner *ngIf="loading"></ion-spinner>
+          </button>
         </ion-list>
-        <button mat-raised-button color="primary" (click)="cancelDenuncia()">
-          Cancelar
-        </button>
-        <button mat-raised-button color="primary" disabled={{loading}} (click)="confirmDenuncia()">
-          Confirmar
-          <ion-spinner *ngIf="loading"></ion-spinner>
-        </button>
       </form>
     </div>
+  </div>
+  <div id="overlay" *ngIf="loadScreen">
+    <ion-spinner id="marker"></ion-spinner>
   </div>
 
 </ion-app>
