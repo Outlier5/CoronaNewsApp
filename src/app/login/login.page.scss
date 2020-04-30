@@ -11,6 +11,7 @@ ion-content{
   width: 100px;
   height: 100px;
   z-index: 1;
+  display: none;
 }
 #container{
   /*Centralizar verticalmente*/
@@ -37,15 +38,21 @@ ion-item{
   background-color: rgba(255,255,255,0.7);
   margin-bottom: 5px;
   border-radius: 5px;
-  --highlight-color-valid: rgb(0,0,150);
+  --highlight-color-valid: #02C39A;
 }
 ion-button{
-  margin-top: 5px;
+  margin-top: 10px;
   width: 150px;
   height: 50px;
+  --background: #02C39A;
+  color: #F0F3BD; 
+}
+ion-spinner{
+  margin-top: 5px;
+  color:#02C39A;
 }
 
 .error {
   font-size: 15px;
-  color: red;
+  color: rgb(253, 35, 49);
 }

@@ -69,7 +69,7 @@ export class LoginPage implements OnInit {
   login(){
     this.isSubmitted = true;
     if (!this.loginForm.valid) {
-      this.global.toast('Por favor coloque todos valores requeridos');
+      this.global.toast('Por favor insira todos valores requeridos');
       return false;
     } else {
       this.loading = true;
@@ -88,6 +88,8 @@ export class LoginPage implements OnInit {
           const { error } = JSON.parse(err.error)
           this.loading = false;
           this.global.toast(error);
+          console.log(error)
+          console.log(this.loginForm)
         });
     }
   }

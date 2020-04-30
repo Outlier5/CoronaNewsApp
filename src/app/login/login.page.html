@@ -1,8 +1,8 @@
 <ion-content class="ion-align-items-center" disable-scroll>
-  <ion-img id="banner" src="../../assets/back2.jpg"><div></div></ion-img>
+  <ion-img id="banner" src="../../assets/banner.jpg"><div></div></ion-img>
   <div id="container">
     <div id="logo">
-      <ion-img  src="../../assets/icon.png"></ion-img>
+      <ion-img  src=""></ion-img>
     </div>
     <form [formGroup]="loginForm" (submit)="login()" novalidate>
       <ion-list>
@@ -28,7 +28,8 @@
           Uma senha é necessária.
         </span>
       </ion-list>
-      <ion-button type="submit" disabled={{loading}}>Entrar <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
+      <ion-button type="submit" disabled={{loading}}>Entrar</ion-button><br>
+      <ion-spinner *ngIf="loading"></ion-spinner>
     </form>
   </div>
 </ion-content>
