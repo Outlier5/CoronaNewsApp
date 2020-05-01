@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-modal',
@@ -46,37 +47,52 @@ export class ModalPage implements OnInit {
   ];
   public selected = '';
 
-  public data: any;
+  public data = [];
+  public pageNumber = 1;
 
   constructor(
     public storage: Storage,
     public modalController: ModalController,
+    public global: GlobalService,
     private iab: InAppBrowser,
     private http: HTTP,
   ) {
   }
 
   ngOnInit() {
-    this.getBoletins('*', '*');
+    this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }
 
   select() {
-    this.getBoletins(this.selected, '*');
+    this.pageNumber = 1;
+    this.getBoletins(this.selected, '*', this.pageNumber, { event: null, first: false });
   }
 
-  getBoletins(state, date) {
+  getBoletins(state, date, page, { event, first }) {
     try {
       this.storage.get('token').then(value => {
-        this.http.get(`https://coronago.herokuapp.com/coronaApi/getBoletins/${state}/${date}`, {}, {
+        this.http.get(`https://coronago.herokuapp.com/coronaApi/getBoletins/${state}/${date}/${page}`, {}, {
           'Authorization': `Bearrer ${value}`
         }).then(data => {
-          this.data = JSON.parse(data.data).results;
-        
+          const results = JSON.parse(data.data).results;
+
+          results.forEach(element => {
+            this.data.push(element);
+          });
+
+          if (first)
+            event.target.complete();
+
+          this.pageNumber ++;
         });
       });
     } catch (error) {
-      alert(error)
+      this.global.toast(error);
     }
+  }
+
+  doInfinite(event) {
+    this.getBoletins('*', 'date', this.pageNumber, { event, first: true });
   }
 
   openBrowser(url) {

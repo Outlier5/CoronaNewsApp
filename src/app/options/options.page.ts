@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
@@ -28,6 +29,7 @@ export class OptionsPage implements OnInit {
     public global: GlobalService,
     public formBuilder: FormBuilder,
     public storage: Storage,
+    public router: Router,
     private http: HTTP,
     private webview: WebView,
     private imagePicker: ImagePicker,
@@ -76,11 +78,9 @@ export class OptionsPage implements OnInit {
 
       fileTransfer.upload(this.toUploadAvatar, 'https://coronago.herokuapp.com/options/avatarUpload', options)
         .then(data => {
-          this.avatar = null;
-
+          this.global.avatar = this.avatar;
           const { user } = JSON.parse(data.response);
           this.storage.set('user', user);
-          this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
           this.acceptButton = false;
           this.loading = false;
           this.global.toast('Foto atualizada com sucesso');

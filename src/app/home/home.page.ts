@@ -8,7 +8,7 @@ import {
   HtmlInfoWindow,
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Platform, MenuController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -24,8 +24,6 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
 
-import { MatDrawer } from '@angular/material';
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -33,20 +31,6 @@ import { MatDrawer } from '@angular/material';
 })
 export class HomePage {
 
-  @ViewChild('drawer', { static: true }) drawer: MatDrawer;
-  
-  handleSwipeRight(drawer){
-    if (this.sideMenu == false){
-      this.sideMenu = true;
-      this.drawer.toggle();
-    }
-  }
-  handleSwipeLeft(drawer){
-    if (this.sideMenu == true){
-      this.sideMenu = false;
-      this.drawer.toggle();
-    }
-  }
   public folder: string;
   public avatar: string;
   public infoDenuncia: any = {};
@@ -63,7 +47,6 @@ export class HomePage {
   map: GoogleMap;
   actualNumber: 0;
   actualState: any;
-  att: any = { state: false, nation: false };
 
   constructor(
     public global: GlobalService,
@@ -85,7 +68,7 @@ export class HomePage {
     }
   
   ngOnInit() {
-    this.loadScreen = true;
+    //this.loadScreen = true;
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       if(canRequest) {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
@@ -170,7 +153,7 @@ export class HomePage {
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
-
+        console.log(zoom);
         if (zoom < 8 && zoom > 6)
           this.insertControll(1, position);
         else if (zoom < 15 && zoom > 8)
@@ -200,26 +183,18 @@ export class HomePage {
   }
 
   async insertControll(number, position) {
-    const date = new Date();
+    const now = new Date();
+
     if (number == 1 && number != this.actualNumber) {
       this.actualNumber = number;
       const data = await this.storage.get('allStates').then(val => val);
-      if (data == null || 
-        (date.getDate() > data.date.day ||
-        date.getMonth() > data.date.month ||
-        date.getFullYear() > data.date.year)) {
-          this.att['state'] = false;
+      if (data == null || now > data.date) {
           this.getAllStates();
-        }
-      else if (date.getHours() >= 17 && !this.att.state) {
-        this.att['state'] = true;
-        this.getAllStates();
       } else
         this.drawCircles(data.cleanData, 'allStates');
     }
     else if (number == 2) {
       this.actualNumber = number;
-
       let options: NativeGeocoderOptions = {
         useLocale: true,
           maxResults: 5
@@ -232,15 +207,8 @@ export class HomePage {
             this.actualState = administrativeArea.replace('State of ', '');
             const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
 
-            if (data == null || 
-              (date.getDate() > data.date.day ||
-              date.getMonth() > data.date.month ||
-              date.getFullYear() > data.date.year)){
-              this.att['nation'] = false;
+            if (data == null || now > data.date){
               this.getPerState(administrativeArea);
-            } else if (date.getHours() >= 17 && !this.att.nation) {
-              this.att['nation'] = true;
-              this.getAllStates();
             } else
               this.drawCircles(data.cleanData, 'perState');
           } else {
@@ -258,16 +226,15 @@ export class HomePage {
 
   getAllStates() {
     this.loadScreen = true;
-    const d = new Date()
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
-        const date = new Date();
+        const now = new Date();
         const { cleanData } = JSON.parse(data.data);
           this.storage.set('allStates', { 
             cleanData,
-            date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
+            date: now.setHours(now.getHours() + 2) });
           this.loadScreen = false;
           this.drawCircles(cleanData, 'allStates');
         });
@@ -276,16 +243,15 @@ export class HomePage {
 
   getPerState(state) {
     this.loadScreen = true;
-    const d = new Date()
     this.storage.get('token').then(value => {
       this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
-        const date = new Date();
+        const now = new Date();
         const { cleanData } = JSON.parse(data.data);
           this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
-            date: { year: date.getFullYear(), month: date.getMonth(), day: date.getDate() } });
+            date: now.setHours(now.getHours() + 2) });
           this.loadScreen = false;
           this.drawCircles(cleanData, 'perState');
         });
