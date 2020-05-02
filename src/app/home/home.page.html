@@ -61,9 +61,10 @@
             </button>
           </div>
         <div class="newsButton">
-          <button mat-raised-button shape="round" color="primary" (click)="openModal()">
+          <button mat-raised-button shape="round" disabled={{newsButton}} color="primary" (click)="openModal()">
             <mat-icon>public</mat-icon>
-            News
+            Notícias
+              <ion-spinner *ngIf="newsButton"></ion-spinner>
           </button>
         </div>
       </div>

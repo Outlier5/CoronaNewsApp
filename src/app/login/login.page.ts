@@ -37,7 +37,7 @@ export class LoginPage implements OnInit {
     return this.loginForm.controls;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.storage.get('date').then(async value => {
       const date = new Date();
       if (date.getFullYear() > value.getFullYear()) {
@@ -56,7 +56,7 @@ export class LoginPage implements OnInit {
       }
     });
 
-    this.storage.get('token').then(value => {
+    await this.storage.get('token').then(value => {
       if(value)
         this.storage.get('user').then(val => {
           this.global.userGlobal = val;

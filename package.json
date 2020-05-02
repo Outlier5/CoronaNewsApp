@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "@capacitor/core": "2.0.0",
+    "@ionic-native/browser-tab": "^5.24.0",
     "@ionic-native/core": "^5.23.0",
     "@ionic-native/file-transfer": "^5.24.0",
     "@ionic-native/geolocation": "^5.23.0",
@@ -45,6 +46,8 @@
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-browser": "6.0.0",
     "cordova-plugin-advanced-http": "^2.4.1",
+    "cordova-plugin-browsertab": "^0.2.0",
+    "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-file-transfer": "^1.7.1",
     "cordova-plugin-geolocation": "^4.0.2",
@@ -116,7 +119,8 @@
       "cordova-plugin-file-transfer": {},
       "cordova-plugin-request-location-accuracy": {
         "PLAY_SERVICES_LOCATION_VERSION": "16.+"
-      }
+      },
+      "cordova-plugin-browsertab": {}
     },
     "platforms": [
       "browser",

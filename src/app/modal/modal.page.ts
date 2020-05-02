@@ -5,6 +5,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 
 import { GlobalService } from '../global.service';
 
@@ -56,6 +57,7 @@ export class ModalPage implements OnInit {
     public modalController: ModalController,
     public global: GlobalService,
     private iab: InAppBrowser,
+    private browserTab: BrowserTab,
     private http: HTTP,
   ) {
   }
@@ -105,16 +107,16 @@ export class ModalPage implements OnInit {
   doInfinite(event) {
     this.getBoletins('*', 'date', this.pageNumber, { event, first: true });
   }
-
   openBrowser(url) {
-    const pdfCheck = url.split('/').reverse()[0];
-    
-    if (pdfCheck.split('.').reverse()[0] == 'pdf')
-      this.iab.create(encodeURI(url), '_system', 'hideurlbar=yes,zoom=no');
-    else
-      this.iab.create(encodeURI(url), '_self', 'hideurlbar=yes,zoom=no');
+    this.browserTab.isAvailable()
+      .then((isAvailable: boolean) => {
+        if(isAvailable) {
+            this.browserTab.openUrl(encodeURI(url));
+        } else {
+          this.iab.create(encodeURI(url), '_system', 'hideurlbar=yes,zoom=yes');
+        }
+      });  
   }
-
   dismiss() {
     this.modalController.dismiss();
   }

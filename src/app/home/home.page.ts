@@ -36,7 +36,7 @@ export class HomePage {
   public infoDenuncia: any = {};
   public denunciaForm: any;
   
-  public sideMenu: boolean = false;
+  public newsButton: boolean = false;
   public overlayHidden: boolean = false;
   public buttonHidden: boolean = true;
   public denunciaHidden: boolean = false;
@@ -68,8 +68,8 @@ export class HomePage {
     }
   
   async ngOnInit() {
-    this.loadScreen = true;
     await this.ativeMap();
+    
   }
 
   ativeMap() {
@@ -80,19 +80,26 @@ export class HomePage {
             this.folder = this.activatedRoute.snapshot.paramMap.get('id');
             this.platform.ready().then(() => {
               this.mapHidden = false; this.buttonHidden = true;
+              this.loadScreen = true;
               this.loadMap();
             });
           },
           error => { this.mapHidden = true; this.loadScreen = false; this.buttonHidden = false;}
         );
-      }    
+      } else {
+        this.loadMap();
+        this.ativeMap();
+      } 
     });
   }
 
   async openModal() {
+    this.newsButton = true;
     const modal = await this.modalController.create({
       component: ModalPage
     });
+
+    this.newsButton = false;
     return await modal.present();
   }
 
@@ -110,8 +117,8 @@ export class HomePage {
 
   loadMap() {
     Environment.setEnv({
-      'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyCOwpKWB6VSvclPt6yoUJIP_jk9LVvzOsM',
-      'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyCOwpKWB6VSvclPt6yoUJIP_jk9LVvzOsM'
+      'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc',
+      'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc'
     });
 
 
@@ -140,7 +147,7 @@ export class HomePage {
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
-        console.log(zoom);
+
         if (zoom < 8 && zoom > 6)
           this.insertControll(1, position);
         else if (zoom < 13 && zoom > 8)

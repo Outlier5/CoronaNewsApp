@@ -10,7 +10,10 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+
+import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
@@ -46,6 +49,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     Geolocation,
     NativeGeocoder,
     InAppBrowser,
+    BrowserTab,
     ImagePicker,
     WebView,
     FileTransfer,

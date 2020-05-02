@@ -61,7 +61,7 @@ export class OptionsPage implements OnInit {
 
   uploadImage() {
     this.loading = true;
-    this.storage.get('token').then(value => { 
+    this.storage.get('token').then(async value => { 
       const fileTransfer: FileTransferObject = this.transfer.create();
 
       let options: FileUploadOptions = {
@@ -75,11 +75,11 @@ export class OptionsPage implements OnInit {
         }
       }
 
-      fileTransfer.upload(this.toUploadAvatar, 'https://coronago.herokuapp.com/options/avatarUpload', options)
-        .then(data => {
-          this.global.avatar = this.avatar;
-          const { user } = JSON.parse(data.response);
-          this.storage.set('user', user);
+      await fileTransfer.upload(this.toUploadAvatar, 'https://coronago.herokuapp.com/options/avatarUpload', options)
+        .then(async data => {
+          this.global.avatar = await this.avatar;
+          const { user } = await JSON.parse(data.response);
+          await this.storage.set('user', user);
           this.acceptButton = false;
           this.loading = false;
           this.global.toast('Foto atualizada com sucesso');
