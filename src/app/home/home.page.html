@@ -109,25 +109,44 @@
     
   </div>
   <div id="itens" *ngIf="overlayHidden">
+    <h1 style="color: white;">Denunciar</h1>
+
     <mat-grid-list cols="2" rowHeight="100px">
-      <h1>Denunciar</h1>
       <mat-grid-tile>
-        <button mat-fab class="overlayButton" color="primary" (click)="denunciaInsert({ title: 'Aglomerações', type: 'aglomeracoes' })">
-          <mat-icon>star</mat-icon>
-        </button>
-        Aglomerações
+        <ion-grid>
+          <ion-row>
+            <button mat-fab class="overlayButton" color="primary" (click)="denunciaInsert({ title: 'Aglomerações', type: 'aglomeracoes' })">
+              <mat-icon>star</mat-icon>
+            </button>
+          </ion-row>
+          <ion-row style="color: white;">
+            Aglomerações
+          </ion-row>
+        </ion-grid>
       </mat-grid-tile>
       <mat-grid-tile>
-        <button mat-fab class="overlayButton" color="accent" (click)="denunciaInsert({ title: 'Situações de Risco', type: 'risco' })">
-          <mat-icon>star</mat-icon>
-        </button>
-          Situações de Risco
+        <ion-grid>
+          <ion-row>
+            <button mat-fab class="overlayButton" color="accent" (click)="denunciaInsert({ title: 'Situações de Risco', type: 'risco' })">
+              <mat-icon>star</mat-icon>
+            </button>
+          </ion-row>
+          <ion-row style="color: white;">
+            Situações de Risco
+          </ion-row>
+        </ion-grid>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="2" [rowspan]="2">
-        <button mat-fab class="overlayButton" color="warn" (click)="denunciaInsert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
-          <mat-icon>star</mat-icon>
-        </button>
-        Areas com incidentes recentes
+        <ion-grid>
+          <ion-row>
+            <button mat-fab class="overlayButton" color="warn" (click)="denunciaInsert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
+              <mat-icon>star</mat-icon>
+            </button>
+          </ion-row>
+          <ion-row style="color: white;">
+            Areas com incidentes recentes
+          </ion-row>
+        </ion-grid>
       </mat-grid-tile>
     </mat-grid-list>
   </div>
