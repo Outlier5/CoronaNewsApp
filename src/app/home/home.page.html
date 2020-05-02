@@ -29,6 +29,9 @@
     <mat-drawer-content>
       <!-- Mapa e Botões -->
       <ion-content [fullscreen]="true" (swiperight)="handleSwipeRight()" (swipeleft)="handleSwipeLeft()">
+        <div id="overlay" *ngIf="loadScreen">
+          <ion-spinner id="marker"></ion-spinner>
+        </div>
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button id="btnDrawer" mat-flat-button (click)="drawer.toggle()">
@@ -36,6 +39,7 @@
             </button>
           </ion-buttons>
         </div>
+        
         <!-- se o gps tiver off, apresenta isso-->
         <div *ngIf="mapHidden" class="mapMss">
           <mat-icon>gps_off</mat-icon>
@@ -61,6 +65,40 @@
             <mat-icon>public</mat-icon>
             News
           </button>
+        </div>
+      </div>
+      <div *ngIf="denunciaHidden" id=marker>
+        <mat-grid-list cols="1" rowHeight="100px">
+          <mat-grid-tile>
+            <mat-icon style="font-size: 30px; margin-bottom: 45px;">room</mat-icon>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+      <div *ngIf="denunciaHidden" id="denuncia">
+        <div style="background-color: #fff; height: 100%;">
+          <form [formGroup]="denunciaForm" novalidate>
+            <ion-list>
+              <ion-item>
+                <h3>{{ infoDenuncia.title }}</h3>
+              </ion-item>
+              <ion-item>
+                <ion-label position="stacked">Titulo</ion-label>
+                <ion-input formControlName="title" type="text"></ion-input>
+              </ion-item>
+              
+              <ion-item>
+                <ion-label position="stacked">Descrição</ion-label>
+                <ion-textarea formControlName="description" type="text" maxlength="125"></ion-textarea>
+              </ion-item>
+              <button mat-raised-button color="primary" (click)="cancelDenuncia()">
+                Cancelar
+              </button>
+              <button mat-raised-button color="primary" disabled={{loading}} (click)="confirmDenuncia()">
+                Confirmar
+                <ion-spinner *ngIf="loading"></ion-spinner>
+              </button>
+            </ion-list>
+          </form>
         </div>
       </div>
       </ion-content>
@@ -92,45 +130,6 @@
       </mat-grid-tile>
     </mat-grid-list>
   </div>
-  
-  <div *ngIf="denunciaHidden" id=marker>
-    <mat-grid-list cols="1" rowHeight="100px">
-      <mat-grid-tile>
-        <mat-icon style="font-size: 30px; margin-bottom: 45px;">room</mat-icon>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
-  <div *ngIf="denunciaHidden" id="denuncia">
-    <div style="background-color: #fff; height: 100%;">
-      <form [formGroup]="denunciaForm" novalidate>
-        <ion-list>
-          <ion-item>
-            <h3>{{ infoDenuncia.title }}</h3>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Titulo</ion-label>
-            <ion-input formControlName="title" type="text"></ion-input>
-          </ion-item>
-          
-          <ion-item>
-            <ion-label position="stacked">Descrição</ion-label>
-            <ion-textarea formControlName="description" type="text" maxlength="125"></ion-textarea>
-          </ion-item>
-          <button mat-raised-button color="primary" (click)="cancelDenuncia()">
-            Cancelar
-          </button>
-          <button mat-raised-button color="primary" disabled={{loading}} (click)="confirmDenuncia()">
-            Confirmar
-            <ion-spinner *ngIf="loading"></ion-spinner>
-          </button>
-        </ion-list>
-      </form>
-    </div>
-  </div>
-  <div id="overlay" *ngIf="loadScreen">
-    <ion-spinner id="marker"></ion-spinner>
-  </div>
-
 </ion-app>
 
 <!-- Eu sempre sobre que o bolo é uma mentira -->

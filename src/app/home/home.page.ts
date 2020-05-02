@@ -67,22 +67,9 @@ export class HomePage {
       });
     }
   
-  ngOnInit() {
-    //this.loadScreen = true;
-    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      if(canRequest) {
-        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-          () => {
-            this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-            this.platform.ready().then(() => {
-              this.mapHidden = false; this.buttonHidden = true;
-              this.loadMap();
-            });
-          },
-          error => { this.mapHidden = true; this.buttonHidden = false; }
-        );
-      }    
-    });
+  async ngOnInit() {
+    this.loadScreen = true;
+    await this.ativeMap();
   }
 
   ativeMap() {
@@ -96,7 +83,7 @@ export class HomePage {
               this.loadMap();
             });
           },
-          error => { }
+          error => { this.mapHidden = true; this.loadScreen = false; this.buttonHidden = false;}
         );
       }    
     });
@@ -156,9 +143,9 @@ export class HomePage {
         console.log(zoom);
         if (zoom < 8 && zoom > 6)
           this.insertControll(1, position);
-        else if (zoom < 15 && zoom > 8)
+        else if (zoom < 13 && zoom > 8)
           this.insertControll(2, position);
-        else if (zoom > 15)
+        else if (zoom > 13)
           this.insertControll(3, position);
       });
      }).catch((error) => {
@@ -318,7 +305,9 @@ export class HomePage {
         let circle: Circle = this.map.addCircleSync({
           center: marker.getPosition(),
           radius,
-          fillColor: "rgba(255, 0, 0, 0.5)",
+          'strokeColor' : 'rgba(255, 0, 0, 0.3)',
+          'strokeWidth': 2,
+          fillColor: "rgba(255, 0, 0, 0.1)",
         });
         marker.bindTo("position", circle, "center");
       }
@@ -395,9 +384,9 @@ export class HomePage {
           }, {
             'Authorization': `Bearrer ${value}`
           }).then(data => {
-            alert(JSON.parse(data.data).success)
+            this.global.toast(JSON.parse(data.data).success)
           }).catch(data => {
-            console.log(JSON.parse(data.data).error)
+            this.global.toast(JSON.parse(data.data).error)
           });
         });
       });
@@ -410,9 +399,9 @@ export class HomePage {
           }, {
             'Authorization': `Bearrer ${value}`
           }).then(data => {
-            alert(JSON.parse(data.data).success)
+            this.global.toast(JSON.parse(data.data).success)
           }).catch(data => {
-            console.log(JSON.parse(data.data).error)
+            this.global.toast(JSON.parse(data.data).error)
           });
         });
       });

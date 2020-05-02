@@ -24,7 +24,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button (click)="select()" >Aceitar</button>
+        <button mat-raised-button (click)="select()">Aceitar <ion-spinner *ngIf="loading"></ion-spinner></button>
 
         <div role="listitem" *ngFor="let boletim of data">
           <mat-card class="card" (click)="openBrowser( boletim.url )">
@@ -37,6 +37,11 @@
             <mat-card-content>
               {{ boletim.notes }}
             </mat-card-content>
+            <mat-card-actions align="end" style="color: red; right: 0; margin: 0;">
+              <h3 *ngIf=boletim.isPDF >
+                PDF
+              </h3>
+            </mat-card-actions>
           </mat-card>  
           <mat-divider></mat-divider>
         </div>

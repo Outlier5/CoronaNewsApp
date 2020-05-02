@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { HTTP } from '@ionic-native/http/ngx';
@@ -7,7 +7,6 @@ import { Storage } from '@ionic/storage';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { Buffer } from 'buffer';
 
 import { GlobalService } from '../global.service';
 
@@ -37,7 +36,7 @@ export class OptionsPage implements OnInit {
   ) { 
     this.optionsForm = formBuilder.group({
       name: [''],
-      email: [''],
+      email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       password: [''],
     });
   }

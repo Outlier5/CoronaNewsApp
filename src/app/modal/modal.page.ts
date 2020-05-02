@@ -16,6 +16,7 @@ import { GlobalService } from '../global.service';
 export class ModalPage implements OnInit {
 
   public selectStateForm: any;
+  public loading: boolean = false;
   public states = [
     { code: 'AC', state: 'Acre' },
     { code: 'AL', state: 'Alagoas' },
@@ -64,6 +65,7 @@ export class ModalPage implements OnInit {
   }
 
   select() {
+    this.loading = true;
     this.pageNumber = 1;
     this.getBoletins(this.selected, '*', this.pageNumber, { event: null, first: false });
   }
@@ -76,14 +78,23 @@ export class ModalPage implements OnInit {
         }).then(data => {
           const results = JSON.parse(data.data).results;
 
+          if (!first)
+            this.data = [];
+
           results.forEach(element => {
-            this.data.push(element);
+            const pdfCheck = element.url.split('/').reverse()[0];
+    
+            if (pdfCheck.split('.').reverse()[0] == 'pdf')
+              this.data.push({ ...element, isPDF: true });
+            else
+              this.data.push({ ...element, isPDF: false });
           });
 
           if (first)
             event.target.complete();
 
           this.pageNumber ++;
+          this.loading = false;
         });
       });
     } catch (error) {
@@ -96,7 +107,12 @@ export class ModalPage implements OnInit {
   }
 
   openBrowser(url) {
-    this.iab.create(encodeURI(url), '_self', 'hideurlbar=yes,zoom=no');
+    const pdfCheck = url.split('/').reverse()[0];
+    
+    if (pdfCheck.split('.').reverse()[0] == 'pdf')
+      this.iab.create(encodeURI(url), '_system', 'hideurlbar=yes,zoom=no');
+    else
+      this.iab.create(encodeURI(url), '_self', 'hideurlbar=yes,zoom=no');
   }
 
   dismiss() {
