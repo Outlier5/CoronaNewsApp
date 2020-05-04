@@ -45,7 +45,7 @@ export class HomePage {
   public loadScreen: boolean = false;
 
   map: GoogleMap;
-  actualNumber: 0;
+  actualNumber: number;
   actualState: any;
 
   constructor(
@@ -99,7 +99,7 @@ export class HomePage {
       component: ModalPage
     });
 
-    return await modal.present().finally(() => {
+    return await modal.present().then(() => {
       this.newsButton = false;
     });
   }
@@ -144,7 +144,9 @@ export class HomePage {
       };
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
-      this.loadScreen = false;
+      setTimeout(() => {
+        this.loadScreen = false;
+      }, 3000);
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
@@ -182,7 +184,6 @@ export class HomePage {
 
     if (number == 1 && number != this.actualNumber) {
       this.actualNumber = number;
-      this.loadScreen = true;
 
       const data = await this.storage.get('allStates').then(val => val);
       if (data == null || now > data.date) {
@@ -192,10 +193,9 @@ export class HomePage {
     }
     else if (number == 2) {
       this.actualNumber = number;
-      this.loadScreen = true;
       let options: NativeGeocoderOptions = {
         useLocale: true,
-          maxResults: 5
+        maxResults: 2
       };
 
       this.nativeGeocoder.reverseGeocode(position.lat, position.lng, options)
@@ -205,7 +205,7 @@ export class HomePage {
             this.actualState = administrativeArea.replace('State of ', '');
             const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
 
-            if (data == null || now > data.date){
+            if (!data || now > data.date){
               this.getPerState(administrativeArea);
             } else
               this.drawCircles(data.cleanData, 'perState');
@@ -215,8 +215,7 @@ export class HomePage {
         })
         .catch((error: any) => console.log(error));
     }
-    else if (number == 3 && number != this.actualNumber) { 
-      this.loadScreen = true;
+    else if (number == 3 && number != this.actualNumber) {
       this.actualNumber = number;
       this.getAllDenuncias();
     }
@@ -225,6 +224,7 @@ export class HomePage {
 
   getAllStates() {
     this.storage.get('token').then(value => {
+      this.loadScreen = true;
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
@@ -240,14 +240,16 @@ export class HomePage {
 
   getPerState(state) {
     this.storage.get('token').then(value => {
+      this.loadScreen = true;
       this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
-        const now = new Date();
-        const { cleanData } = JSON.parse(data.data);
+          const now = new Date();
+          const { cleanData } = JSON.parse(data.data);
+          now.setHours(now.getHours() + 2)
           this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
-            date: now.setHours(now.getHours() + 2) });
+            date: now });
           this.drawCircles(cleanData, 'perState');
         });
       });
@@ -255,6 +257,7 @@ export class HomePage {
 
   getAllDenuncias() {
     this.storage.get('token').then(value => {
+      this.loadScreen = true;
       this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
@@ -265,7 +268,6 @@ export class HomePage {
   }
 
   drawCircles(array, type) {
-    this.loadScreen = false;
     this.map.clear();
     let radius;
 
@@ -319,10 +321,11 @@ export class HomePage {
 
       }
     });
+    this.loadScreen = false;
+
   }
 
   drawMarker(array) {
-    this.loadScreen = false;
     this.map.clear();
     
     array.forEach(element => {
@@ -424,6 +427,8 @@ export class HomePage {
         htmlInfoWindow.open(marker);
       });
     });
+    this.loadScreen = false;
+
   }
 
   denunciaInsert(infos) {
