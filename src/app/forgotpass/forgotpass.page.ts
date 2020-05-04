@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
-import { Buffer } from 'buffer';
 
 import { GlobalService } from '../global.service';
 
@@ -16,6 +15,7 @@ import { GlobalService } from '../global.service';
 export class ForgotPage implements OnInit {
 
   public forgotForm: any;
+  public isSubmitted = false;
 
   constructor(
     public global: GlobalService,
@@ -25,35 +25,41 @@ export class ForgotPage implements OnInit {
     private router: Router
     ) {
       this.forgotForm = formBuilder.group({
-        email: [''],
+        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       });
    }
 
   ngOnInit() {
-    this.storage.get('token').then(value => {
-      if(value)
-        this.storage.get('user').then(val => {
-          this.global.userGlobal = val;
-          this.global.avatar = `data:image/webp;base64,${Buffer.from(val.avatar).toString('base64')}`;
-          this.router.navigate(['/login']);
-        });
-    });
+  }
+
+  get errorControl() {
+    return this.forgotForm.controls;
+  }
+
+  back() {
+    this.router.navigate(['/login']);
   }
 
   forgot(){
-    this.http.post('https://coronago.herokuapp.com/auth/login', this.forgotForm.value, {})
-      .then(data => {
-        const { token, user, message } = JSON.parse(data.data);
-        this.storage.set('token', token);
-        this.storage.set('user', user);
-        this.global.userGlobal = user;
-        this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
-        alert(message);
-        console.log('message')
-        this.router.navigate(['/login'])
-      }).catch(error => {
-        alert(error)
-      });
+    this.isSubmitted = true;
+
+    if (!this.forgotForm.valid) {
+      this.global.toast('Por favor insira todos valores requeridos');
+      return false;
+    } else {
+      this.http.post('https://coronago.herokuapp.com/auth/forgot_password', {
+        email: this.forgotForm.value.email.trim(),
+      }, {})
+        .then(data => {
+          const { success } = JSON.parse(data.data);
+          this.global.toast(success);
+          this.router.navigate(['/login']);
+        }).catch(err => {
+          const { error } = JSON.parse(err.error)
+          console.log(err)
+          this.global.toast(error);
+        });
+    }
   }
 
 }

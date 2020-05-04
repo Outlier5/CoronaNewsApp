@@ -99,8 +99,9 @@ export class HomePage {
       component: ModalPage
     });
 
-    this.newsButton = false;
-    return await modal.present();
+    return await modal.present().finally(() => {
+      this.newsButton = false;
+    });
   }
 
   toggleOverlay(){
@@ -181,6 +182,8 @@ export class HomePage {
 
     if (number == 1 && number != this.actualNumber) {
       this.actualNumber = number;
+      this.loadScreen = true;
+
       const data = await this.storage.get('allStates').then(val => val);
       if (data == null || now > data.date) {
           this.getAllStates();
@@ -189,6 +192,7 @@ export class HomePage {
     }
     else if (number == 2) {
       this.actualNumber = number;
+      this.loadScreen = true;
       let options: NativeGeocoderOptions = {
         useLocale: true,
           maxResults: 5
@@ -212,6 +216,7 @@ export class HomePage {
         .catch((error: any) => console.log(error));
     }
     else if (number == 3 && number != this.actualNumber) { 
+      this.loadScreen = true;
       this.actualNumber = number;
       this.getAllDenuncias();
     }
@@ -219,7 +224,6 @@ export class HomePage {
   }
 
   getAllStates() {
-    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
@@ -229,14 +233,12 @@ export class HomePage {
           this.storage.set('allStates', { 
             cleanData,
             date: now.setHours(now.getHours() + 2) });
-          this.loadScreen = false;
           this.drawCircles(cleanData, 'allStates');
         });
       });
   }
 
   getPerState(state) {
-    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
@@ -246,29 +248,26 @@ export class HomePage {
           this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
             date: now.setHours(now.getHours() + 2) });
-          this.loadScreen = false;
           this.drawCircles(cleanData, 'perState');
         });
       });
   }
 
   getAllDenuncias() {
-    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
-        this.loadScreen = false;
         this.drawMarker(denuncias);
       });
     });
   }
 
   drawCircles(array, type) {
+    this.loadScreen = false;
     this.map.clear();
     let radius;
-    this.loadScreen = false;
 
     array.forEach(element => {
       if (element.position){
@@ -317,11 +316,13 @@ export class HomePage {
           fillColor: "rgba(255, 0, 0, 0.1)",
         });
         marker.bindTo("position", circle, "center");
+
       }
     });
   }
 
   drawMarker(array) {
+    this.loadScreen = false;
     this.map.clear();
     
     array.forEach(element => {
