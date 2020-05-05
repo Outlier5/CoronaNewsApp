@@ -112,4 +112,9 @@ export class OptionsPage implements OnInit {
         });
     });
   }
+
+  back() {
+    this.router.navigate(['/home']);
+  }
+
 }

@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 
+import { MatTabChangeEvent } from '@angular/material/tabs';
+
 import { GlobalService } from '../global.service';
 
 @Component({
@@ -61,7 +63,6 @@ export class ModalPage implements OnInit {
     private http: HTTP,
   ) {
   }
-
   ngOnInit() {
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }

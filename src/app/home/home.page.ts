@@ -45,8 +45,10 @@ export class HomePage {
   public loadScreen: boolean = false;
 
   map: GoogleMap;
-  actualNumber: 0;
+  actualNumber: number;
   actualState: any;
+
+  mudanca = 0;
 
   constructor(
     public global: GlobalService,
@@ -99,8 +101,9 @@ export class HomePage {
       component: ModalPage
     });
 
-    this.newsButton = false;
-    return await modal.present();
+    return await modal.present().finally(() => {
+      this.newsButton = false;
+    });
   }
 
   toggleOverlay(){
@@ -122,7 +125,7 @@ export class HomePage {
     });
 
 
-    this.geolocation.getCurrentPosition().then((resp) => {
+    this.geolocation.getCurrentPosition().then(async (resp) => {
       let mapOptions: GoogleMapOptions = {
         camera: {
            target: {
@@ -164,6 +167,8 @@ export class HomePage {
 
   goToMyLoc() {
     this.actualState = '';
+    this.map.clear();
+
     this.geolocation.getCurrentPosition().then((resp) => {
       this.map.animateCamera({
         target: {
@@ -171,16 +176,19 @@ export class HomePage {
           lng: resp.coords.longitude
         },
         zoom: 18,
-        duration: 0
+        duration: 2000
       });
     });
   }
 
   async insertControll(number, position) {
     const now = new Date();
-
+    console.log(number)
     if (number == 1 && number != this.actualNumber) {
+      this.actualState = '';
+      this.map.clear();
       this.actualNumber = number;
+
       const data = await this.storage.get('allStates').then(val => val);
       if (data == null || now > data.date) {
           this.getAllStates();
@@ -189,86 +197,84 @@ export class HomePage {
     }
     else if (number == 2) {
       this.actualNumber = number;
+
       let options: NativeGeocoderOptions = {
         useLocale: true,
-          maxResults: 5
+        maxResults: 2
       };
 
       this.nativeGeocoder.reverseGeocode(position.lat, position.lng, options)
         .then(async (result: NativeGeocoderResult[]) => {
           const { administrativeArea } = result[0];
           if (this.actualState != administrativeArea.replace('State of ', '')) {
+            this.map.clear();
             this.actualState = administrativeArea.replace('State of ', '');
             const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
 
-            if (data == null || now > data.date){
+            if (!data || now > data.date){
+              this.loadScreen = true;
               this.getPerState(administrativeArea);
             } else
               this.drawCircles(data.cleanData, 'perState');
-          } else {
-            return 0;
           }
         })
         .catch((error: any) => console.log(error));
     }
-    else if (number == 3 && number != this.actualNumber) { 
+    else if (number == 3 && number != this.actualNumber) {
+      this.map.clear();
       this.actualNumber = number;
+      this.actualState = '';
       this.getAllDenuncias();
     }
   
   }
 
   getAllStates() {
-    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
-      }).then(data => {
-        const now = new Date();
-        const { cleanData } = JSON.parse(data.data);
-          this.storage.set('allStates', { 
+      }).then(async data => {
+          const now = new Date();
+          const { cleanData } = JSON.parse(data.data);
+          await this.storage.set('allStates', { 
             cleanData,
             date: now.setHours(now.getHours() + 2) });
-          this.loadScreen = false;
           this.drawCircles(cleanData, 'allStates');
         });
       });
   }
 
   getPerState(state) {
-    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
-      }).then(data => {
-        const now = new Date();
-        const { cleanData } = JSON.parse(data.data);
-          this.storage.set(`${state.replace('State of ', '')}`, { 
+      }).then(async data => {
+          const now = new Date();
+          const { cleanData } = JSON.parse(data.data);
+          now.setHours(now.getHours() + 2)
+          await this.storage.set(`${state.replace('State of ', '')}`, { 
             cleanData,
-            date: now.setHours(now.getHours() + 2) });
-          this.loadScreen = false;
+            date: now });
           this.drawCircles(cleanData, 'perState');
+        }).catch((err) => {
+          this.global.toast('Estado não encontrado')
         });
       });
   }
 
   getAllDenuncias() {
-    this.loadScreen = true;
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
-        this.loadScreen = false;
         this.drawMarker(denuncias);
       });
     });
   }
 
   drawCircles(array, type) {
-    this.map.clear();
     let radius;
-    this.loadScreen = false;
 
     array.forEach(element => {
       if (element.position){
@@ -317,13 +323,13 @@ export class HomePage {
           fillColor: "rgba(255, 0, 0, 0.1)",
         });
         marker.bindTo("position", circle, "center");
+
       }
     });
+
   }
 
   drawMarker(array) {
-    this.map.clear();
-    
     array.forEach(element => {
       let conf = { color: '', type: '', voted: false };
       switch (element.type) {

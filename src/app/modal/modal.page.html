@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <mat-tab-group mat-align-tabs="center">
+  <mat-tab-group mat-stretch-tabs mat-align-tabs="center">
     <mat-tab label="Noticias"> 
       <ng-template matTabContent>
         <ngx-twitter-timeline 
@@ -45,11 +45,11 @@
           </mat-card>  
           <mat-divider></mat-divider>
         </div>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+          <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ng-template>
-      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
     </mat-tab>
   </mat-tab-group>
 </ion-content>

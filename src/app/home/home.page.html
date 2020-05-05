@@ -29,9 +29,6 @@
     <mat-drawer-content>
       <!-- Mapa e Botões -->
       <ion-content [fullscreen]="true">
-        <div id="overlay" *ngIf="loadScreen">
-          <ion-spinner id="marker"></ion-spinner>
-        </div>
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button id="btnDrawer" mat-flat-button (click)="drawer.toggle()">
@@ -139,5 +136,8 @@
     </div>
   </div>
 </ion-app>
+<div id="overlay" *ngIf="loadScreen">
+  <ion-spinner id="marker"></ion-spinner>
+</div>
 
 <!-- Eu sempre sobre que o bolo é uma mentira -->
