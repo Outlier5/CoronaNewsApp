@@ -87,15 +87,15 @@ mat-list-item p{
 .firstButton{
   position: absolute;
   z-index: 20;
-  bottom: 75px;
-  right: 75px;
+  bottom: 20px;
+  right: 16px;
 }
 
 .secondButton {
   position: absolute;
   z-index: 20;
-  bottom: 150px;
-  right: 75px;
+  bottom: 96px;
+  right: 16px;
 }
 
 .newsButton {
@@ -107,7 +107,13 @@ mat-list-item p{
 .newsButton ion-icon{
   margin-right: 8px;
 }
-
+#formDenuncia{
+  background-color: #fff; 
+  height: 250px;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+}
 
 #overlay {
   text-align: center;
