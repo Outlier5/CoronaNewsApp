@@ -28,7 +28,7 @@
 
     <mat-drawer-content>
       <!-- Mapa e Botões -->
-      <ion-content [fullscreen]="true" (swiperight)="handleSwipeRight()" (swipeleft)="handleSwipeLeft()">
+      <ion-content [fullscreen]="true">
         <div id="overlay" *ngIf="loadScreen">
           <ion-spinner id="marker"></ion-spinner>
         </div>
@@ -48,24 +48,27 @@
             Toque aqui para ativar
           </button>
         </div>
-        
         <div *ngIf="buttonHidden">
           <div class="secondButton">
-            <button mat-fab color="primary" (click)="goToMyLoc()">
-              <mat-icon>my_location</mat-icon>
-            </button>
+            
+              <ion-fab-button color="primary" (click)="goToMyLoc()">
+                <ion-icon name="locate-outline"></ion-icon>
+              </ion-fab-button>
+
           </div>
           <div class="firstButton">
-            <button mat-fab color="primary" (click)="toggleOverlay()">
-              <mat-icon style="font-size: 20px;">add</mat-icon>
-            </button>
+            
+              <ion-fab-button color="primary" (click)="toggleOverlay()">
+                <ion-icon name="alert"></ion-icon>
+              </ion-fab-button>
+            
           </div>
         <div class="newsButton">
-          <button mat-raised-button shape="round" disabled={{newsButton}} color="primary" (click)="openModal()">
-            <mat-icon>public</mat-icon>
+          <ion-button shape="round" disabled={{newsButton}} color="primary" (click)="openModal()">
+            <ion-icon name="globe-outline"></ion-icon>
             Notícias
-              <ion-spinner *ngIf="newsButton"></ion-spinner>
-          </button>
+            <ion-spinner *ngIf="newsButton"></ion-spinner>
+          </ion-button>
         </div>
       </div>
       <div *ngIf="denunciaHidden" id=marker>
@@ -106,49 +109,34 @@
     </mat-drawer-content>
   </mat-drawer-container>
   <div id="overlay" *ngIf="overlayHidden" (click)="toggleOverlay()">
-    
-  </div>
-  <div id="itens" *ngIf="overlayHidden">
-    <h1 style="color: white;">Denunciar</h1>
-
-    <mat-grid-list cols="2" rowHeight="100px">
-      <mat-grid-tile>
-        <ion-grid>
-          <ion-row>
-            <button mat-fab class="overlayButton" color="primary" (click)="denunciaInsert({ title: 'Aglomerações', type: 'aglomeracoes' })">
-              <mat-icon>star</mat-icon>
-            </button>
-          </ion-row>
-          <ion-row style="color: white;">
-            Aglomerações
-          </ion-row>
-        </ion-grid>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <ion-grid>
-          <ion-row>
-            <button mat-fab class="overlayButton" color="accent" (click)="denunciaInsert({ title: 'Situações de Risco', type: 'risco' })">
-              <mat-icon>star</mat-icon>
-            </button>
-          </ion-row>
-          <ion-row style="color: white;">
-            Situações de Risco
-          </ion-row>
-        </ion-grid>
-      </mat-grid-tile>
-      <mat-grid-tile [colspan]="2" [rowspan]="2">
-        <ion-grid>
-          <ion-row>
-            <button mat-fab class="overlayButton" color="warn" (click)="denunciaInsert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
-              <mat-icon>star</mat-icon>
-            </button>
-          </ion-row>
-          <ion-row style="color: white;">
-            Areas com incidentes recentes
-          </ion-row>
-        </ion-grid>
-      </mat-grid-tile>
-    </mat-grid-list>
+    <h1>Denunciar</h1>
+  
+  <div *ngIf="overlayHidden">
+    <ion-grid id="itens">
+      <ion-row>
+        <div>
+          <ion-fab-button color="primary" (click)="denunciaInsert({ title: 'Aglomerações', type: 'aglomeracoes' })">
+            <ion-icon name="people"></ion-icon>
+          </ion-fab-button>
+          <p>Aglomerações</p>
+        </div>
+        <div>
+          <ion-fab-button color="tertiary" (click)="denunciaInsert({ title: 'Situações de Risco', type: 'risco' })">
+            <ion-icon name="nuclear"></ion-icon>
+          </ion-fab-button>
+          <p>Situações de risco</p>
+        </div>
+      </ion-row>
+      <ion-row>
+        <div>
+          <ion-fab-button color="danger" (click)="denunciaInsert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
+            <ion-icon name="sad"></ion-icon>
+          </ion-fab-button>
+          <p>Areas com incidentes recentes</p>
+        </div>        
+      </ion-row>
+    </ion-grid>
+    </div>
   </div>
 </ion-app>
 
