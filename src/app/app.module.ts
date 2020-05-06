@@ -10,6 +10,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AndroidFullScreen } from '@ionic-native/android-full-screen/ngx';
 
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -43,7 +44,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     GoogleMaps,
     HTTP,
     Geolocation,
@@ -55,7 +55,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FileTransfer,
     FileTransferObject,
     LocationAccuracy,
-    GlobalService
+    GlobalService,
+    AndroidFullScreen,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AndroidFullScreen } from '@ionic-native/android-full-screen/ngx';
 import { Storage } from '@ionic/storage';
 
 import { HomePage } from './home/home.page';
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit{
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private androidFullScreen: AndroidFullScreen
   ) {
     this.initializeApp();
   }
@@ -30,11 +32,12 @@ export class AppComponent implements OnInit{
         document.addEventListener('backbutton', function (event) {
           event.preventDefault();
           event.stopPropagation();
-          console.log('hello');
         }, false);
       });
       this.rootPage = HomePage;
+      this.androidFullScreen.showUnderSystemUI();
       this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString("#00000000");
       this.splashScreen.hide();
     });
   }

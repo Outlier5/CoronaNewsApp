@@ -25,7 +25,7 @@
   text-decoration: none;
 }
 
-ion-content ion-toolbar {
+ion-content {
   --background: translucent;
 }
 .example-container {
@@ -74,6 +74,7 @@ mat-list-item p{
 
 #btnDrawer{
   background-color: transparent;
+  margin-top: 20px;
   padding: 12px;
 }
 

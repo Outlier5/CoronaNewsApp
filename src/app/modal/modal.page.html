@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <mat-tab-group mat-stretch-tabs mat-align-tabs="center">
+  <mat-tab-group mat-stretch-tabs mat-align-tabs="center" (focusChange)="loadTab()">
     <mat-tab label="Noticias"> 
       <ng-template matTabContent>
         <ngx-twitter-timeline 
@@ -24,8 +24,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button (click)="select()">Aceitar <ion-spinner *ngIf="loading"></ion-spinner></button>
-
+        <button mat-raised-button (click)="select()">Procurar<ion-spinner *ngIf="loading"></ion-spinner></button>
         <div role="listitem" *ngFor="let boletim of data">
           <mat-card class="card" (click)="openBrowser( boletim.url )">
             <mat-card-title>
