@@ -34,8 +34,10 @@
       <ion-button type="submit" disabled={{loading}}>Entrar</ion-button><br>
       <ion-spinner *ngIf="loading"></ion-spinner>
     </form>
-    <span style="color: lightblue;" [routerLink]="['/forgot']">
-      Esqueceu sua senha?
+    <span>
+      <a style="color: lightblue;" [routerLink]="['/forgot']">
+        Esqueceu sua senha?
+      </a>
     </span>
   </div>
 </ion-content>
