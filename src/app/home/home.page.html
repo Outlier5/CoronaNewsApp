@@ -7,7 +7,7 @@
         <img src="{{ global.avatar }}" >
         <div id="userInfo">
           <p> {{ global.userGlobal.name }} </p>
-          <p><b>Level: {{ global.userGlobal.level }}</b></p>
+          <p><b>Level: Em breve.</b></p>
         </div>
       </div>
       <mat-list id="listaDrawer">
@@ -108,7 +108,8 @@
   <div id="overlay" *ngIf="overlayHidden" (click)="toggleOverlay()">
     <h1>Denunciar</h1>
   
-  <div *ngIf="overlayHidden">
+  <div *ngIf="overlayHidden" id="fundoOverlay">
+  </div>
     <ion-grid id="itens">
       <ion-row>
         <div>
@@ -134,6 +135,6 @@
       </ion-row>
     </ion-grid>
     </div>
-  </div>
+  
 </ion-app>
 <!-- Eu sempre sobre que o bolo é uma mentira -->
