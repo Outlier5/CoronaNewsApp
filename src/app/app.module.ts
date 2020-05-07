@@ -29,8 +29,8 @@ import { GlobalService } from './global.service';
 import { IonicGestureConfig } from './ionicGestureConfig.module';
 import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 
-import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 
 @NgModule({
   declarations: [AppComponent],

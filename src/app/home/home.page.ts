@@ -93,13 +93,8 @@ export class HomePage {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
           () => {
             this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-            this.platform.ready().then(async () => {
+            this.platform.ready().then(() => {
               this.mapHidden = false; this.buttonHidden = true;
-              const loading = await this.loadingController.create({
-                message: 'Por favor, aguarde...',
-                duration: 3000
-              });
-              await loading.present();
               this.loadMap();
             });
           },
@@ -135,7 +130,11 @@ export class HomePage {
       
   }
 
-  loadMap() {
+  async loadMap() {
+    const loading = await this.loadingController.create({
+      message: 'Por favor, aguarde...',
+    });
+    await loading.present();
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc',
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc'
@@ -163,7 +162,7 @@ export class HomePage {
       };
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
-
+      loading.dismiss();
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
@@ -249,7 +248,6 @@ export class HomePage {
   async getAllStates() {
     const loading = await this.loadingController.create({
       message: 'Carregando Pontos no mapa...',
-      duration: 2000
     });
     await loading.present();
     this.storage.get('token').then(value => {
@@ -262,6 +260,7 @@ export class HomePage {
             cleanData,
             date: now.setHours(now.getHours() + 2) });
           this.drawCircles(cleanData, 'allStates');
+          loading.dismiss();
         });
       });
   }
@@ -269,7 +268,6 @@ export class HomePage {
   async getPerState(state) {
     const loading = await this.loadingController.create({
       message: 'Carregando Pontos no mapa...',
-      duration: 2000
     });
     await loading.present();
     this.storage.get('token').then(value => {
@@ -283,19 +281,25 @@ export class HomePage {
             cleanData,
             date: now });
           this.drawCircles(cleanData, 'perState');
+          loading.dismiss();
         }).catch((err) => {
           this.global.toast('Estado não encontrado')
         });
       });
   }
 
-  getAllDenuncias() {
+  async getAllDenuncias() {
+    const loading = await this.loadingController.create({
+      message: 'Carregando Pontos no mapa...',
+    });
+    await loading.present();
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
         this.drawMarker(denuncias);
+        loading.dismiss();
       });
     });
   }
