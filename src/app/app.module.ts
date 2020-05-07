@@ -19,6 +19,7 @@ import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { AdMobFree } from '@ionic-native/admob-free/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -57,6 +58,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LocationAccuracy,
     GlobalService,
     AndroidFullScreen,
+    AdMobFree,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

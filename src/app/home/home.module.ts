@@ -20,7 +20,7 @@ import { MaterialModule } from '../material.module';
         component: HomePage
       }
     ]),
-    MaterialModule
+    MaterialModule,
   ],
   declarations: [HomePage]
 })
