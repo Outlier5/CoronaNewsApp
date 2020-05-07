@@ -30,11 +30,11 @@ export class AppComponent implements OnInit{
         document.addEventListener('backbutton', function (event) {
           event.preventDefault();
           event.stopPropagation();
-          console.log('hello');
         }, false);
       });
       this.rootPage = HomePage;
       this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString("#00000000");
       this.splashScreen.hide();
     });
   }

@@ -9,7 +9,7 @@ import {
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
 import { Component } from '@angular/core';
-import { Platform, MenuController, ModalController } from '@ionic/angular';
+import { Platform, MenuController, ModalController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
@@ -42,7 +42,6 @@ export class HomePage {
   public denunciaHidden: boolean = false;
   public mapHidden: boolean = false;
   public loading: boolean = false;
-  public loadScreen: boolean = false;
 
   map: GoogleMap;
   actualNumber: number;
@@ -55,6 +54,7 @@ export class HomePage {
     public storage: Storage,
     public menuCtrl: MenuController,
     public modalController: ModalController,
+    public loadingController: LoadingController,
     public  formBuilder: FormBuilder,
     private locationAccuracy: LocationAccuracy,
     private router: Router,
@@ -80,13 +80,17 @@ export class HomePage {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
           () => {
             this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-            this.platform.ready().then(() => {
+            this.platform.ready().then(async () => {
               this.mapHidden = false; this.buttonHidden = true;
-              this.loadScreen = true;
+              const loading = await this.loadingController.create({
+                message: 'Por favor, aguarde...',
+                duration: 3000
+              });
+              await loading.present();
               this.loadMap();
             });
           },
-          error => { this.mapHidden = true; this.loadScreen = false; this.buttonHidden = false;}
+          error => { this.mapHidden = true; this.buttonHidden = false;}
         );
       } else {
         this.loadMap();
@@ -99,8 +103,8 @@ export class HomePage {
     this.newsButton = true;
     const modal = await this.modalController.create({
       component: ModalPage
-    });
-
+    });    
+    
     return await modal.present().finally(() => {
       this.newsButton = false;
     });
@@ -146,7 +150,7 @@ export class HomePage {
       };
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
-      this.loadScreen = false;
+
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
@@ -183,10 +187,10 @@ export class HomePage {
 
   async insertControll(number, position) {
     const now = new Date();
-    console.log(number)
+
     if (number == 1 && number != this.actualNumber) {
-      this.actualState = '';
       this.map.clear();
+      this.actualState = '';
       this.actualNumber = number;
 
       const data = await this.storage.get('allStates').then(val => val);
@@ -212,7 +216,6 @@ export class HomePage {
             const data = await this.storage.get(`${administrativeArea.replace('State of ', '')}`).then(val => val);
 
             if (!data || now > data.date){
-              this.loadScreen = true;
               this.getPerState(administrativeArea);
             } else
               this.drawCircles(data.cleanData, 'perState');
@@ -229,7 +232,12 @@ export class HomePage {
   
   }
 
-  getAllStates() {
+  async getAllStates() {
+    const loading = await this.loadingController.create({
+      message: 'Carregando Pontos no mapa...',
+      duration: 2000
+    });
+    await loading.present();
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
@@ -244,7 +252,12 @@ export class HomePage {
       });
   }
 
-  getPerState(state) {
+  async getPerState(state) {
+    const loading = await this.loadingController.create({
+      message: 'Carregando Pontos no mapa...',
+      duration: 2000
+    });
+    await loading.present();
     this.storage.get('token').then(value => {
       this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
@@ -334,16 +347,15 @@ export class HomePage {
       let conf = { color: '', type: '', voted: false };
       switch (element.type) {
         case 'aglomeracoes':
-          conf['color'] = 'red';
+          conf['color'] = '#2dd36f';
           conf['type'] = 'Aglomerações';
           break;
         case 'risco':
-          conf['color'] = 'yellow';
+          conf['color'] = '#5260ff';
           conf['type'] = 'Situações de Risco';
-
           break;
         case 'incidenteRecente':
-          conf['color'] = 'green';
+          conf['color'] = '#eb445a';
           conf['type'] = 'Areas com incidentes recentes';
         default:
           break;
@@ -489,16 +501,15 @@ export class HomePage {
         let conf = { color: '', type: '' };
         switch (denuncia.type) {
           case 'aglomeracoes':
-            conf['color'] = 'red';
+            conf['color'] = '#2dd36f';
             conf['type'] = 'Aglomerações';
             break;
           case 'risco':
-            conf['color'] = 'yellow';
+            conf['color'] = '#5260ff';
             conf['type'] = 'Situações de Risco';
-  
             break;
           case 'incidenteRecente':
-            conf['color'] = 'green';
+            conf['color'] = '#eb445a';
             conf['type'] = 'Areas com incidentes recentes';
           default:
             break;
@@ -550,7 +561,7 @@ export class HomePage {
 
   logout() {
     this.storage.clear();
-    alert('logout');
+    this.global.toast('Sessão encerrada');
     this.router.navigate(['/login']);
   }
 

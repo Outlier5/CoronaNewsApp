@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
-
-import { MatTabChangeEvent } from '@angular/material/tabs';
 
 import { GlobalService } from '../global.service';
 
@@ -57,13 +55,20 @@ export class ModalPage implements OnInit {
   constructor(
     public storage: Storage,
     public modalController: ModalController,
+    public loadingController: LoadingController,
     public global: GlobalService,
     private iab: InAppBrowser,
     private browserTab: BrowserTab,
     private http: HTTP,
   ) {
   }
-  ngOnInit() {
+
+  async ngOnInit() {
+    const loading = await this.loadingController.create({
+      message: 'Por favor, aguarde...',
+      duration: 3000
+    });
+    await loading.present();
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }
 
@@ -98,15 +103,20 @@ export class ModalPage implements OnInit {
 
           this.pageNumber ++;
           this.loading = false;
+        }).catch((err) => {
+          const { error } = JSON.parse(err.error);
+          event.target.complete();
+          this.global.toast(error);
         });
       });
-    } catch (error) {
-      this.global.toast(error);
+    } catch (err) {
+      console.log(err);
     }
   }
 
   doInfinite(event) {
     this.getBoletins('*', 'date', this.pageNumber, { event, first: true });
+
   }
   openBrowser(url) {
     this.browserTab.isAvailable()
@@ -122,4 +132,11 @@ export class ModalPage implements OnInit {
     this.modalController.dismiss();
   }
 
+  async loadTab() {
+    const loading = await this.loadingController.create({
+      message: 'Por favor, aguarde...',
+      duration: 2000
+    });
+    await loading.present();
+  }
 }

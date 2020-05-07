@@ -25,7 +25,7 @@
   text-decoration: none;
 }
 
-ion-content ion-toolbar {
+ion-content {
   --background: translucent;
 }
 .example-container {
@@ -74,6 +74,7 @@ mat-list-item p{
 
 #btnDrawer{
   background-color: transparent;
+  margin-top: 20px;
   padding: 12px;
 }
 
@@ -122,7 +123,7 @@ mat-list-item p{
   height: 100%;
   background: rgba(49, 126, 73, 0.7);
   position: absolute;
-  z-index: 21;  
+  z-index: 30;  
 }
 ion-row div{
   margin: 0 auto;
@@ -175,4 +176,21 @@ ion-row div{
   left: 45%;
   width: 10%;
   z-index: 21;
+}
+
+.mapMss {
+   /*Centralizar verticalmente*/
+   margin: 0;
+   position: relative;
+   top: 10em;
+   -ms-transform: translateY(-50%);
+   transform: translateY(-50%);
+ 
+   width: 100%;
+   height: 80%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   flex-direction: column;
 }
