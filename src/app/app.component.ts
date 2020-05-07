@@ -26,12 +26,6 @@ export class AppComponent implements OnInit{
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.platform.backButton.subscribeWithPriority(9999, () => {
-        document.addEventListener('backbutton', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }, false);
-      });
       this.rootPage = HomePage;
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString("#00000000");

@@ -23,6 +23,7 @@ export class OptionsPage implements OnInit {
 
   public acceptButton: boolean = false;
   public loading: boolean = false;
+  public isSubmitted = false;
 
   constructor(
     public global: GlobalService,
@@ -36,7 +37,7 @@ export class OptionsPage implements OnInit {
   ) { 
     this.optionsForm = formBuilder.group({
       name: [''],
-      email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      email: ['', [Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
       password: [''],
     });
   }
@@ -93,24 +94,31 @@ export class OptionsPage implements OnInit {
   }
 
   submit(){
-    this.storage.get('token').then(value => {
-      this.http.put('https://coronago.herokuapp.com/options/updateProfile', this.optionsForm.value, {
-      'Authorization': `Bearrer ${value}`
-      })
-        .then(data => {
-          const { name, email } = this.optionsForm.value;
-          this.global.userGlobal.name = name == '' ? this.global.userGlobal.name : name;
-          this.global.userGlobal.email = email == '' ? this.global.userGlobal.email : email;
+    this.isSubmitted = true;
 
-          const { token, user, message } = JSON.parse(data.data);
-          this.storage.set('token', token);
-          this.storage.set('user', user);
-          alert(message);
-        }).catch(error => {
-          alert(error)
-          console.log(error)
-        });
-    });
+    if (!this.optionsForm.valid) {
+      this.global.toast('Por favor insira todos valores requeridos');
+      return false;
+    } else {
+      this.storage.get('token').then(value => {
+        this.http.put('https://coronago.herokuapp.com/options/updateProfile', this.optionsForm.value, {
+        'Authorization': `Bearrer ${value}`
+        })
+          .then(data => {
+            const { name, email } = this.optionsForm.value;
+            this.global.userGlobal.name = name == '' ? this.global.userGlobal.name : name;
+            this.global.userGlobal.email = email == '' ? this.global.userGlobal.email : email;
+
+            const { token, user, message } = JSON.parse(data.data);
+            this.storage.set('token', token);
+            this.storage.set('user', user);
+            this.global.toast(message);
+          }).catch(err => {
+            const { error } = JSON.parse(err.error);
+            this.global.toast(error);
+          });
+      });
+    }
   }
 
   back() {

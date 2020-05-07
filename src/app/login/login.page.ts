@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
@@ -23,8 +23,8 @@ export class LoginPage implements OnInit {
     public global: GlobalService,
     public formBuilder: FormBuilder,
     public storage: Storage,
+    private navCtrl: NavController,
     private http: HTTP,
-    private router: Router
     ) {
       this.loginForm = formBuilder.group({
         email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
             const { user } = JSON.parse(data.data); 
             this.global.userGlobal = user;
             this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
-            this.router.navigate(['/home']);
+            this.navCtrl.navigateRoot('/home');
           })
       }
     });
@@ -60,7 +60,8 @@ export class LoginPage implements OnInit {
         this.storage.get('user').then(val => {
           this.global.userGlobal = val;
           this.global.avatar = `data:image/webp;base64,${Buffer.from(val.avatar).toString('base64')}`;
-          this.router.navigate(['/home']);
+
+          this.navCtrl.navigateRoot('/home');
         });
     });
   }
@@ -89,7 +90,7 @@ export class LoginPage implements OnInit {
 
           this.global.toast(message);
           this.loading = false;
-          this.router.navigate(['/home'])
+          this.navCtrl.navigateRoot('/home');
         }).catch(err => {
           const { error } = JSON.parse(err.error)
           this.loading = false;

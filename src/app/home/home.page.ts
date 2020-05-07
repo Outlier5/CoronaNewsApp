@@ -79,8 +79,7 @@ export class HomePage {
      this.admobFree.banner.config(bannerConfig);
      
      this.admobFree.banner.prepare();
-    await this.ativeMap();
-    
+    await this.ativeMap();  
   }
 
   openAd() {

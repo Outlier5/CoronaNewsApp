@@ -1,18 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-//custom
-import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import * as Hammer from 'hammerjs';
-
-export class CustomHammerConfig extends HammerGestureConfig {
-  overrides = {
-    'swipe': {
-      direction: Hammer.DIRECTION_ALL
-    }
-  }
-}
-
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
@@ -36,9 +24,7 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
-  providers: [
-    { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
-  ],
+  providers: [],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

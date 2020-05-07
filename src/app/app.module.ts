@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import { RouteReuseStrategy } from '@angular/router'
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
@@ -26,6 +26,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { ModalPageModule } from './modal/modal.module';
 import { GlobalService } from './global.service';
+import { IonicGestureConfig } from './ionicGestureConfig.module';
+import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 
 import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -59,7 +61,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     GlobalService,
     AndroidFullScreen,
     AdMobFree,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: IonicGestureConfig
+    },
   ],
   bootstrap: [AppComponent]
 })

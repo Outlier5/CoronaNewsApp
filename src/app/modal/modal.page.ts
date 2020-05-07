@@ -71,7 +71,7 @@ export class ModalPage implements OnInit {
     await loading.present();
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }
-
+  
   select() {
     this.loading = true;
     this.pageNumber = 1;
