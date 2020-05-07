@@ -184,6 +184,7 @@ export class HomePage {
   }
 
   goToMyLoc() {
+    this.actualNumber = 0;
     this.actualState = '';
     this.map.clear();
 
@@ -334,10 +335,10 @@ export class HomePage {
         });
         switch (type) {
           case 'perState':
-            radius = (element.confirmed * 10) > 10000 ? 10000 : (element.confirmed * 10);
+            radius = (element.confirmed * 5) > 10000 ? 10000 : (element.confirmed * 5);
             break;
           case 'allStates':
-            radius = element.confirmed * 20;
+            radius = element.confirmed * 10;
             break;
           default:
             break;
