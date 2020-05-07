@@ -20,6 +20,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
@@ -55,7 +56,8 @@ export class HomePage {
     public menuCtrl: MenuController,
     public modalController: ModalController,
     public loadingController: LoadingController,
-    public  formBuilder: FormBuilder,
+    public formBuilder: FormBuilder,
+    private admobFree: AdMobFree,
     private locationAccuracy: LocationAccuracy,
     private router: Router,
     private platform: Platform,
@@ -70,8 +72,20 @@ export class HomePage {
     }
   
   async ngOnInit() {
+    const bannerConfig: AdMobFreeBannerConfig = {
+      size: 'BANNER',
+      autoShow: true
+     };
+     this.admobFree.banner.config(bannerConfig);
+     
+     this.admobFree.banner.prepare();
     await this.ativeMap();
     
+  }
+
+  openAd() {
+    this.admobFree.interstitial.prepare()
+    this.admobFree.interstitial.show()
   }
 
   ativeMap() {
