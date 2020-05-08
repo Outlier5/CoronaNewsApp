@@ -11,12 +11,13 @@ ion-content{
   width: 250px;
   height: 175px;
   z-index: 1;
+  display: none;
 }
 #container{
   /*Centralizar verticalmente*/
   margin: 0;
   position: relative;
-  top: 9em;
+  top: 12em;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 
