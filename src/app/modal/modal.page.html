@@ -9,7 +9,7 @@
       <ng-template matTabContent>
         <ngx-twitter-timeline 
           [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
-          [opts]="{ tweetLimit: 20 }">
+          [opts]="{ tweetLimit: 20, chrome: ['noheader', 'noscrollbar'] }">
         </ngx-twitter-timeline>
       </ng-template>
     </mat-tab>

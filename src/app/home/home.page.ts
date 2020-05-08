@@ -9,8 +9,7 @@ import {
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
 import { Component } from '@angular/core';
-import { Platform, MenuController, ModalController, LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Platform, MenuController, ModalController, LoadingController, NavController } from '@ionic/angular';
 import { FormBuilder } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
@@ -59,7 +58,7 @@ export class HomePage {
     public formBuilder: FormBuilder,
     private admobFree: AdMobFree,
     private locationAccuracy: LocationAccuracy,
-    private router: Router,
+    private navCtrl: NavController,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
@@ -135,6 +134,7 @@ export class HomePage {
       message: 'Por favor, aguarde...',
     });
     await loading.present();
+
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc',
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc'
@@ -261,6 +261,9 @@ export class HomePage {
             date: now.setHours(now.getHours() + 2) });
           this.drawCircles(cleanData, 'allStates');
           loading.dismiss();
+        }).catch((err) => {
+          loading.dismiss();
+          this.global.toast('Erro em encontrar os pontos, verifique a sua conexão')
         });
       });
   }
@@ -300,6 +303,9 @@ export class HomePage {
         const { denuncias } = JSON.parse(data.data);
         this.drawMarker(denuncias);
         loading.dismiss();
+      }).catch((err) => {
+        loading.dismiss();
+        this.global.toast('Erro em encontrar as denúncias, verifique a sua conexão')
       });
     });
   }
@@ -469,7 +475,7 @@ export class HomePage {
       }
     });
     this.geolocation.getCurrentPosition().then((resp) => {
-      const { latitude, longitude } =resp.coords;
+      const { latitude, longitude } = resp.coords;
       this.map.animateCamera({
         target: {
           lat: latitude,
@@ -481,7 +487,6 @@ export class HomePage {
     });
     this.overlayHidden = false;
     this.denunciaHidden = true;
-    
   }
 
   cancelDenuncia(){
@@ -498,10 +503,6 @@ export class HomePage {
     this.loading = true;
     const { title, description } = this.denunciaForm.value;
     const { lat, lng } = await this.map.getCameraPosition().target;
-
-    console.log(this.map.getCameraPosition().target)
-    console.log(lat)
-    console.log(lng)
 
     this.storage.get('token').then(value => {
       this.http.post('https://coronago.herokuapp.com/denuncias/register', {
@@ -571,7 +572,8 @@ export class HomePage {
         });
         this.cancelDenuncia();
       }).catch(err => {
-        console.log(err);
+        const { error } = JSON.parse(err.error);
+        this.global.toast(error);
         this.loading = false;
       })
     });
@@ -580,7 +582,7 @@ export class HomePage {
   logout() {
     this.storage.clear();
     this.global.toast('Sessão encerrada');
-    this.router.navigate(['/login']);
+    this.navCtrl.navigateRoot('/login');
   }
 
 }
