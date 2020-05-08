@@ -1,11 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="back()">Voltar</ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-align-items-center" disable-scroll>
-  <ion-img id="banner" src="../../assets/banner.jpg"><div></div></ion-img>
   <div id="container">
-    <div id="logo">
-      <ion-img  src="../../assets/logo.png"></ion-img>
-    </div>
-    <form [formGroup]="loginForm" (submit)="login()" novalidate>
+    <form [formGroup]="registerForm" (submit)="register()" novalidate>
       <ion-list>
+        <ion-item>
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input formControlName="name" placeholder="Insira aqui seu nome" type="text" required></ion-input>
+        </ion-item>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+          Um nome é necessário.
+        </span>
         <ion-item>
           <ion-label position="stacked">Email</ion-label>
           <ion-input formControlName="email" type="email" placeholder="usuário@exemplo.com" required></ion-input>
@@ -24,14 +36,8 @@
           Uma senha é necessária.
         </span>
       </ion-list>
-      <ion-button type="submit" disabled={{loading}}>Entrar</ion-button><br>
+      <ion-button type="submit" disabled={{loading}}>Registrar</ion-button><br>
       <ion-spinner *ngIf="loading"></ion-spinner>
-      <ion-button [routerLink]="['/register']" disabled={{loading}}>Criar uma Conta</ion-button><br>
     </form>
-    <span style="margin: 15px;">
-      <a [routerLink]="['/forgot']">
-        Esqueceu sua senha?
-      </a>
-    </span>
   </div>
 </ion-content>

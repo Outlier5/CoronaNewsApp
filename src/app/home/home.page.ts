@@ -9,8 +9,7 @@ import {
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
 import { Component } from '@angular/core';
-import { Platform, MenuController, ModalController, LoadingController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Platform, MenuController, ModalController, LoadingController, NavController } from '@ionic/angular';
 import { FormBuilder } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
@@ -59,7 +58,7 @@ export class HomePage {
     public formBuilder: FormBuilder,
     private admobFree: AdMobFree,
     private locationAccuracy: LocationAccuracy,
-    private router: Router,
+    private navCtrl: NavController,
     private platform: Platform,
     private http: HTTP,
     private geolocation: Geolocation,
@@ -79,8 +78,7 @@ export class HomePage {
      this.admobFree.banner.config(bannerConfig);
      
      this.admobFree.banner.prepare();
-    await this.ativeMap();
-    
+    await this.ativeMap();  
   }
 
   openAd() {
@@ -94,13 +92,8 @@ export class HomePage {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
           () => {
             this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-            this.platform.ready().then(async () => {
+            this.platform.ready().then(() => {
               this.mapHidden = false; this.buttonHidden = true;
-              const loading = await this.loadingController.create({
-                message: 'Por favor, aguarde...',
-                duration: 3000
-              });
-              await loading.present();
               this.loadMap();
             });
           },
@@ -136,7 +129,12 @@ export class HomePage {
       
   }
 
-  loadMap() {
+  async loadMap() {
+    const loading = await this.loadingController.create({
+      message: 'Por favor, aguarde...',
+    });
+    await loading.present();
+
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc',
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc'
@@ -164,7 +162,7 @@ export class HomePage {
       };
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
-
+      loading.dismiss();
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
@@ -184,6 +182,7 @@ export class HomePage {
   }
 
   goToMyLoc() {
+    this.actualNumber = 0;
     this.actualState = '';
     this.map.clear();
 
@@ -249,7 +248,6 @@ export class HomePage {
   async getAllStates() {
     const loading = await this.loadingController.create({
       message: 'Carregando Pontos no mapa...',
-      duration: 2000
     });
     await loading.present();
     this.storage.get('token').then(value => {
@@ -262,6 +260,10 @@ export class HomePage {
             cleanData,
             date: now.setHours(now.getHours() + 2) });
           this.drawCircles(cleanData, 'allStates');
+          loading.dismiss();
+        }).catch((err) => {
+          loading.dismiss();
+          this.global.toast('Erro em encontrar os pontos, verifique a sua conexão')
         });
       });
   }
@@ -269,7 +271,6 @@ export class HomePage {
   async getPerState(state) {
     const loading = await this.loadingController.create({
       message: 'Carregando Pontos no mapa...',
-      duration: 2000
     });
     await loading.present();
     this.storage.get('token').then(value => {
@@ -283,19 +284,28 @@ export class HomePage {
             cleanData,
             date: now });
           this.drawCircles(cleanData, 'perState');
+          loading.dismiss();
         }).catch((err) => {
           this.global.toast('Estado não encontrado')
         });
       });
   }
 
-  getAllDenuncias() {
+  async getAllDenuncias() {
+    const loading = await this.loadingController.create({
+      message: 'Carregando Pontos no mapa...',
+    });
+    await loading.present();
     this.storage.get('token').then(value => {
       this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
         this.drawMarker(denuncias);
+        loading.dismiss();
+      }).catch((err) => {
+        loading.dismiss();
+        this.global.toast('Erro em encontrar as denúncias, verifique a sua conexão')
       });
     });
   }
@@ -334,10 +344,10 @@ export class HomePage {
         });
         switch (type) {
           case 'perState':
-            radius = (element.confirmed * 10) > 10000 ? 10000 : (element.confirmed * 10);
+            radius = (element.confirmed * 5) > 10000 ? 10000 : (element.confirmed * 5);
             break;
           case 'allStates':
-            radius = element.confirmed * 20;
+            radius = element.confirmed * 10;
             break;
           default:
             break;
@@ -465,7 +475,7 @@ export class HomePage {
       }
     });
     this.geolocation.getCurrentPosition().then((resp) => {
-      const { latitude, longitude } =resp.coords;
+      const { latitude, longitude } = resp.coords;
       this.map.animateCamera({
         target: {
           lat: latitude,
@@ -477,7 +487,6 @@ export class HomePage {
     });
     this.overlayHidden = false;
     this.denunciaHidden = true;
-    
   }
 
   cancelDenuncia(){
@@ -494,10 +503,6 @@ export class HomePage {
     this.loading = true;
     const { title, description } = this.denunciaForm.value;
     const { lat, lng } = await this.map.getCameraPosition().target;
-
-    console.log(this.map.getCameraPosition().target)
-    console.log(lat)
-    console.log(lng)
 
     this.storage.get('token').then(value => {
       this.http.post('https://coronago.herokuapp.com/denuncias/register', {
@@ -567,7 +572,8 @@ export class HomePage {
         });
         this.cancelDenuncia();
       }).catch(err => {
-        console.log(err);
+        const { error } = JSON.parse(err.error);
+        this.global.toast(error);
         this.loading = false;
       })
     });
@@ -576,7 +582,7 @@ export class HomePage {
   logout() {
     this.storage.clear();
     this.global.toast('Sessão encerrada');
-    this.router.navigate(['/login']);
+    this.navCtrl.navigateRoot('/login');
   }
 
 }

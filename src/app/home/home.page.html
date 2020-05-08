@@ -1,33 +1,35 @@
 
 <ion-app>
-  <mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer-container (swipeleft)="drawer.close()" class="example-container" [hasBackdrop]="true">
     <!-- Side Menu -->
     <mat-drawer #drawer>
-      <div id="drawerHeader">
-        <img src="{{ global.avatar }}" >
-        <div id="userInfo">
-          <p> {{ global.userGlobal.name }} </p>
-          <p><b>Level: Em breve.</b></p>
+      <div (swipeleft)="drawer.close()">
+        <div id="drawerHeader">
+          <img src="{{ global.avatar }}" >
+          <div id="userInfo">
+            <p> {{ global.userGlobal.name }} </p>
+            <p><b>Level: {{ global.userGlobal.level }}</b></p>
+          </div>
         </div>
+        <mat-list id="listaDrawer">
+          <mat-list-item routerLinkActive [routerLink]="['/home']">
+            <mat-icon>map</mat-icon>
+            <p>Mapa</p>
+          </mat-list-item>
+          <mat-list-item [routerLink]="['/options']">
+            <mat-icon>tune</mat-icon>
+            <p>Opções</p>
+          </mat-list-item>
+          <mat-list-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <p>Sair</p>
+          </mat-list-item>
+          <mat-list-item style="margin-top: 90%; background-color: red;" (click)="openAd()">
+            <mat-icon>attach_money</mat-icon>
+            <p>Ajude Os Desenvolvedores</p>
+          </mat-list-item>
+        </mat-list>
       </div>
-      <mat-list id="listaDrawer">
-        <mat-list-item routerLinkActive [routerLink]="['/home']">
-          <mat-icon>map</mat-icon>
-          <p>Mapa</p>
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/options']">
-          <mat-icon>tune</mat-icon>
-          <p>Opções</p>
-        </mat-list-item>
-        <mat-list-item (click)="logout()">
-          <mat-icon>exit_to_app</mat-icon>
-          <p>Sair</p>
-        </mat-list-item>
-        <mat-list-item style="margin-top: 90%; background-color: red;" (click)="openAd()">
-          <mat-icon>attach_money</mat-icon>
-          <p>Ajude Os Desenvolvedores</p>
-        </mat-list-item>
-      </mat-list>
     </mat-drawer>
 
     <mat-drawer-content>
@@ -80,7 +82,7 @@
         </mat-grid-list>
       </div>
       <div *ngIf="denunciaHidden" id="denuncia">
-        <div id="formDenuncia" style="">
+        <div id="formDenuncia" >
           <form [formGroup]="denunciaForm" novalidate>
             <ion-list>
               <ion-item>

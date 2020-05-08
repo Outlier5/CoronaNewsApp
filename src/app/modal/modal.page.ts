@@ -16,6 +16,7 @@ import { GlobalService } from '../global.service';
 })
 export class ModalPage implements OnInit {
 
+  public indexTab: number = 0;
   public selectStateForm: any;
   public loading: boolean = false;
   public states = [
@@ -64,12 +65,11 @@ export class ModalPage implements OnInit {
   }
 
   async ngOnInit() {
-    const loading = await this.loadingController.create({
-      message: 'Por favor, aguarde...',
-      duration: 3000
-    });
-    await loading.present();
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
+  }
+  
+  test() {
+    this.indexTab = 1;
   }
 
   select() {
@@ -78,7 +78,11 @@ export class ModalPage implements OnInit {
     this.getBoletins(this.selected, '*', this.pageNumber, { event: null, first: false });
   }
 
-  getBoletins(state, date, page, { event, first }) {
+  async getBoletins(state, date, page, { event, first }) {
+    const loading = await this.loadingController.create({
+      message: 'Por favor, aguarde...',
+    });
+    await loading.present();
     try {
       this.storage.get('token').then(value => {
         this.http.get(`https://coronago.herokuapp.com/coronaApi/getBoletins/${state}/${date}/${page}`, {}, {
@@ -103,6 +107,7 @@ export class ModalPage implements OnInit {
 
           this.pageNumber ++;
           this.loading = false;
+          loading.dismiss();
         }).catch((err) => {
           const { error } = JSON.parse(err.error);
           event.target.complete();
@@ -116,7 +121,6 @@ export class ModalPage implements OnInit {
 
   doInfinite(event) {
     this.getBoletins('*', 'date', this.pageNumber, { event, first: true });
-
   }
   openBrowser(url) {
     this.browserTab.isAvailable()
@@ -130,13 +134,5 @@ export class ModalPage implements OnInit {
   }
   dismiss() {
     this.modalController.dismiss();
-  }
-
-  async loadTab() {
-    const loading = await this.loadingController.create({
-      message: 'Por favor, aguarde...',
-      duration: 2000
-    });
-    await loading.present();
   }
 }
