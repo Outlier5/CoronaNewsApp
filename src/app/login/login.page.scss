@@ -8,16 +8,15 @@ ion-content{
   object-position: 50% 60%;
 }
 #logo{
-  width: 100px;
-  height: 100px;
+  width: 250px;
+  height: 175px;
   z-index: 1;
-  display: none;
 }
 #container{
   /*Centralizar verticalmente*/
   margin: 0;
   position: relative;
-  top: 10em;
+  top: 9em;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 
