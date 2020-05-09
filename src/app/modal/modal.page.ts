@@ -65,6 +65,11 @@ export class ModalPage implements OnInit {
   }
 
   async ngOnInit() {
+    const loading = await this.loadingController.create({
+      message: 'Por favor, aguarde...',
+      duration: 3000,
+    });
+    await loading.present();
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }
   
@@ -79,10 +84,7 @@ export class ModalPage implements OnInit {
   }
 
   async getBoletins(state, date, page, { event, first }) {
-    const loading = await this.loadingController.create({
-      message: 'Por favor, aguarde...',
-    });
-    await loading.present();
+    
     try {
       this.storage.get('token').then(value => {
         this.http.get(`https://coronago.herokuapp.com/coronaApi/getBoletins/${state}/${date}/${page}`, {}, {
@@ -107,7 +109,6 @@ export class ModalPage implements OnInit {
 
           this.pageNumber ++;
           this.loading = false;
-          loading.dismiss();
         }).catch((err) => {
           const { error } = JSON.parse(err.error);
           event.target.complete();

@@ -25,8 +25,8 @@
         </span>
       </ion-list>
       <ion-button type="submit" disabled={{loading}}>Entrar</ion-button><br>
-      <ion-spinner *ngIf="loading"></ion-spinner>
       <ion-button [routerLink]="['/register']" disabled={{loading}}>Criar uma Conta</ion-button><br>
+      <ion-spinner *ngIf="loading"></ion-spinner>
     </form>
     <span style="margin: 15px;">
       <a [routerLink]="['/forgot']">

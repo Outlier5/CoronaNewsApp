@@ -125,6 +125,22 @@ mat-list-item p{
   position: absolute;
   z-index: 30;  
 }
+#fundoOverlay  {
+  text-align: center;
+  color: #FFF;
+  /*Centralizar verticalmente*/
+  margin: 0;
+  position: absolute;
+  top: 40%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  z-index: 31;  
+}
 ion-row div{
   margin: 0 auto;
   display: flex;

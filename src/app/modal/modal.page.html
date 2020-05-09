@@ -1,8 +1,6 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-button id="closeButton" (click)="dismiss()">Fechar</ion-button>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar>
+  
+</ion-toolbar>
 <ion-content>
   <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} >
     <mat-tab label="Noticias">
@@ -55,4 +53,9 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
+  <div class="firstButton">   
+    <ion-button shape="round" color="primary" id="closeButton" (click)="dismiss()">
+      Fechar
+    </ion-button>
+  </div>
 </ion-content>

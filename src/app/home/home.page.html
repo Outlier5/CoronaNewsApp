@@ -1,4 +1,3 @@
-
 <ion-app>
   <mat-drawer-container (swipeleft)="drawer.close()" class="example-container" [hasBackdrop]="true">
     <!-- Side Menu -->
@@ -83,7 +82,7 @@
       </div>
       <div *ngIf="denunciaHidden" id="denuncia">
         <div id="formDenuncia" >
-          <form [formGroup]="denunciaForm" novalidate>
+          <form [formGroup]="denunciaForm" (submit)="confirmDenuncia()" novalidate>
             <ion-list>
               <ion-item>
                 <h3>{{ infoDenuncia.title }}</h3>
@@ -97,13 +96,15 @@
                 <ion-label position="stacked">Descrição</ion-label>
                 <ion-textarea formControlName="description" type="text" maxlength="125"></ion-textarea>
               </ion-item>
-              <button mat-raised-button color="primary" (click)="cancelDenuncia()">
-                Cancelar
-              </button>
-              <button mat-raised-button color="primary" disabled={{loading}} (click)="confirmDenuncia()">
-                Confirmar
-                <ion-spinner *ngIf="loading"></ion-spinner>
-              </button>
+              <ion-item>
+                <ion-button mat-raised-button color="primary" size="default" (click)="cancelDenuncia()">
+                  Cancelar
+                </ion-button>
+                <ion-button style="align-items: flex-end;" size="default" color="primary" disabled={{loading}} type="submit">
+                  Confirmar
+                  <ion-spinner *ngIf="loading"></ion-spinner>
+                </ion-button>
+              </ion-item>
             </ion-list>
           </form>
         </div>
@@ -112,10 +113,10 @@
     </mat-drawer-content>
   </mat-drawer-container>
   <div id="overlay" *ngIf="overlayHidden" (click)="toggleOverlay()">
+  </div>
+  <div *ngIf="overlayHidden" id="fundoOverlay">
     <h1>Denunciar</h1>
   
-  <div *ngIf="overlayHidden" id="fundoOverlay">
-  </div>
     <ion-grid id="itens">
       <ion-row>
         <div>
@@ -140,7 +141,6 @@
         </div>        
       </ion-row>
     </ion-grid>
-    </div>
-  
+  </div>
 </ion-app>
 <!-- Eu sempre sobre que o bolo é uma mentira -->

@@ -70,15 +70,15 @@ export class HomePage {
       });
     }
   
-  async ngOnInit() {
+  async ngOnInit() { 
+    this.ativeMap();  
+
     const bannerConfig: AdMobFreeBannerConfig = {
       size: 'BANNER',
       autoShow: true
-     };
-     this.admobFree.banner.config(bannerConfig);
-     
-     this.admobFree.banner.prepare();
-    await this.ativeMap();  
+    };
+    this.admobFree.banner.config(bannerConfig);
+    this.admobFree.banner.prepare();
   }
 
   openAd() {
@@ -86,23 +86,31 @@ export class HomePage {
     this.admobFree.interstitial.show()
   }
 
-  ativeMap() {
-    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
-      if(canRequest) {
-        this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-          () => {
-            this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-            this.platform.ready().then(() => {
-              this.mapHidden = false; this.buttonHidden = true;
-              this.loadMap();
-            });
-          },
-          error => { this.mapHidden = true; this.buttonHidden = false;}
-        );
-      } else {
+  async ativeMap() {
+    this.storage.get('firstTime').then(async (value) => {
+      if(!value) {
         this.loadMap();
         this.ativeMap();
-      } 
+        this.storage.set('firstTime', true);
+      } else {
+        await this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+          if(canRequest) {
+            this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+              () => {
+                this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+                this.platform.ready().then(() => {
+                  this.mapHidden = false; this.buttonHidden = true;
+                  this.loadMap();
+                });
+              },
+              error => { this.mapHidden = true; this.buttonHidden = false;}
+            );
+          } else {
+            this.loadMap();
+            this.ativeMap();
+          } 
+        });
+      }
     });
   }
 
@@ -130,16 +138,16 @@ export class HomePage {
   }
 
   async loadMap() {
+    /*
     const loading = await this.loadingController.create({
       message: 'Por favor, aguarde...',
     });
-    await loading.present();
+    await loading.present();*/
 
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc',
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc'
     });
-
 
     this.geolocation.getCurrentPosition().then(async (resp) => {
       let mapOptions: GoogleMapOptions = {
@@ -149,7 +157,7 @@ export class HomePage {
              lng: resp.coords.longitude
            },
            zoom: 18,
-           tilt: 30
+           tilt: 0
          },
          controls: {
           'compass': false,
@@ -160,9 +168,10 @@ export class HomePage {
           'mapToolbar': false  
         }
       };
+
+      //loading.dismiss();
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
-      loading.dismiss();
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
         const position = this.map.getCameraPosition().target;
         const zoom = this.map.getCameraZoom(); 
@@ -175,7 +184,7 @@ export class HomePage {
           this.insertControll(3, position);
       });
      }).catch((error) => {
-       console.log('Error getting location', error);
+        console.log(error)
      });
     
     
@@ -503,7 +512,7 @@ export class HomePage {
     this.loading = true;
     const { title, description } = this.denunciaForm.value;
     const { lat, lng } = await this.map.getCameraPosition().target;
-
+    
     this.storage.get('token').then(value => {
       this.http.post('https://coronago.herokuapp.com/denuncias/register', {
         title,
@@ -514,6 +523,7 @@ export class HomePage {
       }, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
+        this.denunciaForm.reset();
         const { denuncia } = JSON.parse(data.data);
         this.loading = false;
 
@@ -574,13 +584,13 @@ export class HomePage {
       }).catch(err => {
         const { error } = JSON.parse(err.error);
         this.global.toast(error);
-        this.loading = false;
       })
     });
   }
 
   logout() {
-    this.storage.clear();
+    this.storage.remove('user');
+    this.storage.remove('token');
     this.global.toast('Sessão encerrada');
     this.navCtrl.navigateRoot('/login');
   }
