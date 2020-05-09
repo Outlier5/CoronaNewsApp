@@ -53,6 +53,8 @@ export class ModalPage implements OnInit {
   public data = [];
   public pageNumber = 1;
 
+  public number = 5;
+
   constructor(
     public storage: Storage,
     public modalController: ModalController,
@@ -74,7 +76,7 @@ export class ModalPage implements OnInit {
   }
   
   test() {
-    this.indexTab = 1;
+    this.indexTab = 0;
   }
 
   select() {
@@ -121,8 +123,13 @@ export class ModalPage implements OnInit {
   }
 
   doInfinite(event) {
-    this.getBoletins('*', 'date', this.pageNumber, { event, first: true });
+    if (this.number > this.data.length)
+      this.getBoletins('*', 'date', this.pageNumber, { event, first: true });
+    else
+      this.number += 5;
+      event.target.complete();
   }
+
   openBrowser(url) {
     this.browserTab.isAvailable()
       .then((isAvailable: boolean) => {
@@ -133,6 +140,7 @@ export class ModalPage implements OnInit {
         }
       });  
   }
+
   dismiss() {
     this.modalController.dismiss();
   }

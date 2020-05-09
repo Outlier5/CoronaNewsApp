@@ -2,12 +2,12 @@
   
 </ion-toolbar>
 <ion-content>
-  <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} >
+  <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}}>
     <mat-tab label="Noticias">
       <ng-template matTabContent>
         <ngx-twitter-timeline 
           [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
-          [opts]="{ tweetLimit: 20, chrome: ['noheader', 'noscrollbar'] }">
+          [opts]="{ tweetLimit: 10 ,chrome: ['noheader', 'noscrollbar', 'nofooter'] }">
         </ngx-twitter-timeline>
       </ng-template>
     </mat-tab>
@@ -23,7 +23,7 @@
           </mat-select>
         </mat-form-field>
         <ion-spinner *ngIf="loading"></ion-spinner>
-        <div role="listitem" *ngFor="let boletim of data">
+        <div role="listitem" *ngFor="let boletim of data | slice:0:number">
           <mat-card class="card" (click)="openBrowser( boletim.url )">
             <mat-card-title>
               {{ boletim.state }}
