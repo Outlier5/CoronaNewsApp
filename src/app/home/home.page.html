@@ -11,10 +11,6 @@
           </div>
         </div>
         <mat-list id="listaDrawer">
-          <mat-list-item routerLinkActive [routerLink]="['/home']">
-            <mat-icon>map</mat-icon>
-            <p>Mapa</p>
-          </mat-list-item>
           <mat-list-item [routerLink]="['/options']">
             <mat-icon>tune</mat-icon>
             <p>Opções</p>
@@ -23,9 +19,9 @@
             <mat-icon>exit_to_app</mat-icon>
             <p>Sair</p>
           </mat-list-item>
-          <mat-list-item style="margin-top: 90%; background-color: red;" (click)="openAd()">
+          <mat-list-item style="background-color: #088ECF;"  [routerLink]="['/sobre']">
             <mat-icon>attach_money</mat-icon>
-            <p>Ajude Os Desenvolvedores</p>
+            <p>Ajude a equipe</p>
           </mat-list-item>
         </mat-list>
       </div>
@@ -52,17 +48,16 @@
         </div>
         <div *ngIf="buttonHidden">
           <div class="secondButton">
-            
               <ion-fab-button color="primary" (click)="goToMyLoc()">
                 <ion-icon name="locate-outline"></ion-icon>
               </ion-fab-button>
-
+              <span class="tooltip">Minha localização</span>
           </div>
           <div class="firstButton">
-            
               <ion-fab-button color="primary" (click)="toggleOverlay()">
                 <ion-icon name="alert"></ion-icon>
               </ion-fab-button>
+              <span class="tooltip2 tooltip">Denúncias</span>
             
           </div>
         <div class="newsButton">

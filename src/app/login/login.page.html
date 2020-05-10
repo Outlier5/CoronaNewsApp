@@ -1,8 +1,8 @@
-<ion-content class="ion-align-items-center" disable-scroll>
+<ion-content class="ion-justify-content-center ion-align-items-center" disable-scroll>
   <ion-img id="banner" src="../../assets/banner.jpg"><div></div></ion-img>
-  <div id="container">
+  <div id="cont" class="">
     <div id="logo">
-      <ion-img  src=""></ion-img>
+      <ion-img  src="../../assets/logo.png"></ion-img>
     </div>
     <form [formGroup]="loginForm" (submit)="login()" novalidate>
       <ion-list>
@@ -24,14 +24,16 @@
           Uma senha é necessária.
         </span>
       </ion-list>
-      <ion-button type="submit" disabled={{loading}}>Entrar</ion-button><br>
-      <ion-button [routerLink]="['/register']" disabled={{loading}}>Criar uma Conta</ion-button><br>
-      <ion-spinner *ngIf="loading"></ion-spinner>
-    </form>
-    <span style="margin: 15px;">
+      <div id="authBtns">
+        <ion-button size="medium" type="submit" disabled={{loading}}>Entrar</ion-button><br>
+        <ion-button size="medium" ion-button color="medium" [routerLink]="['/register']" disabled={{loading}}>Registrar</ion-button><br>
+        <ion-spinner *ngIf="loading"></ion-spinner>
+      </div>
       <a [routerLink]="['/forgot']">
         Esqueceu sua senha?
       </a>
-    </span>
+    </form>
+    
+    
   </div>
 </ion-content>
