@@ -4,9 +4,10 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
-import { Device } from '@ionic-native/device/ngx';
 
 import { HomePage } from './home/home.page';
+
+declare var window: any;
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,6 @@ export class AppComponent implements OnInit{
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private device: Device,
   ) {
     this.initializeApp();
   }
@@ -29,13 +29,16 @@ export class AppComponent implements OnInit{
   initializeApp() {
     this.platform.ready().then(() => {
       this.rootPage = HomePage;
-
-      if (parseInt(this.device.version) <= 5){
-        this.statusBar.styleDefault();
-        this.statusBar.backgroundColorByHexString("#02c39a");
-      } else {
+      const style = document.documentElement.style;
+      if (window.AndroidNotch) {
         this.statusBar.styleDefault();
         this.statusBar.backgroundColorByHexString("#00000000");
+        window.AndroidNotch.getInsetTop(px => {
+          style.setProperty("--notch-inset-top", px + "px");
+        }, (err) => console.error("Failed to get insets top:", err));
+      } else {
+        this.statusBar.styleDefault();
+        this.statusBar.backgroundColorByHexString("#02c39a");
       }
 
       this.storage.get('firstTime').then(async (value) => {

@@ -1,3 +1,7 @@
+:root {
+  --notch-inset-top: 20px;
+}
+
 ion-content{
     overflow: hidden;
   }
@@ -50,5 +54,5 @@ ion-content{
   color: rgb(253, 35, 49);
 }
 ion-toolbar {
-  margin-top: 20px;
+  margin-top: var(--notch-inset-top);
 }

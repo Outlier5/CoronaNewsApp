@@ -1,3 +1,7 @@
+:root {
+  --notch-inset-top: 20px;
+}
+
 #container {
   text-align: center;
   position: absolute;
@@ -74,7 +78,7 @@ mat-list-item p{
 
 #btnDrawer{
   background-color: transparent;
-  margin-top: 20px;
+  margin-top: var(--notch-inset-top);
   padding: 12px;
 }
 
