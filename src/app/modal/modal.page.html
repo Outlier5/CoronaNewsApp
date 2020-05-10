@@ -1,61 +1,62 @@
-<ion-toolbar>
-  
-</ion-toolbar>
-<ion-content>
-  <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}}>
-    <mat-tab label="Noticias">
-      <ng-template matTabContent>
-        <ngx-twitter-timeline 
-          [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
-          [opts]="{ tweetLimit: 10 ,chrome: ['noheader', 'noscrollbar', 'nofooter'] }">
-        </ngx-twitter-timeline>
-      </ng-template>
-    </mat-tab>
-    <mat-tab label="Boletins Oficiais">
-      <ng-template matTabContent>
-        <h3>Escolha um estado</h3>
+<ion-app>
+  <ion-toolbar>
+  </ion-toolbar>
+  <ion-content>
+    <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}}>
+      <mat-tab label="Noticias">
+        <ng-template matTabContent>
+          <ngx-twitter-timeline
+            [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
+            [opts]="{ tweetLimit: 10 ,chrome: ['noheader', 'noscrollbar', 'nofooter'] }">
+          </ngx-twitter-timeline>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Boletins Oficiais">
+        <ng-template matTabContent>
+          <h3>Escolha um estado</h3>
 
-        <mat-form-field appearance="fill">
-          <mat-select (selectionChange)="select()" [(value)]="selected">
-            <mat-option *ngFor="let state of states" [value]="state.code">
-              {{ state.state }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <ion-spinner *ngIf="loading"></ion-spinner>
-        <div role="listitem" *ngFor="let boletim of data | slice:0:number">
-          <mat-card class="card" (click)="openBrowser( boletim.url )">
-            <mat-card-title>
-              {{ boletim.state }}
-            </mat-card-title>
-            <mat-card-subtitle>
-              {{ boletim.date }}
-            </mat-card-subtitle>
-            <mat-card-content>
-              {{ boletim.notes }}
-            </mat-card-content>
-            
-            <mat-card-actions *ngIf=boletim.isPDF align="end" >
-              <p style="color: grey;
-              align-items: flex-start;
-              text-align: left; margin: 0;">PDF's são baixados automaticamente e ficam em downloads</p>
-              <h3 style="color: red; right: 0; margin: 0;">
-                PDF
-              </h3>
-            </mat-card-actions>
-          </mat-card>  
-          <mat-divider></mat-divider>
-        </div>
-        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-          <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
-          </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
-  <div class="firstButton">   
-    <ion-button shape="round" color="primary" id="closeButton" (click)="dismiss()">
-      Fechar
-    </ion-button>
-  </div>
-</ion-content>
+          <mat-form-field appearance="fill">
+            <mat-select (selectionChange)="select()" [(value)]="selected">
+              <mat-option *ngFor="let state of states" [value]="state.code">
+                {{ state.state }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <ion-spinner *ngIf="loading"></ion-spinner>
+          <div role="listitem" *ngFor="let boletim of data | slice:0:number">
+            <mat-card class="card" (click)="openBrowser( boletim.url )">
+              <mat-card-title>
+                {{ boletim.state }}
+              </mat-card-title>
+              <mat-card-subtitle>
+                {{ boletim.date }}
+              </mat-card-subtitle>
+              <mat-card-content>
+                {{ boletim.notes }}
+              </mat-card-content>
+              
+              <mat-card-actions *ngIf=boletim.isPDF align="end" >
+                <p style="color: grey;
+                align-items: flex-start;
+                text-align: left; margin: 0;">PDF's são baixados automaticamente e ficam em downloads</p>
+                <h3 style="color: red; right: 0; margin: 0;">
+                  PDF
+                </h3>
+              </mat-card-actions>
+            </mat-card>  
+            <mat-divider></mat-divider>
+          </div>
+          <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
+            </ion-infinite-scroll-content>
+          </ion-infinite-scroll>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+    <div class="firstButton">   
+      <ion-button shape="round" color="primary" id="closeButton" (click)="dismiss()">
+        Fechar
+      </ion-button>
+    </div>
+  </ion-content>
+</ion-app>

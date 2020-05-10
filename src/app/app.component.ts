@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AndroidFullScreen } from '@ionic-native/android-full-screen/ngx';
 import { Storage } from '@ionic/storage';
 
 import { HomePage } from './home/home.page';
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit{
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private androidFullScreen: AndroidFullScreen, 
   ) {
     this.initializeApp();
   }
@@ -27,6 +29,16 @@ export class AppComponent implements OnInit{
   initializeApp() {
     this.platform.ready().then(() => {
       this.rootPage = HomePage;
+
+      this.androidFullScreen.isImmersiveModeSupported()
+        .then(() => console.log('feijoada'))
+        .catch(err => this.androidFullScreen.leanMode());
+
+      this.storage.get('firstTime').then(async (value) => {
+        if(!value) {
+          // AQUI COLOQUE O CODIGO PARA ABRI O SLIDE
+        }
+      });
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString("#00000000");
       this.splashScreen.hide();

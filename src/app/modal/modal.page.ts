@@ -75,9 +75,17 @@ export class ModalPage implements OnInit {
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }
   
-  test() {
-    this.indexTab = 0;
+
+  swipe(event) {
+    alert('aaa')
+    if(event.direction === 2) {
+      this.indexTab = 1;
+    }
+    if(event.direction === 4) {
+      this.indexTab = 0;
+    }
   }
+  
 
   select() {
     this.loading = true;
