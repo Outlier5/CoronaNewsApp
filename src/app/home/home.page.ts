@@ -138,12 +138,6 @@ export class HomePage {
   }
 
   async loadMap() {
-    /*
-    const loading = await this.loadingController.create({
-      message: 'Por favor, aguarde...',
-    });
-    await loading.present();*/
-
     Environment.setEnv({
       'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc',
       'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyB1ekhcMmOAkdwG77_lgpnwGpghFYcYqlc'
@@ -152,14 +146,14 @@ export class HomePage {
     this.geolocation.getCurrentPosition().then(async (resp) => {
       let mapOptions: GoogleMapOptions = {
         camera: {
-           target: {
-             lat: resp.coords.latitude,
-             lng: resp.coords.longitude
-           },
-           zoom: 18,
-           tilt: 0
-         },
-         controls: {
+          target: {
+            lat: resp.coords.latitude,
+            lng: resp.coords.longitude
+          },
+          zoom: 18,
+          tilt: 0
+        },
+        controls: {
           'compass': false,
           'myLocationButton': false,
           'myLocation': true, 
@@ -168,8 +162,6 @@ export class HomePage {
           'mapToolbar': false  
         }
       };
-
-      //loading.dismiss();
   
       this.map = GoogleMaps.create('map_canvas', mapOptions);
       this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
@@ -183,11 +175,9 @@ export class HomePage {
         else if (zoom > 13)
           this.insertControll(3, position);
       });
-     }).catch((error) => {
+    }).catch((error) => {
         console.log(error)
-     });
-    
-    
+    });
   }
 
   goToMyLoc() {
