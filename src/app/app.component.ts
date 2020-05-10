@@ -30,9 +30,7 @@ export class AppComponent implements OnInit{
     this.platform.ready().then(() => {
       this.rootPage = HomePage;
 
-      this.androidFullScreen.isImmersiveModeSupported()
-        .then(() => console.log('feijoada'))
-        .catch(err => this.androidFullScreen.leanMode());
+      this.androidFullScreen.leanMode()
 
       this.storage.get('firstTime').then(async (value) => {
         if(!value) {

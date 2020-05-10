@@ -25,8 +25,8 @@
         </span>
       </ion-list>
       <div id="authBtns">
-        <ion-button type="submit" disabled={{loading}}>Entrar</ion-button><br>
-        <ion-button ion-button color="medium" [routerLink]="['/register']" disabled={{loading}}>Registrar</ion-button>
+        <ion-button size="medium" type="submit" disabled={{loading}}>Entrar</ion-button><br>
+        <ion-button size="medium" ion-button color="medium" [routerLink]="['/register']" disabled={{loading}}>Registrar</ion-button>
         <ion-spinner *ngIf="loading"></ion-spinner>
       </div>
       <a [routerLink]="['/forgot']">
