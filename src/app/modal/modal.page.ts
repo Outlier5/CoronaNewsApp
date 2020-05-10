@@ -158,7 +158,7 @@ export class ModalPage implements OnInit {
     var options = {
       message: `Boletim oficial do estado de ${state}\n\n${url}\n\nMensagem compartilhada do app Corona Hoje, baixe agora`,
       subject: 'Mensagem compartilhada do app Corona Hoje, baixe agora',
-      chooserTitle: 'Pick an app',
+      chooserTitle: 'Escolha um App',
     };
     this.socialSharing.shareWithOptions(options);
   }
