@@ -2,7 +2,7 @@
   <ion-toolbar>
   </ion-toolbar>
   <ion-content>
-    <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}}>
+    <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} (focusChange)="number = 5">
       <mat-tab label="Noticias">
         <ng-template matTabContent>
           <ngx-twitter-timeline
@@ -24,26 +24,25 @@
           </mat-form-field>
           <ion-spinner *ngIf="loading"></ion-spinner>
           <div role="listitem" *ngFor="let boletim of data | slice:0:number">
-            <mat-card class="card" (click)="openBrowser( boletim.url )">
-              <mat-card-title>
-                {{ boletim.state }}
-              </mat-card-title>
-              <mat-card-subtitle>
-                {{ boletim.date }}
-              </mat-card-subtitle>
-              <mat-card-content>
-                {{ boletim.notes }}
-              </mat-card-content>
-              
-              <mat-card-actions *ngIf=boletim.isPDF align="end" >
-                <p style="color: grey;
-                align-items: flex-start;
-                text-align: left; margin: 0;">PDF's são baixados automaticamente e ficam em downloads</p>
-                <h3 style="color: red; right: 0; margin: 0;">
+            <ion-card class="card">
+              <ion-card-header>
+                <ion-card-title>{{ boletim.state }}</ion-card-title>
+                <ion-card-subtitle>{{ boletim.date }}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content (click)="openBrowser( boletim.url )">
+                <ion-item>
+                  {{ boletim.notes || 'Sem notas para Exibir' }}
+                </ion-item>
+              </ion-card-content>
+              <ion-item>
+                <ion-button (click)="share(boletim.state, boletim.url)" color="primary" fill="clear" slot="start">
+                  Compartilhar
+                </ion-button>
+                <h3 *ngIf=boletim.isPDF slot="end" style="color: red; right: 0; margin: 0;">
                   PDF
                 </h3>
-              </mat-card-actions>
-            </mat-card>  
+              </ion-item>
+            </ion-card>  
             <mat-divider></mat-divider>
           </div>
           <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
