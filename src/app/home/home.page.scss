@@ -74,7 +74,6 @@ mat-list-item p{
 
 #btnDrawer{
   background-color: transparent;
-  margin-top: 20px;
   padding: 12px;
 }
 
@@ -212,4 +211,21 @@ ion-row div{
    align-items: center;
    text-align: center;
    flex-direction: column;
+}
+.tooltip{
+  display:none;
+  background-color: rgb(46, 46, 46);
+  border-radius: 5px;
+  padding: 5px;
+  right: 64px;
+  bottom: 12px;
+  position: absolute;
+  color: #fff;
+}
+.tooltip2{
+  right: 64px;
+  bottom: 12px;
+}
+.secondButton:active .tooltip{
+  display: block;
 }

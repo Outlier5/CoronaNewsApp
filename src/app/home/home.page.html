@@ -19,7 +19,7 @@
             <mat-icon>exit_to_app</mat-icon>
             <p>Sair</p>
           </mat-list-item>
-          <mat-list-item style="margin-top: 90%; background-color: red;" (click)="openAd()">
+          <mat-list-item style="background-color: red;" (click)="openAd()">
             <mat-icon>attach_money</mat-icon>
             <p>Ajude Os Desenvolvedores</p>
           </mat-list-item>
@@ -48,17 +48,17 @@
         </div>
         <div *ngIf="buttonHidden">
           <div class="secondButton">
-            
               <ion-fab-button color="primary" (click)="goToMyLoc()">
                 <ion-icon name="locate-outline"></ion-icon>
               </ion-fab-button>
-
+              <span class="tooltip">Hooray!</span>
           </div>
           <div class="firstButton">
             
               <ion-fab-button color="primary" (click)="toggleOverlay()">
                 <ion-icon name="alert"></ion-icon>
               </ion-fab-button>
+              <span class="tooltip2 tooltip">Hooray!</span>
             
           </div>
         <div class="newsButton">
