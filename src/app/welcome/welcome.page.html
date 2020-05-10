@@ -1,9 +1,35 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>welcome</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content fullscreen>
+  <ion-slides #mySlider pager="true" fullscreen [options]="slideOpts" (ionSlideReachEnd)="finish()">
+    <ion-slide>
+      <ion-img src="../../assets/fa-solid_viruses.svg"></ion-img>
+      <div class="text">
+        <h1>Corona Hoje</h1>
+        <p>Aplicativo feito para poder mostrar, em tempo real, informações de aglomerações e de casos do novo corona virus no Brasil.</p>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <ion-img src="../../assets/bx_bxs-home.svg"></ion-img>
+      <ion-icon></ion-icon>
+      <div class="text">
+        <h1>Localização</h1>
+        <p>A localização servirá <b>unicamente</b> para o aplicativo mostrar os casos e denúncias específicos(as) da sua região.
+          Fique tranquilo, seus dados estão seguros :)
+        </p>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <ion-img src="../../assets/medical-icon_i-cardiology.svg"></ion-img>
+      <ion-icon></ion-icon>
+      <div class="text">
+        <h1>#StayHome</h1>
+        <p>Pedimos a todos os que puderem, que, para manter o controle da epidemia, permaneçam em casa.</p>
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <div id="btns">
+    <hr>
+    <ion-button expand="full" (click)="swipeEnd()" class="ion-float-left">Pular</ion-button>
+    <ion-button expand="full" (click)="swipeNext()" *ngIf="!finished" class="ion-float-right">Próximo</ion-button>
+    <ion-button expand="full" (click)="goToLog()" *ngIf="finished" class="ion-float-right">Continuar</ion-button>
+  </div>
 </ion-content>

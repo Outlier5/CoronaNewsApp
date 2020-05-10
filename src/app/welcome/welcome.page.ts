@@ -1,15 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonSlides, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.page.html',
   styleUrls: ['./welcome.page.scss'],
 })
+
 export class WelcomePage implements OnInit {
-
-  constructor() { }
-
+  finished = false;
+  slideOpts = {
+    initialSlide: 0,
+  };
+  @ViewChild('mySlider', { static: true }) slides: IonSlides;  
+  constructor(private navCtrl: NavController) { }
   ngOnInit() {
   }
-
+  swipeNext(){
+    this.slides.slideNext();
+  }
+  swipeEnd(){
+    this.slides.slideTo(3);
+  }
+  finish(){
+    this.finished = true;
+    console.log(this.finished);
+  }
+  goToLog(){
+    this.navCtrl.navigateRoot('/login');
+  }
 }

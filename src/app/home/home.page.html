@@ -19,7 +19,7 @@
             <mat-icon>exit_to_app</mat-icon>
             <p>Sair</p>
           </mat-list-item>
-          <mat-list-item style="background-color: #088ECF;"  [routerLink]="['/sobre']">
+          <mat-list-item style="background-color: #088dcf9c;"  [routerLink]="['/sobre']">
             <mat-icon>attach_money</mat-icon>
             <p>Ajude a equipe</p>
           </mat-list-item>
@@ -29,7 +29,7 @@
 
     <mat-drawer-content>
       <!-- Mapa e Botões -->
-      <ion-content [fullscreen]="true">
+      <ion-content>
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button id="btnDrawer" mat-flat-button (click)="drawer.toggle()">

@@ -20,8 +20,6 @@ export class SobrePage implements OnInit {
     }
     this.adMobFree.rewardVideo.config(rewardedConfig);
     this.admobFree.rewardVideo.prepare().then((data:any)=>{
-      // HERE YOU WILL NEED TO MAKE THE SAME THING
-      // catching the Error or the Success of the Promise
       this.adMobFree.rewardVideo.show()
     })
     .catch((e:Error)=>{

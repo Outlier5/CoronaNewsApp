@@ -1,0 +1,42 @@
+ion-slides{
+  height: 100%;
+  --bullet-background-active: #fff;
+  color: #fff;
+}
+ion-slides ion-slide:nth-of-type(1){
+  background-color: #02C39A;
+}
+ion-slides ion-slide:nth-of-type(2){
+  background-color: #028090;
+}
+ion-slides ion-slide:nth-of-type(3){
+  background-color: #05668D;
+}
+hr{
+  height: 2px;
+  background-color: #fff;
+}
+ion-img{
+  width: 150px;
+  height: 150px;
+}
+.swiper-slide{
+  flex-direction: column;
+}
+.text{
+  width: 90%;
+  text-align: center;
+}
+#btns{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+}
+#btns > ion-button{
+  --border-radius: 0px;
+  --box-shadow:none;
+  --background: transparent;
+  --margin: 0;
+  margin:0;
+}
