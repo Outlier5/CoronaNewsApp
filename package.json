@@ -29,6 +29,7 @@
     "@ionic-native/android-full-screen": "^5.25.0",
     "@ionic-native/browser-tab": "^5.24.0",
     "@ionic-native/core": "^5.23.0",
+    "@ionic-native/device": "^5.25.0",
     "@ionic-native/file-transfer": "^5.24.0",
     "@ionic-native/geolocation": "^5.23.0",
     "@ionic-native/google-maps": "^5.5.0",
