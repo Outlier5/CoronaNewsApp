@@ -40,7 +40,10 @@ export class AppComponent implements OnInit{
         this.statusBar.backgroundColorByHexString("#00000000");
         window.AndroidNotch.getInsetTop(px => {
           style.setProperty("--notch-inset-top", px + "px");
-        }, (err) => console.error("Failed to get insets top:", err));
+        }, (err) => {
+          this.statusBar.styleDefault();
+          this.statusBar.backgroundColorByHexString("#02c39a");
+        });
       } else {
         this.statusBar.styleDefault();
         this.statusBar.backgroundColorByHexString("#02c39a");

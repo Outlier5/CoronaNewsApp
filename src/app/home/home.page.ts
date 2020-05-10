@@ -81,11 +81,6 @@ export class HomePage {
     this.admobFree.banner.prepare();
   }
 
-  openAd() {
-    this.admobFree.interstitial.prepare()
-    this.admobFree.interstitial.show()
-  }
-
   async ativeMap() {
     this.storage.get('firstTime').then(async (value) => {
       if(!value) {

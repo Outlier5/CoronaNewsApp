@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 import { GlobalService } from '../global.service';
 
@@ -63,6 +64,7 @@ export class ModalPage implements OnInit {
     private iab: InAppBrowser,
     private browserTab: BrowserTab,
     private http: HTTP,
+    private socialSharing: SocialSharing,
   ) {
   }
 
@@ -151,5 +153,13 @@ export class ModalPage implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
+  }
+  share(state, url) {
+    var options = {
+      message: `Boletim oficial do estado de ${state}\n\n${url}\n\nMensagem compartilhada do app Corona Hoje, baixe agora`,
+      subject: 'Mensagem compartilhada do app Corona Hoje, baixe agora',
+      chooserTitle: 'Escolha um App',
+    };
+    this.socialSharing.shareWithOptions(options);
   }
 }

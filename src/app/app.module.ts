@@ -11,6 +11,7 @@ import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AndroidFullScreen } from '@ionic-native/android-full-screen/ngx';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -61,6 +62,7 @@ import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
     GlobalService,
     AndroidFullScreen,
     AdMobFree,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HAMMER_GESTURE_CONFIG,
