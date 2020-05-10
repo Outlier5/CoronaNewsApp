@@ -19,7 +19,7 @@ import { MaterialModule } from '../material.module';
     IonicModule,
     ModalPageRoutingModule,
     NgxTwitterTimelineModule,
-    MaterialModule
+    MaterialModule,
   ],
   declarations: [ModalPage]
 })
