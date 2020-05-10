@@ -19,9 +19,9 @@
             <mat-icon>exit_to_app</mat-icon>
             <p>Sair</p>
           </mat-list-item>
-          <mat-list-item style="background-color: red;" (click)="openAd()">
+          <mat-list-item style="background-color: #088ECF;"  [routerLink]="['/sobre']">
             <mat-icon>attach_money</mat-icon>
-            <p>Ajude Os Desenvolvedores</p>
+            <p>Ajude a equipe</p>
           </mat-list-item>
         </mat-list>
       </div>
@@ -51,14 +51,13 @@
               <ion-fab-button color="primary" (click)="goToMyLoc()">
                 <ion-icon name="locate-outline"></ion-icon>
               </ion-fab-button>
-              <span class="tooltip">Hooray!</span>
+              <span class="tooltip">Minha localização</span>
           </div>
           <div class="firstButton">
-            
               <ion-fab-button color="primary" (click)="toggleOverlay()">
                 <ion-icon name="alert"></ion-icon>
               </ion-fab-button>
-              <span class="tooltip2 tooltip">Hooray!</span>
+              <span class="tooltip2 tooltip">Denúncias</span>
             
           </div>
         <div class="newsButton">

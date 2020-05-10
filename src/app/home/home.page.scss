@@ -2,6 +2,7 @@
   --notch-inset-top: 20px;
 }
 
+
 #container {
   text-align: center;
   position: absolute;
@@ -226,6 +227,8 @@ ion-row div{
   bottom: 12px;
   position: absolute;
   color: #fff;
+  text-align: center;
+  font-size: small;
 }
 .tooltip2{
   right: 64px;
@@ -233,4 +236,7 @@ ion-row div{
 }
 .secondButton:active .tooltip{
   display: block;
+}
+.firstButton:active .tooltip{
+  display:block;
 }

@@ -71,11 +71,11 @@ export class HomePage {
     }
   
   async ngOnInit() { 
-    this.ativeMap();  
+    this.ativeMap();
 
     const bannerConfig: AdMobFreeBannerConfig = {
       size: 'BANNER',
-      autoShow: true
+      autoShow: true,
     };
     this.admobFree.banner.config(bannerConfig);
     this.admobFree.banner.prepare();
