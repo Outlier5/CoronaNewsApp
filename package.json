@@ -29,7 +29,6 @@
     "@ionic-native/android-full-screen": "^5.25.0",
     "@ionic-native/browser-tab": "^5.24.0",
     "@ionic-native/core": "^5.23.0",
-    "@ionic-native/device": "^5.25.0",
     "@ionic-native/file-transfer": "^5.24.0",
     "@ionic-native/geolocation": "^5.23.0",
     "@ionic-native/google-maps": "^5.5.0",
@@ -51,6 +50,7 @@
     "cordova-android-support-gradle-release": "^3.0.1",
     "cordova-plugin-admob-free": "^0.27.0",
     "cordova-plugin-advanced-http": "^2.4.1",
+    "cordova-plugin-android-notch": "^1.0.3",
     "cordova-plugin-androidx": "^1.0.2",
     "cordova-plugin-androidx-adapter": "^1.1.0",
     "cordova-plugin-browsertab": "^0.2.0",
@@ -87,7 +87,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^8.9.5",
     "codelyzer": "^5.0.0",
-    "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-webview": "^4.1.3",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
@@ -110,7 +109,6 @@
       "cordova-plugin-googlemaps": {},
       "cordova-plugin-whitelist": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
@@ -128,13 +126,14 @@
         "PLAY_SERVICES_LOCATION_VERSION": "16.+"
       },
       "cordova-plugin-browsertab": {},
-      "cordova-plugin-fullscreen": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-admob-free": {
         "ADMOB_APP_ID": "ca-app-pub-7992243410212657~7518142886"
       },
       "cordova-plugin-androidx": {},
-      "cordova-plugin-androidx-adapter": {}
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-android-notch": {},
+      "cordova-plugin-fullscreen": {}
     },
     "platforms": [
       "android"

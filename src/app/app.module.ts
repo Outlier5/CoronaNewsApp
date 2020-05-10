@@ -20,7 +20,6 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { AdMobFree } from '@ionic-native/admob-free/ngx';
-import { Device } from '@ionic-native/device/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -62,7 +61,6 @@ import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
     GlobalService,
     AndroidFullScreen,
     AdMobFree,
-    Device,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HAMMER_GESTURE_CONFIG,
