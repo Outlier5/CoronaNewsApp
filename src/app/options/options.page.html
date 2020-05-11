@@ -17,6 +17,7 @@
     </button>
   </div>
 
+  <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="cancel()">Cancelar</ion-button>
   <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="uploadImage()">Alterar <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
 
   <ion-item-divider></ion-item-divider>

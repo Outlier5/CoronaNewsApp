@@ -1,4 +1,4 @@
-<ion-app>
+<ion-app fullscreen>
   <mat-drawer-container (swipeleft)="drawer.close()" class="example-container" [hasBackdrop]="true">
     <!-- Side Menu -->
     <mat-drawer #drawer>
@@ -29,7 +29,7 @@
 
     <mat-drawer-content>
       <!-- Mapa e Botões -->
-      <ion-content>
+      <ion-content fullscreen>
         <div #map_canvas id="map_canvas">
           <ion-buttons slot="start" *ngIf="buttonHidden">
             <button id="btnDrawer" mat-flat-button (click)="drawer.toggle()">
@@ -76,7 +76,7 @@
         </mat-grid-list>
       </div>
       <div *ngIf="denunciaHidden" id="denuncia">
-        <div id="formDenuncia" >
+        <div id="formDenuncia">
           <form [formGroup]="denunciaForm" (submit)="confirmDenuncia()" novalidate>
             <ion-list>
               <ion-item>
@@ -109,7 +109,7 @@
   </mat-drawer-container>
   <div id="overlay" *ngIf="overlayHidden" (click)="toggleOverlay()">
   </div>
-  <div *ngIf="overlayHidden" id="fundoOverlay">
+  <div *ngIf="overlayHidden" id="fundoOverlay" (click)="toggleOverlay()">
     <h1>Denunciar</h1>
   
     <ion-grid id="itens">

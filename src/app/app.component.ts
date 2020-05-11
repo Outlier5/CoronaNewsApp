@@ -7,10 +7,6 @@ import { Storage } from '@ionic/storage';
 
 import { HomePage } from './home/home.page';
 
-
-
-
-
 declare var window: any;
 
 @Component({
@@ -33,12 +29,14 @@ export class AppComponent implements OnInit{
         this.navCtrl.navigateRoot('/welcome');
       }
     });
+
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.rootPage = HomePage;
+
       const style = document.documentElement.style;
       if (window.AndroidNotch) {
         this.statusBar.styleDefault();
