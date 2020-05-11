@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
     private http: HTTP,
     ) {
       this.loginForm = formBuilder.group({
-        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'), Validators.maxLength(60)]],
         password: ['', Validators.required],
       });
     }

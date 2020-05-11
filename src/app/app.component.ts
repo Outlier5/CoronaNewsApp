@@ -4,6 +4,7 @@ import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
+import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 
 import { HomePage } from './home/home.page';
 
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit{
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private navCtrl: NavController,
+    private navigationBar: NavigationBar
   ) {
     this.storage.get('firstTime').then(async (value) => {
       if (!value) {
@@ -51,7 +53,7 @@ export class AppComponent implements OnInit{
         this.statusBar.styleDefault();
         this.statusBar.backgroundColorByHexString("#02c39a");
       }
-
+      this.navigationBar.hideNavigationBar();
       this.splashScreen.hide();
     });
   }

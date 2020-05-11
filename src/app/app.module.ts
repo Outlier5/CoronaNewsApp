@@ -1,4 +1,3 @@
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router'
@@ -22,6 +21,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { AdMobFree } from '@ionic-native/admob-free/ngx';
+import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -50,7 +50,6 @@ import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
     ],
   providers: [
     StatusBar,
-    ScreenOrientation,
     SplashScreen,
     GoogleMaps,
     HTTP,
@@ -67,6 +66,7 @@ import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
     AndroidFullScreen,
     AdMobFree,
     SocialSharing,
+    NavigationBar,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HAMMER_GESTURE_CONFIG,
