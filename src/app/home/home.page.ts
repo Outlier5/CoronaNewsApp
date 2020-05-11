@@ -68,7 +68,6 @@ export class HomePage {
         description: ['', [Validators.required, Validators.maxLength(125)]],
       });
     }
-  
   ngOnInit() { 
     this.ativeMap();
 

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
@@ -16,6 +17,7 @@ declare var window: any;
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit{
+  @ViewChild(IonRouterOutlet, {static: false}) routerOutlet: IonRouterOutlet;
   rootPage: any;
 
   constructor(
@@ -24,11 +26,36 @@ export class AppComponent implements OnInit{
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private navCtrl: NavController,
-    private navigationBar: NavigationBar
+    private navigationBar: NavigationBar,
+    private alertController: AlertController,
+    private router: Router,
   ) {
     this.storage.get('firstTime').then(async (value) => {
       if (!value) {
         this.navCtrl.navigateRoot('/welcome');
+      }
+    });
+    this.platform.backButton.subscribeWithPriority(0, async () => {
+      if (this.routerOutlet && this.routerOutlet.canGoBack()){
+        this.routerOutlet.pop();
+      } else if (this.router.url === "/home"){
+        const alert = await this.alertController.create({
+          header: 'fechar app',
+          message: 'quer mesmo',
+          buttons: [
+            {
+              text: 'cancelar',
+              role: 'cancelar'
+            },
+            {
+              text: 'fechar',
+              handler: () => {
+                navigator["app"].exitApp();
+              }
+            }
+          ]
+        });
+        await alert.present();
       }
     });
 
