@@ -32,8 +32,10 @@ ion-item{
   --highlight-color-valid: #02C39A;
 }
 ion-button{
-  margin: 8px;
+  margin-bottom: 8px;
   width: 75%;
+  height: 46px;
+  --box-shadow: none;
 }
 ion-spinner{
   margin-top: 5px;

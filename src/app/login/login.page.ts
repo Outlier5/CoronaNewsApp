@@ -16,7 +16,7 @@ import { GlobalService } from '../global.service';
 export class LoginPage implements OnInit {
 
   public loginForm: any;
-  public loading: boolean = false;
+  public loading = false;
   public isSubmitted = false;
 
   constructor(
@@ -30,8 +30,7 @@ export class LoginPage implements OnInit {
         email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
         password: ['', Validators.required],
       });
-  }
-
+    }
   get errorControl() {
     return this.loginForm.controls;
   }
@@ -56,13 +55,13 @@ export class LoginPage implements OnInit {
     });
 
     await this.storage.get('token').then(value => {
-      if(value)
+      if (value) {
         this.storage.get('user').then(val => {
           this.global.userGlobal = val;
           this.global.avatar = `data:image/webp;base64,${Buffer.from(val.avatar).toString('base64')}`;
-
           this.navCtrl.navigateRoot('/home');
         });
+      }
     });
   }
 
@@ -88,7 +87,6 @@ export class LoginPage implements OnInit {
           this.global.userGlobal = user;
           this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
 
-          this.global.toast(message);
           this.loading = false;
           this.navCtrl.navigateRoot('/home');
         }).catch(err => {

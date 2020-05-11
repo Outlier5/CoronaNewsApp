@@ -35,7 +35,6 @@ export class HomePage {
   public avatar: string;
   public infoDenuncia: any = {};
   public denunciaForm: any;
-  
   public newsButton: boolean = false;
   public overlayHidden: boolean = false;
   public buttonHidden: boolean = true;
@@ -48,7 +47,7 @@ export class HomePage {
   actualState: any;
 
   mudanca = 0;
-
+  subscribe: any;
   constructor(
     public global: GlobalService,
     public storage: Storage,
@@ -68,9 +67,15 @@ export class HomePage {
         title: ['', [Validators.required, Validators.maxLength(20)]],
         description: ['', [Validators.required, Validators.maxLength(125)]],
       });
+      this.subscribe = this.platform.backButton.subscribeWithPriority(666666, () => {
+        if (this.constructor.name === 'HomePage') {
+          if (window.confirm('Deseja sair?')) {
+            navigator['app'].exitApp();
+          }
+        }
+      });
     }
-  
-  async ngOnInit() { 
+  async ngOnInit() {
     this.ativeMap();
 
     const bannerConfig: AdMobFreeBannerConfig = {

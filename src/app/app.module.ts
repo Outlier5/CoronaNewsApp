@@ -1,3 +1,4 @@
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router'
@@ -33,6 +34,8 @@ import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -47,6 +50,7 @@ import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
     ],
   providers: [
     StatusBar,
+    ScreenOrientation,
     SplashScreen,
     GoogleMaps,
     HTTP,

@@ -28,7 +28,7 @@
   </ion-slides>
   <div id="btns">
     <hr>
-    <ion-button expand="full" size="large" (click)="swipeEnd()" class="ion-float-left">Pular</ion-button>
+    <ion-button expand="full" size="large" (click)="goToLog()" class="ion-float-left">Pular</ion-button>
     <ion-button expand="full" size="large" (click)="swipeNext()" *ngIf="!finished" class="ion-float-right">Próximo</ion-button>
     <ion-button expand="full" size="large" (click)="goToLog()" *ngIf="finished" class="ion-float-right">Continuar</ion-button>
   </div>
