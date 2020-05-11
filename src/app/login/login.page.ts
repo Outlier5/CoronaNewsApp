@@ -43,7 +43,7 @@ export class LoginPage implements OnInit {
         const { _id } = await this.storage.get('user').then(val => JSON.parse(val));
         const token = await this.storage.get('token').then(val => val);
 
-        this.http.get(`https://coronago.herokuapp.com/auth/revokeToken/${ _id }`, {}, {
+        this.http.get(`http://outlier5-com.umbler.net/auth/revokeToken/${ _id }`, {}, {
           'Authorization': `Bearrer ${token}`
         })
           .then(data => {
@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
       return false;
     } else {
       this.loading = true;
-      this.http.post('https://coronago.herokuapp.com/auth/login', {
+      this.http.post('http://outlier5-com.umbler.net/auth/login', {
         email: this.loginForm.value.email.trim(),
         password: this.loginForm.value.password.trim(),
       }, {})

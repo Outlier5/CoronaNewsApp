@@ -10,7 +10,7 @@ import {
 } from '@ionic-native/google-maps/ngx';
 import { Component } from '@angular/core';
 import { Platform, MenuController, ModalController, LoadingController, NavController } from '@ionic/angular';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
 
@@ -65,8 +65,8 @@ export class HomePage {
     private nativeGeocoder: NativeGeocoder,
     private activatedRoute: ActivatedRoute) {
       this.denunciaForm = formBuilder.group({
-        title: [''],
-        description: [''],
+        title: ['', [Validators.required, Validators.maxLength(20)]],
+        description: ['', [Validators.required, Validators.maxLength(125)]],
       });
     }
   
@@ -245,7 +245,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get('https://coronago.herokuapp.com/coronaApi/getAllStates', {}, {
+      this.http.get('http://outlier5-com.umbler.net/coronaApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(async data => {
           const now = new Date();
@@ -268,7 +268,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get(`https://coronago.herokuapp.com/coronaApi/getPerState/${state}`, {}, {
+      this.http.get(`http://outlier5-com.umbler.net/coronaApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
       }).then(async data => {
           const now = new Date();
@@ -291,7 +291,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get('https://coronago.herokuapp.com/denuncias/getAllDenuncias', {}, {
+      this.http.get('http://outlier5-com.umbler.net/denuncias/getAllDenuncias', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(data => {
         const { denuncias } = JSON.parse(data.data);
@@ -395,13 +395,18 @@ export class HomePage {
       frame.innerHTML = [
         '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
         `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } <span class="vote">Votos: ${ element.rank }</span></p>`,
+        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } <div class="vote">Votos:<span>${ element.rank }</span></div></p>`,
         `<h3>${ element.title }</h3>`,
         `<p style="margin: 0;display: block;overflow: hidden;">${ element.description }</p>`,
         '<footer class="bottomButton">',
-        '<button style="left: 1;" class="rank"><i class="material-icons">thumb_down</i></button>',
-        '<button style="margin-left: 60%;" class="rank"><i class="material-icons">thumb_up</i></button>',
+          '<div class="voteButtons">',
+            '<button style="left: 1;" class="rank"><i class="material-icons">thumb_down</i></button>',
+            '<button style="margin-left: 60%;" class="rank"><i class="material-icons">thumb_up</i></button>',
+          '</div>',
         '</footer>',
+        '<div class="deleteButton">',
+          '<button class="delete">Apagar</button>',
+        '</div>',
         `<style>
           button {
             background-color: white;
@@ -410,7 +415,24 @@ export class HomePage {
           .bottomButton {
             margin-left: 10%;
             bottom: 0;
-            display: ${ conf.voted ? 'none' : 'block' }
+            display: ${ conf.voted ? 'none' : 'block' };
+          }
+          .voteButtons {
+            display: ${ element.by.name == this.global.userGlobal.name ? 'none' : 'block' };
+          }
+          .deleteButton {
+            margin-left: 60%;
+            bottom: 0;
+            display: ${ element.by.name == this.global.userGlobal.name ? 'block' : 'none' };
+          }
+          .delete {
+            left: 1;
+            color: #fff;
+            background-color: red;
+            border: none;
+            width: 90%;
+            height: 15%;
+            border-radius: 25px;
           }
           .vote {
             margin-left: 50%;
@@ -421,12 +443,16 @@ export class HomePage {
 
       frame.getElementsByClassName('rank')[0].addEventListener('click', () => {
         this.storage.get('token').then(value => {
-          this.http.put('https://coronago.herokuapp.com/denuncias/rankDenuncia', {
+          this.http.put('http://outlier5-com.umbler.net/denuncias/rankDenuncia', {
             id: element._id,
             rank: '-1',
           }, {
             'Authorization': `Bearrer ${value}`
           }).then(data => {
+            frame.getElementsByTagName('footer')[0].style.display = 'none';
+            var number = parseInt(frame.getElementsByTagName('span')[0].innerHTML);
+            number--;
+            frame.getElementsByTagName('span')[0].innerHTML = number.toString();
             this.global.toast(JSON.parse(data.data).success)
           }).catch(data => {
             this.global.toast(JSON.parse(data.data).error)
@@ -436,12 +462,30 @@ export class HomePage {
 
       frame.getElementsByClassName('rank')[1].addEventListener('click', () => {
         this.storage.get('token').then(value => {
-          this.http.put('https://coronago.herokuapp.com/denuncias/rankDenuncia', {
+          this.http.put('http://outlier5-com.umbler.net/denuncias/rankDenuncia', {
             id: element._id,
             rank: '1',
           }, {
             'Authorization': `Bearrer ${value}`
           }).then(data => {
+            frame.getElementsByTagName('footer')[0].style.display = 'none';
+            var number = parseInt(frame.getElementsByTagName('span')[0].innerHTML);
+            number++;
+            frame.getElementsByTagName('span')[0].innerHTML = number.toString();
+            this.global.toast(JSON.parse(data.data).success)
+          }).catch(data => {
+            this.global.toast(JSON.parse(data.data).error)
+          });
+        });
+      });
+
+      frame.getElementsByClassName('delete')[0].addEventListener('click', () => {
+        this.storage.get('token').then(value => {
+          this.http.delete(`http://outlier5-com.umbler.net/denuncias/reinvoke/${element._id}`, {}, {
+            'Authorization': `Bearrer ${value}`
+          }).then(data => {
+            this.map.clear();
+            this.getAllDenuncias();
             this.global.toast(JSON.parse(data.data).success)
           }).catch(data => {
             this.global.toast(JSON.parse(data.data).error)
@@ -494,83 +538,119 @@ export class HomePage {
   }
 
   async confirmDenuncia() {
-    this.loading = true;
-    const { title, description } = this.denunciaForm.value;
-    const { lat, lng } = await this.map.getCameraPosition().target;
-    
-    this.storage.get('token').then(value => {
-      this.http.post('https://coronago.herokuapp.com/denuncias/register', {
-        title,
-        description,
-        type: this.infoDenuncia.type,
-        lat,
-        lng,
-      }, {
-        'Authorization': `Bearrer ${value}`
-      }).then(data => {
-        this.denunciaForm.reset();
-        const { denuncia } = JSON.parse(data.data);
-        this.loading = false;
+    if (!this.denunciaForm.valid) {
+      this.global.toast('Por favor insira todos valores requeridos');
+      return false;
+    } else {
+      this.loading = true;
+      const { title, description } = this.denunciaForm.value;
+      const { lat, lng } = await this.map.getCameraPosition().target;
+      
+      this.storage.get('token').then(value => {
+        this.http.post('http://outlier5-com.umbler.net/denuncias/register', {
+          title,
+          description,
+          type: this.infoDenuncia.type,
+          lat,
+          lng,
+        }, {
+          'Authorization': `Bearrer ${value}`
+        }).then(data => {
+          this.denunciaForm.reset();
+          const { denuncia } = JSON.parse(data.data);
+          this.loading = false;
 
-        let conf = { color: '', type: '' };
-        switch (denuncia.type) {
-          case 'aglomeracoes':
-            conf['color'] = '#2dd36f';
-            conf['type'] = 'Aglomerações';
-            break;
-          case 'risco':
-            conf['color'] = '#5260ff';
-            conf['type'] = 'Situações de Risco';
-            break;
-          case 'incidenteRecente':
-            conf['color'] = '#eb445a';
-            conf['type'] = 'Areas com incidentes recentes';
-          default:
-            break;
-        }
-
-        let marker: Marker = this.map.addMarkerSync({
-          position: { lat: denuncia.lat, lng: denuncia.lng },
-          icon: conf.color,
-          animation: 'DROP',
-        });
-
-        let htmlInfoWindow = new HtmlInfoWindow();
-
-        let frame: HTMLElement = document.createElement('div');
-        frame.innerHTML = [
-          '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
-        `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-        `<p style="color: grey; margin: 0;">Por: Eu <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
-        `<h3>${ denuncia.title }</h3>`,
-        `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
-        `<style>
-          button {
-            background-color: white;
-            color: #028090;
+          let conf = { color: '', type: '' };
+          switch (denuncia.type) {
+            case 'aglomeracoes':
+              conf['color'] = '#2dd36f';
+              conf['type'] = 'Aglomerações';
+              break;
+            case 'risco':
+              conf['color'] = '#5260ff';
+              conf['type'] = 'Situações de Risco';
+              break;
+            case 'incidenteRecente':
+              conf['color'] = '#eb445a';
+              conf['type'] = 'Areas com incidentes recentes';
+            default:
+              break;
           }
-          #vote {
-            margin-left: 50%;
-            color: ${ denuncia.rank > 0 ? 'green' : 'red'};
-          }
-        </style>`
-        ].join("");
 
-        htmlInfoWindow.setContent(frame, {
-          width: "300px",
-          height: "200px"
-        });
+          let marker: Marker = this.map.addMarkerSync({
+            position: { lat: denuncia.lat, lng: denuncia.lng },
+            icon: conf.color,
+            animation: 'DROP',
+          });
 
-        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-          marker.hideInfoWindow();
-          htmlInfoWindow.open(marker);
-        });
-        this.cancelDenuncia();
-      }).catch(err => {
-        const { error } = JSON.parse(err.error);
-        this.global.toast(error);
-      })
-    });
+          let htmlInfoWindow = new HtmlInfoWindow();
+
+          let frame: HTMLElement = document.createElement('div');
+          frame.innerHTML = [
+            '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
+          `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
+          `<p style="color: grey; margin: 0;">Por: Eu <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
+          `<h3>${ denuncia.title }</h3>`,
+          `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
+          '<div class="deleteButton">',
+            '<button class="delete">Apagar</button>',
+          '</div>',
+          `<style>
+            button {
+              background-color: white;
+              color: #028090;
+            }
+            #vote {
+              margin-left: 50%;
+              color: ${ denuncia.rank > 0 ? 'green' : 'red'};
+            }
+            .deleteButton {
+              margin-left: 60%;
+              bottom: 0;
+              display: block;
+            }
+            .delete {
+              left: 1;
+              color: #fff;
+              background-color: red;
+              border: none;
+              width: 90%;
+              height: 15%;
+              border-radius: 25px;
+            }
+          </style>`
+          ].join("");
+
+          frame.getElementsByClassName('delete')[0].addEventListener('click', () => {
+            this.storage.get('token').then(value => {
+              this.http.delete(`http://outlier5-com.umbler.net/denuncias/reinvoke/${denuncia._id}`, {}, {
+                'Authorization': `Bearrer ${value}`
+              }).then(data => {
+                this.map.clear();
+                this.getAllDenuncias();
+                this.global.toast(JSON.parse(data.data).success)
+              }).catch(data => {
+                this.global.toast(JSON.parse(data.data).error)
+              });
+            });
+          });
+
+          htmlInfoWindow.setContent(frame, {
+            width: "300px",
+            height: "200px"
+          });
+
+          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+            marker.hideInfoWindow();
+            htmlInfoWindow.open(marker);
+          });
+          this.cancelDenuncia();
+        }).catch(err => {
+          const { error } = JSON.parse(err.error);
+          this.global.toast(error);
+        })
+      });
+    }
   }
 
   logout() {

@@ -76,7 +76,7 @@ export class OptionsPage implements OnInit {
         }
       }
 
-      await fileTransfer.upload(this.toUploadAvatar, 'https://coronago.herokuapp.com/options/avatarUpload', options)
+      await fileTransfer.upload(this.toUploadAvatar, 'http://outlier5-com.umbler.net/options/avatarUpload', options)
         .then(async data => {
           this.global.avatar = await this.avatar;
           const { user } = await JSON.parse(data.response);
@@ -101,7 +101,7 @@ export class OptionsPage implements OnInit {
       return false;
     } else {
       this.storage.get('token').then(value => {
-        this.http.put('https://coronago.herokuapp.com/options/updateProfile', this.optionsForm.value, {
+        this.http.put('http://outlier5-com.umbler.net/options/updateProfile', this.optionsForm.value, {
         'Authorization': `Bearrer ${value}`
         })
           .then(data => {

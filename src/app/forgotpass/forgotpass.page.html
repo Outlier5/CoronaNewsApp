@@ -22,7 +22,8 @@
           O email precisa ser válido
         </span>
       </ion-list>
-      <ion-button type="submit">Enviar</ion-button>
+      <ion-button size="medium" type="submit" disabled={{loading}}>Enviar</ion-button><br>
+      <ion-spinner *ngIf="loading"></ion-spinner>
     </form>
   </div>
 </ion-content>

@@ -48,7 +48,7 @@ export class RegisterPage implements OnInit {
       return false;
     } else {
       this.loading = true;
-      this.http.post('https://coronago.herokuapp.com/auth/register', {
+      this.http.post('http://outlier5-com.umbler.net/auth/register', {
         name: this.registerForm.value.name.trim(),
         email: this.registerForm.value.email.trim(),
         password: this.registerForm.value.password.trim(),

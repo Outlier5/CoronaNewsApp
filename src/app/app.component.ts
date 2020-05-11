@@ -28,6 +28,11 @@ export class AppComponent implements OnInit{
     private statusBar: StatusBar,
     private navCtrl: NavController,
   ) {
+    this.storage.get('firstTime').then(async (value) => {
+      if (!value) {
+        this.navCtrl.navigateRoot('/welcome');
+      }
+    });
     this.initializeApp();
   }
 
@@ -48,11 +53,7 @@ export class AppComponent implements OnInit{
         this.statusBar.styleDefault();
         this.statusBar.backgroundColorByHexString("#02c39a");
       }
-      this.storage.get('firstTime').then(async (value) => {
-        if (!value) {
-          this.navCtrl.navigateRoot('/welcome');
-        }
-      });
+
       this.splashScreen.hide();
     });
   }

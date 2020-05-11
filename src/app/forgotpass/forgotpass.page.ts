@@ -16,6 +16,7 @@ export class ForgotPage implements OnInit {
 
   public forgotForm: any;
   public isSubmitted = false;
+  public loading: boolean = false;
 
   constructor(
     public global: GlobalService,
@@ -42,21 +43,23 @@ export class ForgotPage implements OnInit {
 
   forgot(){
     this.isSubmitted = true;
+    this.loading = true;
 
     if (!this.forgotForm.valid) {
       this.global.toast('Por favor insira todos valores requeridos');
       return false;
     } else {
-      this.http.post('https://coronago.herokuapp.com/auth/forgot_password', {
+      this.http.post('http://outlier5-com.umbler.net/auth/forgot_password', {
         email: this.forgotForm.value.email.trim(),
       }, {})
         .then(data => {
           const { success } = JSON.parse(data.data);
           this.global.toast(success);
+          this.loading = false;
           this.router.navigate(['/login']);
         }).catch(err => {
           const { error } = JSON.parse(err.error)
-          console.log(err)
+          this.loading = false;
           this.global.toast(error);
         });
     }

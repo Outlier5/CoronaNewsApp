@@ -99,7 +99,7 @@ export class ModalPage implements OnInit {
     
     try {
       this.storage.get('token').then(value => {
-        this.http.get(`https://coronago.herokuapp.com/coronaApi/getBoletins/${state}/${date}/${page}`, {}, {
+        this.http.get(`http://outlier5-com.umbler.net/coronaApi/getBoletins/${state}/${date}/${page}`, {}, {
           'Authorization': `Bearrer ${value}`
         }).then(data => {
           const results = JSON.parse(data.data).results;
