@@ -75,7 +75,8 @@ export class HomePage {
         }
       });
     }
-  async ngOnInit() {
+  
+  ngOnInit() { 
     this.ativeMap();
 
     const bannerConfig: AdMobFreeBannerConfig = {
@@ -133,8 +134,7 @@ export class HomePage {
     else {
       this.overlayHidden = false;
       this.buttonHidden = true;
-    }
-      
+    }  
   }
 
   async loadMap() {

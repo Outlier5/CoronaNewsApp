@@ -79,7 +79,6 @@ export class ModalPage implements OnInit {
   
 
   swipe(event) {
-    alert('aaa')
     if(event.direction === 2) {
       this.indexTab = 1;
     }

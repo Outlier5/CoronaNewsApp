@@ -90,7 +90,11 @@ export class OptionsPage implements OnInit {
           this.global.toast(error);
         });
     });
-      
+  }
+
+  async cancel() {
+    this.avatar = await this.global.avatar;
+    this.acceptButton = false;
   }
 
   submit(){
