@@ -67,15 +67,7 @@ export class HomePage {
         title: ['', [Validators.required, Validators.maxLength(20)]],
         description: ['', [Validators.required, Validators.maxLength(125)]],
       });
-      this.subscribe = this.platform.backButton.subscribeWithPriority(666666, () => {
-        if (this.constructor.name === 'HomePage') {
-          if (window.confirm('Deseja sair?')) {
-            navigator['app'].exitApp();
-          }
-        }
-      });
     }
-  
   ngOnInit() { 
     this.ativeMap();
 
