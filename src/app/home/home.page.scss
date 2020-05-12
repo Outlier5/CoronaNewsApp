@@ -124,22 +124,7 @@ mat-list-item p{
 .ativo{
   background-color: rgb(0, 156, 122);
 }
-#fundoOverlay  {
-  text-align: center;
-  color: #FFF;
-  /*Centralizar verticalmente*/
-  margin: 0;
-  position: absolute;
-  top: 40%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-  z-index: 31;  
-}
+
 ion-row div{
   margin: 0 auto;
   display: flex;
@@ -149,29 +134,6 @@ ion-row div{
 
 }
 
-#itens {
-  width: 100%;
-  height: 50%;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-wrap: wrap;
-  color: #fff;
-}
-#itens div{
-  margin: 24px 0px;
-  display: flex;
-  flex-direction: column;
-  width: 150px;
-  height: 150px;
-}
-#itens div  ion-fab-button{
-  width: 75px;
-  height: 75px;
-
-}
 #denuncia {
   position: fixed;
   margin: 0;
