@@ -12,9 +12,11 @@
   <ion-title>Alterar imagem</ion-title>
   <div id="userImg">
     <img src="{{ avatar || global.avatar }}">
-    <button mat-fab (click)="getImage()" color="accent">
-      <mat-icon>edit</mat-icon>
-    </button>
+    <ion-fab>
+      <ion-fab-button color="danger" (click)="getImage()">
+        <ion-icon name="pencil-sharp"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </div>
 
   <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="cancel()">Cancelar</ion-button>
@@ -25,12 +27,12 @@
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
     <ion-item>
       <ion-label position="stacked">Nome</ion-label>
-      <ion-input formControlName="name"  value={{global.userGlobal.name}}></ion-input>
+      <ion-input formControlName="name"  value="{{global.userGlobal.name}}"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Email</ion-label>
-      <ion-input type="email" disabled formControlName="email"  value={{global.userGlobal.email}}></ion-input>
+      <ion-input type="email" disabled formControlName="email"  value="{{global.userGlobal.email}}"></ion-input>
     </ion-item>
 
     <ion-item>

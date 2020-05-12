@@ -1,14 +1,20 @@
 :root {
   --notch-inset-top: 20px;
 }
-
+#container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 #container ion-title{
-  margin-top: 5%;
+  margin: 5%;
 }
 #userImg{
   width: 50%;
   height: 25%;
-  margin-top: 2rem;
+  
 }
 #userImg img{
   width: 150px;
@@ -17,12 +23,13 @@
   display: block;
   margin: 0 auto;
 }
-#userImg button[mat-fab]{
-  z-index: 2;
-  margin-top: -2rem;
-  margin-left: 7rem;
+ion-fab{
+  margin: -38px 42px;
 }
 
 ion-toolbar {
   margin-top: var(--notch-inset-top);
+}
+ion-button{
+  margin: 32px;
 }
