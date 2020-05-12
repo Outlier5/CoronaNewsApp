@@ -1,7 +1,32 @@
-
+mat-tab-group{
+    padding-top: 42px;
+    background-color: #fff;
+}
+ion-card-title, ion-card-subtitle{
+    --color: #fff;
+}
+#btns{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 0;
+    flex-direction: column;
+}
+#escolha{
+    margin-left: 15px;
+}
+ion-icon{
+    margin-right: 5px;
+}
 .card {
-    width: 100%;
     padding-bottom: 20px;
+    color: #FFF;
+}
+ion-list{
+    --ion-item-background: transparent;
+    margin-top:0;
+}
+p::first-letter { 
+    text-transform: uppercase; 
 }
 
 .firstButton{

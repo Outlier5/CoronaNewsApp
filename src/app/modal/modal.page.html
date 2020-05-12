@@ -1,6 +1,4 @@
 <ion-app (swipe)="swipe($event)" fullscreen>
-  <ion-toolbar>
-  </ion-toolbar>
   <ion-content fullscreen>
     <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} (focusChange)="number = 5">
       <mat-tab label="Noticias" (swipe)="swipe($event)">
@@ -14,7 +12,8 @@
       <mat-tab label="Boletins Oficiais">
         <ng-template matTabContent>
           <div (swipe)="swipe($event)">
-            <h3>Escolha um estado</h3>
+            <div id="escolha">
+            <p>Escolha um estado</p>
 
             <mat-form-field appearance="fill">
               <mat-select (selectionChange)="select()" [(value)]="selected">
@@ -24,12 +23,14 @@
               </mat-select>
             </mat-form-field>
             <ion-spinner *ngIf="loading"></ion-spinner>
+            </div>
             <div role="listitem" *ngFor="let boletim of data | slice:0:number">
               <ion-card class="card">
                 <ion-card-header>
                   <ion-card-title>{{ boletim.state }}</ion-card-title>
                   <ion-card-subtitle>{{ boletim.date }}</ion-card-subtitle>
                 </ion-card-header>
+                <!--
                 <ion-card-content (click)="openBrowser( boletim.url )">
                   <ion-item>
                     {{ boletim.notes || 'Sem notas para Exibir' }}
@@ -43,8 +44,21 @@
                     PDF
                   </h3>
                 </ion-item>
+                -->
+                <ion-card-content>
+                 <div>
+                   <p id="boletimTxt">{{ boletim.notes || 'Sem notas para Exibir' }}</p>
+                 </div>
+                 <div id="btns">
+                  <ion-button (click)="share(boletim.state, boletim.url)">
+                    <ion-icon name="share-social-sharp"></ion-icon>
+                    Compartilhar</ion-button>
+                  <ion-button (click)="openBrowser( boletim.url )">
+                    <ion-icon name="arrow-down-sharp"></ion-icon>
+                    Baixar PDF</ion-button>
+                 </div>
+                </ion-card-content>
               </ion-card>  
-              <mat-divider></mat-divider>
           </div>
           <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
             <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
