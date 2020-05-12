@@ -27,8 +27,8 @@ export class RegisterPage implements OnInit {
     private router: Router
     ) {
       this.registerForm = formBuilder.group({
-        name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+        name: ['', [Validators.required, Validators.maxLength(60)]],
+        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'), Validators.maxLength(60)]],
         password: ['', Validators.required],
       });
   }

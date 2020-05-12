@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, NavController } from '@ionic/angular';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: 'app-welcome',
@@ -16,7 +15,6 @@ export class WelcomePage implements OnInit {
   @ViewChild('mySlider', { static: true }) slides: IonSlides;  
   constructor(
     private navCtrl: NavController,
-    private screenOrientation: ScreenOrientation
     ) { }
   ngOnInit() {
   }

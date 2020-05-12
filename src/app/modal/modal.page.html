@@ -3,14 +3,12 @@
   </ion-toolbar>
   <ion-content fullscreen>
     <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} (focusChange)="number = 5">
-      <mat-tab label="Noticias">
+      <mat-tab label="Noticias" (swipe)="swipe($event)">
         <ng-template matTabContent>
-          <div (swipe)="swipe($event)">
             <ngx-twitter-timeline
               [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
-              [opts]="{ tweetLimit: 10 ,chrome: ['noheader', 'noscrollbar', 'nofooter'] }">
+              [opts]="{ tweetLimit: 10 ,chrome: ['noheader', 'noscrollbar', 'nofooter'] }">   
             </ngx-twitter-timeline>
-          </div>
         </ng-template>
       </mat-tab>
       <mat-tab label="Boletins Oficiais">
