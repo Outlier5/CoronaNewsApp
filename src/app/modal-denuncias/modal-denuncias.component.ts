@@ -1,5 +1,6 @@
 import { ModalController } from '@ionic/angular';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-modal-denuncias',
@@ -7,11 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./modal-denuncias.component.scss'],
 })
 export class ModalDenunciasComponent implements OnInit {
-
+  @Input() denunciaInsert: any;
   constructor(private modalController: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
   async closeModal() { 
     this.modalController.dismiss();
+  }
+
+  insert(infos: any) {
+    this.denunciaInsert(infos);
   }
 }

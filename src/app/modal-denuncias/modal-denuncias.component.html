@@ -1,30 +1,33 @@
 <ion-content (click)="closeModal()">
   <h1>Denuncias</h1>
+  
   <div>
     <ion-row style="margin-bottom: 135px;" class="ion-align-items-center">
       <ion-col size="6">
         <div>
-            <ion-fab-button color="tertiary">
+            <ion-fab-button color="tertiary" (click)="insert({ title: 'Aglomerações', type: 'aglomeracoes' })">
               <ion-icon name="people"></ion-icon>
             </ion-fab-button>
+            <p>Aglomerações</p>
         </div>
       </ion-col>
 
       <ion-col>
         <div>
-            <ion-fab-button color="medium">
+            <ion-fab-button color="medium" (click)="insert({ title: 'Situações de Risco', type: 'risco' })">
               <ion-icon name="nuclear"></ion-icon>
             </ion-fab-button>
+            <p>Situações de risco</p>
         </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <div>
-            <ion-fab-button color="danger">
+            <ion-fab-button color="danger" (click)="insert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
               <ion-icon name="sad"></ion-icon>
             </ion-fab-button>
-          <p>ASDASD</p>
+          <p>Áreas com incidentes recentes</p>
           
         </div>
       </ion-col>

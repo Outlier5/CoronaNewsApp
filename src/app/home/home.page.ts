@@ -25,11 +25,6 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
 
-import { ActionSheetController } from '@ionic/angular';
-
-
-
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -69,7 +64,6 @@ export class HomePage {
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     private activatedRoute: ActivatedRoute,
-    private actionSheetController: ActionSheetController,
     ) {
       this.denunciaForm = formBuilder.group({
         title: ['', [Validators.required, Validators.maxLength(20)]],
@@ -87,10 +81,13 @@ export class HomePage {
     this.admobFree.banner.prepare();
   }
   async presentModal() {
+    this.newsButton = true;
     const modal = await this.modalController.create({
       component: ModalPage
     });
-    return await modal.present();
+    return await modal.present().finally(() => {
+      this.newsButton = false;
+    });
   }
 
   async ativeMap() {
@@ -122,14 +119,14 @@ export class HomePage {
   }
 
   async openModal() {
-    this.newsButton = true;
     const modal = await this.modalController.create({
-      component: ModalDenunciasComponent
+      component: ModalDenunciasComponent,
+      componentProps: {
+        denunciaInsert: this.denunciaInsert.bind(this),
+      }
     });    
     
-    return await modal.present().finally(() => {
-      this.newsButton = false;
-    });
+    return await modal.present();
   }
 
   toggleOverlay(){
