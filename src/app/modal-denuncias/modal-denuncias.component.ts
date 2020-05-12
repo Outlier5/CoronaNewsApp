@@ -8,12 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./modal-denuncias.component.scss'],
 })
 export class ModalDenunciasComponent implements OnInit {
+
   @Input() denunciaInsert: any;
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {
   }
-  async closeModal() { 
+  async closeModal() {
     this.modalController.dismiss();
   }
 

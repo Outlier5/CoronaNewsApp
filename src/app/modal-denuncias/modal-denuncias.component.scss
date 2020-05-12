@@ -3,27 +3,44 @@ ion-modal {
 }
 h1{
   text-align: center;
-  margin-top: 54px;
   color: #F0F3BD;
   font-size: 2.2rem;
+  margin-bottom: 36px;
 }
-div{
+#container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+}
+.linha1{
   width: 100%;
-  top: 40%;
-  position: absolute;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+}
+.linha2{
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.item{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.linha1item{
+  width: 50%;
+  text-align: center;
+  align-self: center;
 }
 ion-fab-button{
   width: 100px;
   height: 100px;
-}
-ion-row{
-  height: 25%;
-}
-ion-col{
-  height:100%;
-}
-ion-col div{
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
