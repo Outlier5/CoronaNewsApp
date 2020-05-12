@@ -1,3 +1,4 @@
+import { ModalDenunciasComponent } from './../modal-denuncias/modal-denuncias.component';
 import {
   GoogleMaps,
   GoogleMap,
@@ -23,6 +24,11 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
+
+import { ActionSheetController } from '@ionic/angular';
+
+
+
 
 @Component({
   selector: 'app-home',
@@ -62,7 +68,9 @@ export class HomePage {
     private http: HTTP,
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private actionSheetController: ActionSheetController,
+    ) {
       this.denunciaForm = formBuilder.group({
         title: ['', [Validators.required, Validators.maxLength(20)]],
         description: ['', [Validators.required, Validators.maxLength(125)]],
@@ -77,6 +85,12 @@ export class HomePage {
     };
     this.admobFree.banner.config(bannerConfig);
     this.admobFree.banner.prepare();
+  }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ModalPage
+    });
+    return await modal.present();
   }
 
   async ativeMap() {
@@ -110,7 +124,7 @@ export class HomePage {
   async openModal() {
     this.newsButton = true;
     const modal = await this.modalController.create({
-      component: ModalPage
+      component: ModalDenunciasComponent
     });    
     
     return await modal.present().finally(() => {

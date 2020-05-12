@@ -1,0 +1,29 @@
+ion-modal {
+  --ion-background-color: #ffffff85;
+}
+h1{
+  text-align: center;
+  margin-top: 54px;
+  color: #F0F3BD;
+  font-size: 2.2rem;
+}
+div{
+  width: 100%;
+  top: 40%;
+  position: absolute;
+}
+ion-fab-button{
+  width: 100px;
+  height: 100px;
+}
+ion-row{
+  height: 25%;
+}
+ion-col{
+  height:100%;
+}
+ion-col div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

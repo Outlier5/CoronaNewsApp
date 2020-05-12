@@ -1,3 +1,4 @@
+import { ModalDenunciasComponent } from './modal-denuncias/modal-denuncias.component';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -29,16 +30,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { ModalPageModule } from './modal/modal.module';
 import { GlobalService } from './global.service';
 import { IonicGestureConfig } from './ionicGestureConfig.module';
-import { HAMMER_GESTURE_CONFIG } from "@angular/platform-browser";
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 
 
 
+
+
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, ModalDenunciasComponent],
+  entryComponents: [ModalDenunciasComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

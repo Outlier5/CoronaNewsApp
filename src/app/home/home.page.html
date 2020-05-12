@@ -54,14 +54,14 @@
               <span class="tooltip">Minha localização</span>
           </div>
           <div class="firstButton">
-              <ion-fab-button color="primary" (click)="toggleOverlay()">
+              <ion-fab-button color="primary" (click)="openModal()">
                 <ion-icon name="alert"></ion-icon>
               </ion-fab-button>
               <span class="tooltip2 tooltip">Denúncias</span>
             
           </div>
         <div class="newsButton">
-          <ion-button shape="round" disabled={{newsButton}} color="primary" (click)="openModal()">
+          <ion-button shape="round" disabled={{newsButton}} color="primary" (click)="presentModal()">
             <ion-icon name="globe-outline"></ion-icon>
             Notícias
             <ion-spinner *ngIf="newsButton"></ion-spinner>
@@ -107,8 +107,10 @@
       </ion-content>
     </mat-drawer-content>
   </mat-drawer-container>
+  <!--
   <div id="overlay" *ngIf="overlayHidden" (click)="toggleOverlay()">
   </div>
+  
   <div *ngIf="overlayHidden" id="fundoOverlay" (click)="toggleOverlay()">
     <h1>Denunciar</h1>
   
@@ -137,5 +139,6 @@
       </ion-row>
     </ion-grid>
   </div>
+  -->
 </ion-app>
 <!-- Eu sempre sobre que o bolo é uma mentira -->
