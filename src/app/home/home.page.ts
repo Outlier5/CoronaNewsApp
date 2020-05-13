@@ -597,7 +597,7 @@ export class HomePage {
           frame.innerHTML = [
             '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
           `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-          `<p style="color: grey; margin: 0;">Por: Eu Lv.${ this.global.userGlobal.level } <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
+          `<p style="color: grey; margin: 0;">Por: Eu Lv.${ this.global.userGlobal.level }<div class="vote">Votos:<span>${ denuncia.rank }</span></div></p>`,
           `<h3>${ denuncia.title }</h3>`,
           `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
           '<div class="deleteButton">',
@@ -608,7 +608,7 @@ export class HomePage {
               background-color: white;
               color: #028090;
             }
-            #vote {
+            .vote {
               margin-left: 50%;
               color: ${ denuncia.rank > 0 ? 'green' : 'red'};
             }
@@ -664,6 +664,7 @@ export class HomePage {
   logout() {
     this.storage.remove('user');
     this.storage.remove('token');
+    this.storage.remove('date');
     this.global.toast('Sessão encerrada');
     this.navCtrl.navigateRoot('/login');
   }

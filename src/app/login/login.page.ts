@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
   async ngOnInit() {
     this.storage.get('date').then(async value => {
       const date = new Date();
-      if (date.getFullYear() > value.getFullYear()) {
+      if (date > value) {
         const { _id } = await this.storage.get('user').then(val => JSON.parse(val));
         const token = await this.storage.get('token').then(val => val);
 
@@ -46,10 +46,19 @@ export class LoginPage implements OnInit {
           'Authorization': `Bearrer ${token}`
         })
           .then(data => {
-            const { user } = JSON.parse(data.data); 
+            const { user, token } = JSON.parse(data.data); 
+            const date = new Date();
+
+            this.storage.set('token', token);
+            this.storage.set('date', date.setHours(date.getHours() + 24));
+            this.storage.set('user', user);
+
             this.global.userGlobal = user;
             this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
             this.navCtrl.navigateRoot('/home');
+          }).catch(err => {
+            const { error } = JSON.parse(err.error);
+            this.global.toast(error);
           })
       }
     });
@@ -79,15 +88,17 @@ export class LoginPage implements OnInit {
       }, {})
         .then(data => {
           const { token, user, message } = JSON.parse(data.data);
+          const date = new Date();
 
           this.storage.set('token', token);
-          this.storage.set('date', new Date());
+          this.storage.set('date', date.setHours(date.getHours() + 24));
           this.storage.set('user', user);
 
           this.global.userGlobal = user;
           this.global.avatar = `data:image/webp;base64,${Buffer.from(user.avatar).toString('base64')}`;
 
           this.loading = false;
+          this.global.toast(message);
           this.navCtrl.navigateRoot('/home');
         }).catch(err => {
           const { error } = JSON.parse(err.error)

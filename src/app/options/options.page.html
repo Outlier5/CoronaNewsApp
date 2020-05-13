@@ -28,12 +28,14 @@
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
     <ion-item>
       <ion-label position="stacked">Nome</ion-label>
-      <ion-input formControlName="name"  value="{{global.userGlobal.name}}"></ion-input>
+      <ion-input formControlName="name"  value="{{global.userGlobal.name}}" maxlength="60"></ion-input>
     </ion-item>
-
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.maxlength">
+      O nome deve ter no máximo 60 caracteres
+    </span>
     <ion-item>
       <ion-label position="stacked">Email</ion-label>
-      <ion-input type="email" disabled formControlName="email"  value="{{global.userGlobal.email}}"></ion-input>
+      <ion-input type="email" disabled formControlName="email"  value="{{global.userGlobal.email}}" maxlength="60"></ion-input>
     </ion-item>
 
     <ion-item>
