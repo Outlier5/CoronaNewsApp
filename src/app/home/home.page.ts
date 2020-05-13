@@ -288,6 +288,7 @@ export class HomePage {
           this.drawCircles(cleanData, 'perState');
           loading.dismiss();
         }).catch((err) => {
+          loading.dismiss();
           this.global.toast('Estado não encontrado')
         });
       });
@@ -645,7 +646,7 @@ export class HomePage {
 
           htmlInfoWindow.setContent(frame, {
             width: "300px",
-            height: "200px"
+            height: "250px"
           });
 
           marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {

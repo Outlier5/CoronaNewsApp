@@ -1,8 +1,8 @@
 {
-  "name": "TestMaps",
+  "name": "coronahoje",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Outlier 5",
+  "homepage": "http://outlier5.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
