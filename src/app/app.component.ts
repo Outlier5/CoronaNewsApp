@@ -40,15 +40,15 @@ export class AppComponent implements OnInit{
         this.routerOutlet.pop();
       } else if (this.router.url === "/home"){
         const alert = await this.alertController.create({
-          header: 'fechar app',
-          message: 'quer mesmo',
+          header: 'Sair',
+          message: 'Deseja sair do aplicativo ?',
           buttons: [
             {
-              text: 'cancelar',
-              role: 'cancelar'
+              text: 'Não',
+              role: 'Não'
             },
             {
-              text: 'fechar',
+              text: 'Sim',
               handler: () => {
                 navigator["app"].exitApp();
               }

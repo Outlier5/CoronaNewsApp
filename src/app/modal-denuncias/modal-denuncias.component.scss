@@ -4,7 +4,10 @@ ion-modal {
 h1{
   text-align: center;
   font-size: 2.2rem;
-  margin-bottom: 36px;
+  margin-bottom: 0;
+}
+small{
+  margin-bottom: 15px;
 }
 #container{
   display: flex;
@@ -13,7 +16,7 @@ h1{
   height: 100%;
   justify-content: center;
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding: 10px;
 }
 .linha1{
@@ -34,6 +37,7 @@ h1{
   align-content: center;
   justify-content: center;
   flex-direction: column;
+  white-space: nowrap;
 }
 .linha1item{
   width: 50%;

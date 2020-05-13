@@ -1,40 +1,7 @@
 <ion-content (click)="closeModal()">
 <div id="container">
   <h1>Denuncias</h1>
-  <!--
-  <div>
-    <ion-row style="margin-bottom: 135px;" class="ion-align-items-center">
-      <ion-col size="6">
-        <div>
-            <ion-fab-button color="tertiary" (click)="insert({ title: 'Aglomerações', type: 'aglomeracoes' })">
-              <ion-icon name="people"></ion-icon>
-            </ion-fab-button>
-            <p>AglomeraçõesAAAAAAAAa</p>
-        </div>
-      </ion-col>
-
-      <ion-col>
-        <div>
-            <ion-fab-button color="medium" (click)="insert({ title: 'Situações de Risco', type: 'risco' })">
-              <ion-icon name="nuclear"></ion-icon>
-            </ion-fab-button>
-            <p>Situações de risco</p>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div>
-            <ion-fab-button color="danger" (click)="insert({ title: 'Areas com incidentes recentes', type: 'incidenteRecente' })">
-              <ion-icon name="sad"></ion-icon>
-            </ion-fab-button>
-          <p>Áreas com incidentes recentes</p>
-          
-        </div>
-      </ion-col>
-    </ion-row>
-  </div>
-  -->
+  <small>Denúncias ficam por 24 horas no mapa</small>
   <div class="linha1">
     <div class="item linha1item">
       <ion-fab-button style="align-self: center;" color="tertiary" (click)="insert({ title: 'Aglomerações', type: 'aglomeracoes' })">
@@ -59,7 +26,7 @@
       <p>Áreas com incidentes recentes</p>
     </div>
   </div>
-  <p style="color: lightgrey;">Denúncias ficam por 24 horas no mapa</p>
+  <p style="color: lightgrey;"></p>
 
 </div>
 </ion-content>
