@@ -403,7 +403,7 @@ export class HomePage {
       frame.innerHTML = [
         '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
         `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } <div class="vote">Votos:<span>${ element.rank }</span></div></p>`,
+        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } Lv.${element.by.level}<div class="vote">Votos:<span>${ element.rank }</span></div></p>`,
         `<h3>${ element.title }</h3>`,
         `<p style="margin: 0;display: block;overflow: hidden;">${ element.description }</p>`,
         '<footer class="bottomButton">',
@@ -597,7 +597,7 @@ export class HomePage {
           frame.innerHTML = [
             '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
           `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-          `<p style="color: grey; margin: 0;">Por: Eu <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
+          `<p style="color: grey; margin: 0;">Por: Eu Lv.${ this.global.userGlobal.level } <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
           `<h3>${ denuncia.title }</h3>`,
           `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
           '<div class="deleteButton">',

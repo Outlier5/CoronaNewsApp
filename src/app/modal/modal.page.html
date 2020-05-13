@@ -30,21 +30,6 @@
                   <ion-card-title>{{ boletim.state }}</ion-card-title>
                   <ion-card-subtitle>{{ boletim.date }}</ion-card-subtitle>
                 </ion-card-header>
-                <!--
-                <ion-card-content (click)="openBrowser( boletim.url )">
-                  <ion-item>
-                    {{ boletim.notes || 'Sem notas para Exibir' }}
-                  </ion-item>
-                </ion-card-content>
-                <ion-item>
-                  <ion-button (click)="share(boletim.state, boletim.url)" color="primary" fill="clear" slot="start">
-                    Compartilhar
-                  </ion-button>
-                  <h3 *ngIf=boletim.isPDF slot="end" style="color: red; right: 0; margin: 0;">
-                    PDF
-                  </h3>
-                </ion-item>
-                -->
                 <ion-card-content>
                  <div>
                    <p id="boletimTxt">{{ boletim.notes || 'Sem notas para Exibir' }}</p>
@@ -53,9 +38,11 @@
                   <ion-button (click)="share(boletim.state, boletim.url)">
                     <ion-icon name="share-social-sharp"></ion-icon>
                     Compartilhar</ion-button>
-                  <ion-button (click)="openBrowser( boletim.url )">
+                  <ion-button *ngIf=boletim.isPDF (click)="openBrowser( boletim.url )">
                     <ion-icon name="arrow-down-sharp"></ion-icon>
                     Baixar PDF</ion-button>
+                  <ion-button *ngIf=!boletim.isPDF (click)="openBrowser( boletim.url )">
+                    Ir Para o site<ion-icon name="arrow-forward-sharp"></ion-icon></ion-button>
                  </div>
                 </ion-card-content>
               </ion-card>  
