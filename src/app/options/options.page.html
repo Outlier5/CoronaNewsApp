@@ -19,9 +19,10 @@
     </ion-fab>
   </div>
 
-  <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="cancel()">Cancelar</ion-button>
-  <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="uploadImage()">Alterar <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
-
+  
+  <ion-button size="medium" disabled={{loading}} color="primary" *ngIf="acceptButton" (click)="uploadImage()">Alterar</ion-button>
+  <ion-spinner *ngIf="loading"></ion-spinner>
+  <ion-button size="medium" disabled={{loading}} color="danger" *ngIf="acceptButton" (click)="cancel()">Cancelar</ion-button>
   <ion-item-divider></ion-item-divider>
   <ion-title>Alterar Nome</ion-title>
   <form [formGroup]="optionsForm" (submit)="submit()" novalidate>
@@ -40,7 +41,7 @@
       <ion-input type="password" placeholder="Digite uma nova senha" formControlName="password"></ion-input>
     </ion-item>
     
-    <ion-button type="submit" size="medium" color="primary">Atualizar</ion-button>
+    <ion-button style="margin: 35px;" type="submit" size="medium" color="primary">Atualizar</ion-button>
   </form>
 </div>
 </ion-content>
