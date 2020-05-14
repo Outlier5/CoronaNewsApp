@@ -74,6 +74,7 @@ export class HomePage {
     this.ativeMap();
 
     const bannerConfig: AdMobFreeBannerConfig = {
+      id: 'ca-app-pub-7992243410212657/7518142886',
       size: 'BANNER',
       autoShow: true,
     };
@@ -253,7 +254,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get('http://outlier5-com.umbler.net/coronaApi/getAllStates', {}, {
+      this.http.get('http://outlier5-com.umbler.net/brasilIoApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(async data => {
           const now = new Date();
@@ -276,7 +277,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get(`http://outlier5-com.umbler.net/coronaApi/getPerState/${state}`, {}, {
+      this.http.get(`http://outlier5-com.umbler.net/brasilIoApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
       }).then(async data => {
           const now = new Date();

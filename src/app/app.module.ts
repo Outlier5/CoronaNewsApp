@@ -1,5 +1,4 @@
 import { ModalDenunciasComponent } from './modal-denuncias/modal-denuncias.component';
-import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router'

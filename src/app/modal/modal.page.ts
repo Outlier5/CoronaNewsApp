@@ -98,7 +98,7 @@ export class ModalPage implements OnInit {
     
     try {
       this.storage.get('token').then(value => {
-        this.http.get(`http://outlier5-com.umbler.net/coronaApi/getBoletins/${state}/${date}/${page}`, {}, {
+        this.http.get(`http://outlier5-com.umbler.net/brasilIoApi/getBoletins/${state}/${date}/${page}`, {}, {
           'Authorization': `Bearrer ${value}`
         }).then(data => {
           const results = JSON.parse(data.data).results;
@@ -155,8 +155,8 @@ export class ModalPage implements OnInit {
   }
   share(state, url) {
     var options = {
-      message: `Boletim oficial do estado de ${state}\n\n${url}\n\nMensagem compartilhada do app Corona Hoje, baixe agora`,
-      subject: 'Mensagem compartilhada do app Corona Hoje, baixe agora',
+      message: `Boletim oficial do estado de ${state}\n\n${url}\n\nMensagem compartilhada do app Saúde Hoje, baixe agora`,
+      subject: 'Mensagem compartilhada do app Saúde Hoje, baixe agora',
       chooserTitle: 'Escolha um App',
     };
     this.socialSharing.shareWithOptions(options);
