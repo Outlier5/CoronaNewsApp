@@ -26,7 +26,7 @@ export class ForgotPage implements OnInit {
     private router: Router
     ) {
       this.forgotForm = formBuilder.group({
-        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+        email: ['', [Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'), Validators.maxLength(60)]],
       });
    }
 

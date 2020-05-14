@@ -36,8 +36,8 @@ export class OptionsPage implements OnInit {
     private transfer: FileTransfer,
   ) { 
     this.optionsForm = formBuilder.group({
-      name: [''],
-      email: ['', [Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')]],
+      name: ['', [Validators.maxLength(60)]],
+      email: ['', [Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$'), Validators.maxLength(60)]],
       password: [''],
     });
   }
@@ -57,7 +57,9 @@ export class OptionsPage implements OnInit {
         this.toUploadAvatar = results[i];
         this.acceptButton = true;
       }
-    }, (err) => { this.acceptButton = false; });
+    }, async (err) => { 
+      this.acceptButton = false; 
+      this.avatar = await this.global.avatar; });
   }
 
   uploadImage() {
@@ -90,6 +92,10 @@ export class OptionsPage implements OnInit {
           this.global.toast(error);
         });
     });
+  }
+
+  get errorControl() {
+    return this.optionsForm.controls;
   }
 
   async cancel() {

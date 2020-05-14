@@ -77,6 +77,7 @@ export class HomePage {
     this.ativeMap();
 
     const bannerConfig: AdMobFreeBannerConfig = {
+      id: 'ca-app-pub-7992243410212657/7518142886',
       size: 'BANNER',
       autoShow: true,
     };
@@ -271,7 +272,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get('http://outlier5-com.umbler.net/coronaApi/getAllStates', {}, {
+      this.http.get('http://outlier5-com.umbler.net/brasilIoApi/getAllStates', {}, {
         'Authorization': `Bearrer ${value}`
       }).then(async data => {
           const now = new Date();
@@ -294,7 +295,7 @@ export class HomePage {
     });
     await loading.present();
     this.storage.get('token').then(value => {
-      this.http.get(`http://outlier5-com.umbler.net/coronaApi/getPerState/${state}`, {}, {
+      this.http.get(`http://outlier5-com.umbler.net/brasilIoApi/getPerState/${state}`, {}, {
         'Authorization': `Bearrer ${value}`
       }).then(async data => {
           const now = new Date();
@@ -306,6 +307,7 @@ export class HomePage {
           this.drawCircles(cleanData, 'perState');
           loading.dismiss();
         }).catch((err) => {
+          loading.dismiss();
           this.global.toast('Estado não encontrado')
         });
       });
@@ -615,7 +617,7 @@ export class HomePage {
           frame.innerHTML = [
             '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
           `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-          `<p style="color: grey; margin: 0;">Por: Eu Lv.${ this.global.userGlobal.level } <span id="vote">Votos: ${ denuncia.rank }</span></p>`,
+          `<p style="color: grey; margin: 0;">Por: Eu Lv.${ this.global.userGlobal.level }<div class="vote">Votos:<span>${ denuncia.rank }</span></div></p>`,
           `<h3>${ denuncia.title }</h3>`,
           `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
           '<div class="deleteButton">',
@@ -626,7 +628,7 @@ export class HomePage {
               background-color: white;
               color: #028090;
             }
-            #vote {
+            .vote {
               margin-left: 50%;
               color: ${ denuncia.rank > 0 ? 'green' : 'red'};
             }
@@ -663,7 +665,7 @@ export class HomePage {
 
           htmlInfoWindow.setContent(frame, {
             width: "300px",
-            height: "200px"
+            height: "250px"
           });
 
           marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
@@ -682,6 +684,7 @@ export class HomePage {
   logout() {
     this.storage.remove('user');
     this.storage.remove('token');
+    this.storage.remove('date');
     this.global.toast('Sessão encerrada');
     this.navCtrl.navigateRoot('/login');
   }

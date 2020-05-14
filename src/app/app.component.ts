@@ -80,7 +80,11 @@ export class AppComponent implements OnInit{
         this.statusBar.styleDefault();
         this.statusBar.backgroundColorByHexString("#02c39a");
       }
-      this.navigationBar.hideNavigationBar();
+      this.navigationBar.hideNavigationBar().then(() => {
+        console.log('success')
+      }).catch(() => {
+        console.log('error')
+      });
       this.splashScreen.hide();
     });
   }

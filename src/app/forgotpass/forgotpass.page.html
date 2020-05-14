@@ -13,13 +13,16 @@
       <ion-list>       
         <ion-item>
           <ion-label position="stacked">Email</ion-label>
-          <ion-input formControlName="email" type="email" placeholder="usuário@exemplo.com" required></ion-input>
+          <ion-input formControlName="email" type="email" placeholder="usuário@exemplo.com" required maxlength="60"></ion-input>
         </ion-item>
         <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
           Um email é necessário.
         </span>
         <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.pattern">
           O email precisa ser válido
+        </span>
+        <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.maxlength">
+          O email deve ter no máximo 60 caracteres
         </span>
       </ion-list>
       <ion-button size="medium" type="submit" disabled={{loading}}>Enviar</ion-button><br>

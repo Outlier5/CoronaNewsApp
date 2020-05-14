@@ -14,6 +14,9 @@ export class SobrePage implements OnInit {
   ngOnInit() {
   }
   openAd() {
+    this.admobFree.interstitial.config({
+      id: 'ca-app-pub-7992243410212657/5917033016',
+     });
     this.admobFree.interstitial.prepare().then((data: any) => {
       this.admobFree.interstitial.show()
     }).catch((e:Error)=>{
