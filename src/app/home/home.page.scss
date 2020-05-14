@@ -84,6 +84,34 @@ mat-list-item p{
   margin-top: var(--notch-inset-top);
   padding: 12px;
 }
+#btnReferencia{
+  position: absolute;
+  right: 8px;
+  top: 24px;
+}
+#referencia{
+  background-color: whitesmoke;
+    width: 296px;
+    height: 160px;
+    z-index: 2;
+    position: absolute;
+    right: 12px;
+    top: 68px;
+    border-radius: 2px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    display: none;
+}
+#referencia ion-list{
+  --ion-item-background: transparent;
+}
+#referencia ion-item{
+  background-color: transparent;
+  display: flex;
+}
+#referencia ion-img{
+  width: 32px;
+  height: 32px;
+}
 
 #map_canvas {
   height: 100%;

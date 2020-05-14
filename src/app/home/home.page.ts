@@ -10,7 +10,7 @@ import {
   GoogleMapsEvent
 } from '@ionic-native/google-maps/ngx';
 import { Component } from '@angular/core';
-import { Platform, MenuController, ModalController, LoadingController, NavController } from '@ionic/angular';
+import { Platform, MenuController, ModalController, LoadingController, NavController, PopoverController } from '@ionic/angular';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { ActivatedRoute } from '@angular/router';
@@ -24,6 +24,8 @@ import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 
 import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
+import { popoverController } from '@ionic/core';
+import { PopoverComponent } from './../popover/popover.component';
 
 @Component({
   selector: 'app-home',
@@ -64,6 +66,7 @@ export class HomePage {
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     private activatedRoute: ActivatedRoute,
+    private popoverController: PopoverController,
     ) {
       this.denunciaForm = formBuilder.group({
         title: ['', [Validators.required, Validators.maxLength(20)]],
@@ -89,7 +92,22 @@ export class HomePage {
       this.newsButton = false;
     });
   }
-
+  async showReference(){
+    if (document.getElementById('referencia').style.display === 'none') {
+      document.getElementById('referencia').style.setProperty('display', 'block');
+    } else {
+      document.getElementById('referencia').style.setProperty('display', 'none');
+    }
+  }
+  async showPop(ev: any) {
+    const popover = await this.popoverController.create({
+        component: PopoverComponent,
+        event: ev,
+        animated: true,
+        showBackdrop: false
+    });
+    return await popover.present();
+  }
   async ativeMap() {
     this.storage.get('firstTime').then(async (value) => {
       if(!value) {
@@ -377,7 +395,7 @@ export class HomePage {
           conf['type'] = 'Aglomerações';
           break;
         case 'risco':
-          conf['color'] = '#5260ff';
+          conf['color'] = '#666';
           conf['type'] = 'Situações de Risco';
           break;
         case 'incidenteRecente':
