@@ -198,7 +198,7 @@ export class HomePage {
           this.insertControll(3, position);
       });
     }).catch((error) => {
-        console.log(error)
+      console.log(error)
     });
   }
 
@@ -229,7 +229,7 @@ export class HomePage {
 
       const data = await this.storage.get('allStates').then(val => val);
       if (data == null || now > data.date) {
-          this.getAllStates();
+        this.getAllStates();
       } else
         this.drawCircles(data.cleanData, 'allStates');
     }
@@ -393,7 +393,7 @@ export class HomePage {
       let conf = { color: '', type: '', voted: false };
       switch (element.type) {
         case 'aglomeracoes':
-          conf['color'] = '#2dd36f';
+          conf['color'] = '#f00';
           conf['type'] = 'Aglomerações';
           break;
         case 'risco':
@@ -401,7 +401,7 @@ export class HomePage {
           conf['type'] = 'Situações de Risco';
           break;
         case 'incidenteRecente':
-          conf['color'] = '#eb445a';
+          conf['color'] = '#00f';
           conf['type'] = 'Areas com incidentes recentes';
         default:
           break;
@@ -591,15 +591,15 @@ export class HomePage {
           let conf = { color: '', type: '' };
           switch (denuncia.type) {
             case 'aglomeracoes':
-              conf['color'] = '#2dd36f';
+              conf['color'] = '#f00';
               conf['type'] = 'Aglomerações';
               break;
             case 'risco':
-              conf['color'] = '#5260ff';
+              conf['color'] = '#666';
               conf['type'] = 'Situações de Risco';
               break;
             case 'incidenteRecente':
-              conf['color'] = '#eb445a';
+              conf['color'] = '#00f';
               conf['type'] = 'Areas com incidentes recentes';
             default:
               break;
