@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef} from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
@@ -7,6 +7,8 @@ import { Storage } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+
+import { SwiperOptions } from 'swiper';
 
 import { GlobalService } from '../global.service';
 
@@ -56,6 +58,11 @@ export class ModalPage implements OnInit {
 
   public number = 5;
 
+  config: SwiperOptions = {
+    initialSlide: 0, // Slide Index Starting from 0
+    slidesPerView: 1, // Slides Visible in Single View Default is 1
+  };
+
   constructor(
     public storage: Storage,
     public modalController: ModalController,
@@ -67,6 +74,10 @@ export class ModalPage implements OnInit {
     private socialSharing: SocialSharing,
   ) {
   }
+
+  ngAfterViewInit() {
+    (<any>window).twttr.widgets.load();
+}
 
   async ngOnInit() {
     const loading = await this.loadingController.create({

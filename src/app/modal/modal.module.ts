@@ -7,10 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ModalPageRoutingModule } from './modal-routing.module';
 
 import { ModalPage } from './modal.page';
-
-import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
 import { MaterialModule } from '../material.module';
-
 
 @NgModule({
   imports: [
@@ -18,7 +15,6 @@ import { MaterialModule } from '../material.module';
     FormsModule,
     IonicModule,
     ModalPageRoutingModule,
-    NgxTwitterTimelineModule,
     MaterialModule,
   ],
   declarations: [ModalPage]

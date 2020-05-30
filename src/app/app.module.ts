@@ -33,11 +33,9 @@ import { GlobalService } from './global.service';
 import { IonicGestureConfig } from './ionicGestureConfig.module';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
+import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
-
-
-
 
 
 @NgModule({
@@ -49,8 +47,8 @@ import { NgxTwitterTimelineModule } from 'ngx-twitter-timeline';
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     ModalPageModule,
-    NgxTwitterTimelineModule,
     BrowserAnimationsModule,
+    NgxUsefulSwiperModule,
     ],
   providers: [
     StatusBar,

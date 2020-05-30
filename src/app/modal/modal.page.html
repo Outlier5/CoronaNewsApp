@@ -1,13 +1,32 @@
 <ion-app (swipe)="swipe($event)" fullscreen>
   <ion-content fullscreen>
+    <swiper [config]="config" style="height: 100%;">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          aaa
+        </div>
+        <div class="swiper-slide">
+          bbb
+        </div>
+        <div class="swiper-slide">
+          ccc
+        </div>
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+      <!-- Add Arrows -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </swiper>
+    <!--
     <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} (focusChange)="number = 5">
       <mat-tab label="Noticias" (swipe)="swipe($event)">
         <div style="background-color: #fff;">
+          
         <ng-template matTabContent>
-            <ngx-twitter-timeline
-              [data]="{ sourceType: 'url', url: 'https://twitter.com/minsaude?ref_src=twsrc%5Etfw' }"
-              [opts]="{ tweetLimit: 10 ,chrome: ['noheader', 'noscrollbar', 'nofooter'] }">   
-            </ngx-twitter-timeline>
+          <a class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
+            Tweets by TwitterDev
+         </a>
         </ng-template>
         </div>
       </mat-tab>
@@ -62,5 +81,6 @@
         <ion-icon name="close-outline"></ion-icon>
       </ion-fab-button>
     </div>
+  -->
   </ion-content>
 </ion-app>

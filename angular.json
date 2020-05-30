@@ -33,6 +33,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/swiper/css/swiper.css",
               {
                 "input": "src/theme/variables.scss"
               },
@@ -40,7 +41,9 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/swiper/js/swiper.js"
+            ]
           },
           "configurations": {
             "production": {
