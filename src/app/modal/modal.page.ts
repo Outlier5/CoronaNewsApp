@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef} from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { Component, OnInit, ViewChild} from '@angular/core';
+import { ModalController, LoadingController, IonSlides, IonContent } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
@@ -7,8 +7,6 @@ import { Storage } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { BrowserTab } from '@ionic-native/browser-tab/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-
-import { SwiperOptions } from 'swiper';
 
 import { GlobalService } from '../global.service';
 
@@ -19,8 +17,7 @@ import { GlobalService } from '../global.service';
 })
 export class ModalPage implements OnInit {
 
-  public indexTab: number = 0;
-  public selectStateForm: any;
+  public newsButtons: boolean;
   public loading: boolean = false;
   public states = [
     { code: 'AC', state: 'Acre' },
@@ -58,11 +55,13 @@ export class ModalPage implements OnInit {
 
   public number = 5;
 
-  config: SwiperOptions = {
-    initialSlide: 0, // Slide Index Starting from 0
-    slidesPerView: 1, // Slides Visible in Single View Default is 1
+  public slideOpts = {
+    initialSlide: 0,
+    autoHeight: true,
   };
 
+  @ViewChild(IonContent, { static: false }) content: IonContent;
+  @ViewChild('mySlider', { static: true }) slides: IonSlides; 
   constructor(
     public storage: Storage,
     public modalController: ModalController,
@@ -77,7 +76,7 @@ export class ModalPage implements OnInit {
 
   ngAfterViewInit() {
     (<any>window).twttr.widgets.load();
-}
+  } 
 
   async ngOnInit() {
     const loading = await this.loadingController.create({
@@ -87,18 +86,29 @@ export class ModalPage implements OnInit {
     await loading.present();
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
   }
-  
 
-  swipe(event) {
-    if(event.direction === 2) {
-      this.indexTab = 1;
-    }
-    if(event.direction === 4) {
-      this.indexTab = 0;
+  async changeSlide(){
+    this.content.scrollToTop(800);
+    switch (await this.slides.getActiveIndex()) {
+      case 0:
+        this.newsButtons = true;
+        break;
+      case 1:
+        this.newsButtons = false;
+        break;
+    
+      default:
+        break;
     }
   }
-  
 
+  toBoletim() {
+    this.slides.slideTo(1);
+  }
+  toTweet() {
+    this.slides.slideTo(0);
+  }
+  
   select() {
     this.loading = true;
     this.pageNumber = 1;

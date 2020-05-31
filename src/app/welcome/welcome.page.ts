@@ -26,9 +26,8 @@ export class WelcomePage implements OnInit {
   }
   finish(){
     this.finished = true;
-    console.log(this.finished);
   }
   goToLog(){
-    this.navCtrl.navigateRoot('/login');
+    this.navCtrl.navigateRoot('/home');
   }
 }

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Platform, NavController, IonRouterOutlet, AlertController } from '@ionic/angular';
+import { Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
@@ -25,16 +25,10 @@ export class AppComponent implements OnInit{
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private navCtrl: NavController,
     private navigationBar: NavigationBar,
     private alertController: AlertController,
     private router: Router,
   ) {
-    this.storage.get('firstTime').then(async (value) => {
-      if (!value) {
-        this.navCtrl.navigateRoot('/welcome');
-      }
-    });
     this.platform.backButton.subscribeWithPriority(0, async () => {
       if (this.routerOutlet && this.routerOutlet.canGoBack()){
         this.routerOutlet.pop();
@@ -63,7 +57,7 @@ export class AppComponent implements OnInit{
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       this.rootPage = HomePage;
 
       const style = document.documentElement.style;

@@ -10,13 +10,17 @@
           </div>
         </div>
         <mat-list id="listaDrawer">
-          <mat-list-item [routerLink]="['/options']">
+          <mat-list-item *ngIf="global.loged" [routerLink]="['/options']">
             <mat-icon>tune</mat-icon>
             <p>Opções</p>
           </mat-list-item>
-          <mat-list-item (click)="logout()">
+          <mat-list-item *ngIf="global.loged" (click)="logout()">
             <mat-icon>exit_to_app</mat-icon>
             <p>Sair</p>
+          </mat-list-item>
+          <mat-list-item *ngIf="!global.loged" [routerLink]="['/login']">
+            <mat-icon>login</mat-icon>
+            <p>Ir fazer Login</p>
           </mat-list-item>
           <mat-list-item style="background-color: #088dcf9c;"  [routerLink]="['/sobre']">
             <mat-icon>attach_money</mat-icon>
@@ -68,12 +72,17 @@
               </ion-fab-button>
               <span class="tooltip">Minha localização</span>
           </div>
-          <div class="firstButton">
+          <div class="firstButton" *ngIf="global.loged">
               <ion-fab-button color="primary" (click)="openModal()">
                 <ion-icon name="alert"></ion-icon>
               </ion-fab-button>
-              <span class="tooltip2 tooltip">Denúncias</span>
-            
+              <span class="tooltip2 tooltip" *ngIf="global.loged">Denúncias</span>
+          </div>
+          <div class="firstButton" *ngIf="!global.loged">
+            <ion-fab-button color="primary" (click)="global.toast('Necessário Login para denunciar')">
+              <ion-icon name="alert"></ion-icon>
+            </ion-fab-button>
+            <span class="tooltip2 tooltip">Necessário login</span>
           </div>
         <div class="newsButton">
           <ion-button shape="round" disabled={{newsButton}} color="primary" (click)="presentModal()">

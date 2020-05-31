@@ -1,49 +1,41 @@
-<ion-app (swipe)="swipe($event)" fullscreen>
-  <ion-content fullscreen>
-    <swiper [config]="config" style="height: 100%;">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          aaa
-        </div>
-        <div class="swiper-slide">
-          bbb
-        </div>
-        <div class="swiper-slide">
-          ccc
-        </div>
-      </div>
-      <!-- Add Pagination -->
-      <div class="swiper-pagination"></div>
-      <!-- Add Arrows -->
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-    </swiper>
-    <!--
-    <mat-tab-group mat-stretch-tabs mat-align-tabs="center" selectedIndex={{indexTab}} (focusChange)="number = 5">
-      <mat-tab label="Noticias" (swipe)="swipe($event)">
-        <div style="background-color: #fff;">
-          
-        <ng-template matTabContent>
-          <a class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
-            Tweets by TwitterDev
+<ion-app fullscreen style="background-color: #fff;">
+  <ion-header>
+    <ion-toolbar>
+      <ion-tabs #tabs>
+        <ion-tab-bar slot="top">
+          <ion-tab-button tab="noticias" (click)="toTweet()" selected={{newsButtons}}>
+            <ion-icon name="newspaper-outline"></ion-icon>
+            <ion-label>Notícias</ion-label>
+          </ion-tab-button>
+      
+          <ion-tab-button tab="boletim" (click)="toBoletim()" selected={{!newsButtons}}>
+            <ion-icon name="information-circle"></ion-icon>
+            <ion-label>Boletins Oficiais</ion-label>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+      <ion-slides #mySlider [options]="slideOpts" (ionSlideWillChange)="changeSlide()">
+        <ion-slide>
+          <div style="z-index: 1; height: 100%; width: 100%; position: absolute;">
+          </div>
+          <a style="z-index: initial;" class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
+            Tweets por Ministerio da Saúde
          </a>
-        </ng-template>
-        </div>
-      </mat-tab>
-      <mat-tab label="Boletins Oficiais">
-        <ng-template matTabContent>
-          <div (swipe)="swipe($event)">
+        </ion-slide>
+        <ion-slide>
+          <div style="width: 100%;">
             <div id="escolha">
-            <p>Escolha um estado</p>
-
-            <mat-form-field appearance="fill">
-              <mat-select (selectionChange)="select()" [(value)]="selected">
-                <mat-option *ngFor="let state of states" [value]="state.code">
-                  {{ state.state }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <ion-spinner *ngIf="loading"></ion-spinner>
+              <p>Escolha um estado</p>
+              <ion-item style="margin: 20px ;">
+                <ion-label>Estados</ion-label>
+                <ion-select (ionChange)="select()" [(ngModel)]="selected" placeholder="Escolha um...">
+                  <ion-select-option *ngFor="let state of states" value={{state.code}}>{{ state.state }}</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-spinner *ngIf="loading"></ion-spinner>
             </div>
             <div role="listitem" *ngFor="let boletim of data | slice:0:number">
               <ion-card class="card">
@@ -73,14 +65,12 @@
             </ion-infinite-scroll-content>
           </ion-infinite-scroll>
           </div>
-        </ng-template>
-      </mat-tab>
-    </mat-tab-group>
-    <div class="firstButton">   
-      <ion-fab-button color="primary" id="closeButton" (click)="dismiss()">
-        <ion-icon name="close-outline"></ion-icon>
-      </ion-fab-button>
-    </div>
-  -->
+        </ion-slide>
+      </ion-slides>
+      <div class="firstButton">   
+        <ion-fab-button color="primary" id="closeButton" (click)="dismiss()">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-fab-button>
+      </div>
   </ion-content>
 </ion-app>

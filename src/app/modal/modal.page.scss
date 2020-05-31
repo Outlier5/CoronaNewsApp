@@ -1,7 +1,21 @@
-mat-tab-group{
-    padding-top: 42px;
-    background-color: #fff;
+:root {
+    --notch-inset-top: 20px;
+  }
+
+ion-toolbar {
+    margin-top: var(--notch-inset-top);
 }
+
+ion-tab-bar {
+    --background: #fff;
+}
+
+ion-slides{
+    background-color: #fff;
+    --bullet-background-active: #F0F3BD;
+    color: #000;
+  }
+
 ion-card-title, ion-card-subtitle{
     --color: #fff;
 }

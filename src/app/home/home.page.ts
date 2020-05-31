@@ -446,12 +446,12 @@ export class HomePage {
             display: ${ conf.voted ? 'none' : 'block' };
           }
           .voteButtons {
-            display: ${ element.by.name == this.global.userGlobal.name ? 'none' : 'block' };
+            display: ${ (element.by.name == this.global.userGlobal.name) && (this.global.loged) ? 'none' : 'block' };
           }
           .deleteButton {
             margin-left: 60%;
             bottom: 0;
-            display: ${ element.by.name == this.global.userGlobal.name ? 'block' : 'none' };
+            display: ${ (element.by.name == this.global.userGlobal.name) && (this.global.loged) ? 'block' : 'none' };
           }
           .delete {
             left: 1;
@@ -686,7 +686,7 @@ export class HomePage {
     this.storage.remove('token');
     this.storage.remove('date');
     this.global.toast('Sessão encerrada');
-    this.navCtrl.navigateRoot('/login');
+    this.navCtrl.navigateRoot('/landpage');
   }
 
 }

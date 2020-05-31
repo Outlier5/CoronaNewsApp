@@ -33,8 +33,6 @@ import { GlobalService } from './global.service';
 import { IonicGestureConfig } from './ionicGestureConfig.module';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -48,7 +46,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     IonicStorageModule.forRoot(),
     ModalPageModule,
     BrowserAnimationsModule,
-    NgxUsefulSwiperModule,
     ],
   providers: [
     StatusBar,

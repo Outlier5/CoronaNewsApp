@@ -9,6 +9,7 @@ export class GlobalService {
 
   public userGlobal: any; 
   public avatar: any;
+  public loged: boolean;
 
   constructor(
     public toastController: ToastController,) { }

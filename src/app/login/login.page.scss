@@ -1,3 +1,10 @@
+:root {
+  --notch-inset-top: 20px;
+}
+ion-toolbar {
+  margin-top: var(--notch-inset-top);
+}
+
 ion-content{
   overflow: hidden;
   --background: whitesmoke;
