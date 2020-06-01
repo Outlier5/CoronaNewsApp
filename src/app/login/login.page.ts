@@ -64,7 +64,7 @@ export class LoginPage implements OnInit {
 
           this.loading = false;
           this.global.toast(message);
-          this.navCtrl.navigateRoot('/home');
+          this.navCtrl.navigateRoot('/landpage');
         }).catch(err => {
           const { error } = JSON.parse(err.error)
           this.loading = false;

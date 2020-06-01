@@ -1,6 +1,6 @@
 {
   "name": "saudehoje",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Outlier 5",
   "homepage": "http://outlier5.com/",
   "scripts": {
@@ -80,6 +80,7 @@
     "rxjs": "~6.5.1",
     "rxjs-compat": "^6.5.5",
     "tslib": "^1.9.0",
+    "xcode": "^3.0.1",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

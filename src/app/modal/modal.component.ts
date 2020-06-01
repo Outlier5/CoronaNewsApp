@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, LoadingController, IonSlides, IonContent } from '@ionic/angular';
 
 import { HTTP } from '@ionic-native/http/ngx';
@@ -12,10 +12,10 @@ import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-modal',
-  templateUrl: './modal.page.html',
-  styleUrls: ['./modal.page.scss'],
+  templateUrl: './modal.component.html',
+  styleUrls: ['./modal.component.scss'],
 })
-export class ModalPage implements OnInit {
+export class ModalComponent implements OnInit {
 
   public newsButtons: boolean;
   public loading: boolean = false;
@@ -60,7 +60,7 @@ export class ModalPage implements OnInit {
     autoHeight: true,
   };
 
-  @ViewChild(IonContent, { static: false }) content: IonContent;
+  @ViewChild('conteudo', { static: false }) content: IonContent;
   @ViewChild('mySlider', { static: true }) slides: IonSlides; 
   constructor(
     public storage: Storage,
@@ -76,6 +76,11 @@ export class ModalPage implements OnInit {
 
   ngAfterViewInit() {
     (<any>window).twttr.widgets.load();
+
+    document.getElementById('newsDiv').ontouchstart = () => {
+      document.getElementById('newsDiv').style.pointerEvents = 'none';
+      setTimeout(() => {document.getElementById('newsDiv').style.pointerEvents = 'all';}, 200)
+    };
   } 
 
   async ngOnInit() {
@@ -85,10 +90,11 @@ export class ModalPage implements OnInit {
     });
     await loading.present();
     this.getBoletins('*', '*', this.pageNumber, { event: null, first: false });
+    this.changeSlide();
   }
 
   async changeSlide(){
-    this.content.scrollToTop(800);
+    this.content.scrollToTop(200);
     switch (await this.slides.getActiveIndex()) {
       case 0:
         this.newsButtons = true;
@@ -171,8 +177,8 @@ export class ModalPage implements OnInit {
       });  
   }
 
-  dismiss() {
-    this.modalController.dismiss();
+  async dismiss() {
+    await this.modalController.dismiss();
   }
   share(state, url) {
     var options = {
@@ -182,4 +188,5 @@ export class ModalPage implements OnInit {
     };
     this.socialSharing.shareWithOptions(options);
   }
+
 }

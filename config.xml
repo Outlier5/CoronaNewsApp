@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.saudehoje.android.saudehoje" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.saudehoje.android.saudehoje" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Saúde Hoje</name>
     <description>Aplicativo feito para poder mostrar, em tempo real, informações de aglomerações e informações sobre a saúde no Brasil.</description>
     <author email="contato@outlier5.com" href="http://outlier5.com/">Outlier 5</author>

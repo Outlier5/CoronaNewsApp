@@ -1,4 +1,6 @@
 import { ModalDenunciasComponent } from './../modal-denuncias/modal-denuncias.component';
+import { ModalComponent } from './../modal/modal.component';
+
 import {
   GoogleMaps,
   GoogleMap,
@@ -22,9 +24,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { AdMobFree, AdMobFreeBannerConfig } from '@ionic-native/admob-free/ngx';
 
-import { ModalPage } from '../modal/modal.page';
 import { GlobalService } from '../global.service';
-import { popoverController } from '@ionic/core';
 import { PopoverComponent } from './../popover/popover.component';
 
 @Component({
@@ -84,15 +84,7 @@ export class HomePage {
     this.admobFree.banner.config(bannerConfig);
     this.admobFree.banner.prepare();
   }
-  async presentModal() {
-    this.newsButton = true;
-    const modal = await this.modalController.create({
-      component: ModalPage
-    });
-    return await modal.present().finally(() => {
-      this.newsButton = false;
-    });
-  }
+
   async showReference(){
     if (document.getElementById('referencia').style.display === 'none') {
       document.getElementById('referencia').style.setProperty('display', 'block');
@@ -134,6 +126,16 @@ export class HomePage {
           } 
         });
       }
+    });
+  }
+
+  async presentModal() {
+    this.newsButton = true;
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+    });
+    return await modal.present().finally(() => {
+      this.newsButton = false;
     });
   }
 
@@ -369,7 +371,7 @@ export class HomePage {
             radius = (element.confirmed * 5) > 10000 ? 10000 : (element.confirmed * 5);
             break;
           case 'allStates':
-            radius = element.confirmed * 10;
+            radius = (element.confirmed * 10) > 100000 ? 100000 : (element.confirmed * 10);
             break;
           default:
             break;
@@ -423,7 +425,7 @@ export class HomePage {
       frame.innerHTML = [
         '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
         `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } Lv.${element.by.level}<div class="vote">Votos:<span>${ element.rank }</span></div></p>`,
+        `<p style="color: grey; margin: 0;">Por: ${ element.by.name == this.global.userGlobal.name ? 'Eu' : element.by.name } <div class="vote">Votos:<span>${ element.rank }</span></div></p>`,
         `<h3>${ element.title }</h3>`,
         `<p style="margin: 0;display: block;overflow: hidden;">${ element.description }</p>`,
         '<footer class="bottomButton">',
@@ -446,12 +448,12 @@ export class HomePage {
             display: ${ conf.voted ? 'none' : 'block' };
           }
           .voteButtons {
-            display: ${ (element.by.name == this.global.userGlobal.name) && (this.global.loged) ? 'none' : 'block' };
+            display: ${ (element.by.name == this.global.userGlobal.name || this.global.loged != true ) ? 'none' : 'block' };
           }
           .deleteButton {
             margin-left: 60%;
             bottom: 0;
-            display: ${ (element.by.name == this.global.userGlobal.name) && (this.global.loged) ? 'block' : 'none' };
+            display: ${ (element.by.name == this.global.userGlobal.name) ? 'block' : 'none' };
           }
           .delete {
             left: 1;
@@ -617,7 +619,7 @@ export class HomePage {
           frame.innerHTML = [
             '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">',
           `<p style="margin: 0; margin-top: 5px; font-size: 20px;">${ conf.type }</p>`,
-          `<p style="color: grey; margin: 0;">Por: Eu Lv.${ this.global.userGlobal.level }<div class="vote">Votos:<span>${ denuncia.rank }</span></div></p>`,
+          `<p style="color: grey; margin: 0;">Por: Eu <div class="vote">Votos:<span>${ denuncia.rank }</span></div></p>`,
           `<h3>${ denuncia.title }</h3>`,
           `<p style="margin: 0;isplay: block;overflow: hidden;">${ denuncia.description }</p>`,
           '<div class="deleteButton">',

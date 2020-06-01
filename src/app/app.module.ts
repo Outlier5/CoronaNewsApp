@@ -1,8 +1,10 @@
 import { PopoverComponent } from './popover/popover.component';
 import { ModalDenunciasComponent } from './modal-denuncias/modal-denuncias.component';
+import { ModalComponent } from './modal/modal.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router'
+import { FormsModule } from '@angular/forms';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
@@ -28,7 +30,6 @@ import { NavigationBar } from '@ionic-native/navigation-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { ModalPageModule } from './modal/modal.module';
 import { GlobalService } from './global.service';
 import { IonicGestureConfig } from './ionicGestureConfig.module';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
@@ -37,14 +38,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
-  declarations: [AppComponent, ModalDenunciasComponent, PopoverComponent],
-  entryComponents: [ModalDenunciasComponent, PopoverComponent],
+  declarations: [AppComponent, ModalDenunciasComponent, PopoverComponent, ModalComponent],
+  entryComponents: [ModalDenunciasComponent, PopoverComponent, ModalComponent],
   imports: [
+    FormsModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    ModalPageModule,
     BrowserAnimationsModule,
     ],
   providers: [

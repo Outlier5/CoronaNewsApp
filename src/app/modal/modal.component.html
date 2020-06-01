@@ -1,29 +1,25 @@
-<ion-app fullscreen style="background-color: #fff;">
-  <ion-header>
-    <ion-toolbar>
-      <ion-tabs #tabs>
-        <ion-tab-bar slot="top">
-          <ion-tab-button tab="noticias" (click)="toTweet()" selected={{newsButtons}}>
-            <ion-icon name="newspaper-outline"></ion-icon>
-            <ion-label>Notícias</ion-label>
-          </ion-tab-button>
-      
-          <ion-tab-button tab="boletim" (click)="toBoletim()" selected={{!newsButtons}}>
-            <ion-icon name="information-circle"></ion-icon>
-            <ion-label>Boletins Oficiais</ion-label>
-          </ion-tab-button>
-        </ion-tab-bar>
-      </ion-tabs>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
+
+  <ion-content #conteudo>
+    <!--
+    <ion-tabs #tabs>
+      <ion-tab-bar slot="top">
+        <ion-tab-button tab="noticias" (click)="toTweet()" selected={{newsButtons}}>
+          <ion-icon name="newspaper-outline"></ion-icon>
+          <ion-label>Notícias</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="boletim" (click)="toBoletim()" selected={{!newsButtons}}>
+          <ion-icon name="information-circle"></ion-icon>
+          <ion-label>Boletins Oficiais</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>-->
+
       <ion-slides #mySlider [options]="slideOpts" (ionSlideWillChange)="changeSlide()">
         <ion-slide>
-          <div style="z-index: 1; height: 100%; width: 100%; position: absolute;">
-          </div>
-          <a style="z-index: initial;" class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
-            Tweets por Ministerio da Saúde
-         </a>
+          <a class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
+          </a>
+          <div id="newsDiv" style="z-index: 1; height: 100%; width: 100%; position: absolute; pointer-events:painted;"></div>
         </ion-slide>
         <ion-slide>
           <div style="width: 100%;">
@@ -73,4 +69,3 @@
         </ion-fab-button>
       </div>
   </ion-content>
-</ion-app>
