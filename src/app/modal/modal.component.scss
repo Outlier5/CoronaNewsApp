@@ -2,7 +2,8 @@
     --notch-inset-top: 20px;
   }
 
-ion-toolbar {
+ion-header {
+    height: 40px;
     margin-top: var(--notch-inset-top);
 }
 

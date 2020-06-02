@@ -25,8 +25,10 @@ export class LandpagePage implements OnInit {
   async ngOnInit() {
     await this.storage.get('date').then(async value => {
       const date = new Date();
+
       if (value && date > value) {
-        const { _id } = await this.storage.get('user').then(val => JSON.parse(val));
+        const { _id } = await this.storage.get('user').then(val => val);
+
         const token = await this.storage.get('token').then(val => val);
 
         this.http.get(`http://outlier5-com.umbler.net/auth/revokeToken/${ _id }`, {}, {

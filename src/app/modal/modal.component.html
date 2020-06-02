@@ -1,71 +1,73 @@
-
+<ion-app fullscreen style="background-color: white;">
+  <ion-header>
+    <div style="display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;">
+      <ion-button color="{{newsButtons ? 'primary' : 'dark'}}" (click)="toTweet()" fill="clear">
+        <ion-icon name="newspaper-outline"></ion-icon>
+        <ion-label>Notícias</ion-label>
+      </ion-button>
+  
+      <ion-button color="{{newsButtons ? 'dark' : 'primary'}}" (click)="toBoletim()" fill="clear">
+        <ion-icon name="information-circle"></ion-icon>
+        <ion-label>Boletins Oficiais</ion-label>
+      </ion-button>
+    </div>
+  </ion-header>
   <ion-content #conteudo>
-    <!--
-    <ion-tabs #tabs>
-      <ion-tab-bar slot="top">
-        <ion-tab-button tab="noticias" (click)="toTweet()" selected={{newsButtons}}>
-          <ion-icon name="newspaper-outline"></ion-icon>
-          <ion-label>Notícias</ion-label>
-        </ion-tab-button>
-    
-        <ion-tab-button tab="boletim" (click)="toBoletim()" selected={{!newsButtons}}>
-          <ion-icon name="information-circle"></ion-icon>
-          <ion-label>Boletins Oficiais</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>-->
-
-      <ion-slides #mySlider [options]="slideOpts" (ionSlideWillChange)="changeSlide()">
-        <ion-slide>
-          <a class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
-          </a>
-          <div id="newsDiv" style="z-index: 1; height: 100%; width: 100%; position: absolute; pointer-events:painted;"></div>
-        </ion-slide>
-        <ion-slide>
-          <div style="width: 100%;">
-            <div id="escolha">
-              <p>Escolha um estado</p>
-              <ion-item style="margin: 20px ;">
-                <ion-label>Estados</ion-label>
-                <ion-select (ionChange)="select()" [(ngModel)]="selected" placeholder="Escolha um...">
-                  <ion-select-option *ngFor="let state of states" value={{state.code}}>{{ state.state }}</ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-spinner *ngIf="loading"></ion-spinner>
-            </div>
-            <div role="listitem" *ngFor="let boletim of data | slice:0:number">
-              <ion-card class="card">
-                <ion-card-header>
-                  <ion-card-title>{{ boletim.state }}</ion-card-title>
-                  <ion-card-subtitle>{{ boletim.date }}</ion-card-subtitle>
-                </ion-card-header>
-                <ion-card-content>
-                 <div>
-                   <p id="boletimTxt">{{ boletim.notes || 'Sem notas para Exibir' }}</p>
-                 </div>
-                 <div id="btns">
-                  <ion-button (click)="share(boletim.state, boletim.url)">
-                    <ion-icon name="share-social-sharp"></ion-icon>
-                    Compartilhar</ion-button>
-                  <ion-button *ngIf=boletim.isPDF (click)="openBrowser( boletim.url )">
-                    <ion-icon name="arrow-down-sharp"></ion-icon>
-                    Baixar PDF</ion-button>
-                  <ion-button *ngIf=!boletim.isPDF (click)="openBrowser( boletim.url )">
-                    Ir Para o site<ion-icon name="arrow-forward-sharp"></ion-icon></ion-button>
-                 </div>
-                </ion-card-content>
-              </ion-card>  
+    <ion-slides #mySlider [options]="slideOpts" (ionSlideWillChange)="changeSlide()">
+      <ion-slide>
+        <a class="twitter-timeline" href="https://twitter.com/minsaude?ref_src=twsrc%5Etfw">
+        </a>
+        <div id="newsDiv" style="z-index: 1; height: 100%; width: 100%; position: absolute; pointer-events:painted;"></div>
+      </ion-slide>
+      <ion-slide>
+        <div style="width: 100%;">
+          <div id="escolha">
+            <p>Escolha um estado</p>
+            <ion-item style="margin: 20px ;">
+              <ion-label>Estados</ion-label>
+              <ion-select (ionChange)="select()" [(ngModel)]="selected" placeholder="Escolha um...">
+                <ion-select-option *ngFor="let state of states" value={{state.code}}>{{ state.state }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-spinner *ngIf="loading"></ion-spinner>
           </div>
-          <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-            <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
-            </ion-infinite-scroll-content>
-          </ion-infinite-scroll>
-          </div>
-        </ion-slide>
-      </ion-slides>
-      <div class="firstButton">   
-        <ion-fab-button color="primary" id="closeButton" (click)="dismiss()">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-fab-button>
-      </div>
+          <div role="listitem" *ngFor="let boletim of data | slice:0:number">
+            <ion-card class="card">
+              <ion-card-header>
+                <ion-card-title>{{ boletim.state }}</ion-card-title>
+                <ion-card-subtitle>{{ boletim.date }}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content>
+                <div>
+                  <p id="boletimTxt">{{ boletim.notes || 'Sem notas para Exibir' }}</p>
+                </div>
+                <div id="btns">
+                <ion-button (click)="share(boletim.state, boletim.url)">
+                  <ion-icon name="share-social-sharp"></ion-icon>
+                  Compartilhar</ion-button>
+                <ion-button *ngIf=boletim.isPDF (click)="openBrowser( boletim.url )">
+                  <ion-icon name="arrow-down-sharp"></ion-icon>
+                  Baixar PDF</ion-button>
+                <ion-button *ngIf=!boletim.isPDF (click)="openBrowser( boletim.url )">
+                  Ir Para o site<ion-icon name="arrow-forward-sharp"></ion-icon></ion-button>
+                </div>
+              </ion-card-content>
+            </ion-card>  
+        </div>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+          <ion-infinite-scroll-content loadingSpinner="default" loadingText="Carregando mais items...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <div class="firstButton">   
+      <ion-fab-button color="primary" id="closeButton" (click)="dismiss()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-fab-button>
+    </div>
   </ion-content>
+</ion-app>
